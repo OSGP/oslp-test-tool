@@ -1,0 +1,42 @@
+name: Build Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  release:
+    types: [ "created" ]
+
+permissions: write-all
+
+jobs:
+  build:
+    timeout-minutes: 30
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          cache: 'gradle'
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Setup Gradle to generate and submit dependency graphs
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          dependency-graph: generate-and-submit
+      - name: Build binaries
+        run: ./gradlew build packageReleaseExe packageReleaseMsi
+      - name: Publish binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'oslp-test-tool'
+          path: 'composeApp/build/compose/binaries/main-release/'
+      - name: Upload binaries to release
+        if: github.event_name == 'release'
+        run: gh release upload ${{github.ref_name}} "composeApp/build/compose/binaries/main-release/msi/*.msi" "composeApp/build/compose/binaries/main-release/exe/*.exe"
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
