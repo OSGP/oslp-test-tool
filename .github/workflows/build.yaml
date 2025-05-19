@@ -18,25 +18,28 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           cache: 'gradle'
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
       - name: Setup Gradle to generate and submit dependency graphs
         uses: gradle/actions/setup-gradle@v4
         with:
           dependency-graph: generate-and-submit
       - name: Build binaries
-        run: ./gradlew build packageReleaseExe packageReleaseMsi
+        run: ./gradlew build createReleaseDistributable packageReleaseMsi
       - name: Publish binaries
         uses: actions/upload-artifact@v4
         with:
           name: 'oslp-test-tool'
           path: 'composeApp/build/compose/binaries/main-release/'
+      - name: Compress distributable
+        if: github.event_name == 'release'
+        run: Compress-Archive -Path 'composeApp/build/compose/binaries/main-release/app/oslp-test-tool' -DestinationPath 'composeApp/build/compose/binaries/main-release/oslp-test-tool.zip'
       - name: Upload binaries to release
         if: github.event_name == 'release'
-        run: gh release upload ${{github.ref_name}} "composeApp/build/compose/binaries/main-release/msi/*.msi" "composeApp/build/compose/binaries/main-release/exe/*.exe"
+        run: gh release upload ${{github.ref_name}} "composeApp/build/compose/binaries/main-release/msi/*.msi" "composeApp/build/compose/binaries/main-release/oslp-test-tool.zip"
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}

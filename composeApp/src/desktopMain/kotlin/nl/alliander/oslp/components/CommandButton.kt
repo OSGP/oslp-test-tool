@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
-fun CommandButton(text: String, modifier: Modifier, onClick: () -> Unit) {
+fun CommandButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = { onClick() },
         modifier = modifier
