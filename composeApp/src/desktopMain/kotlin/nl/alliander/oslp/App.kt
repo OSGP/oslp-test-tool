@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
-import org.alliander.MainViewModel
-import org.alliander.components.SetLightRow
+import nl.alliander.oslp.MainViewModel
+import nl.alliander.oslp.components.SetLightRow
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
@@ -28,6 +28,7 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
 
     MaterialTheme {
         Row(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            val modifier = Modifier.weight(1f).height(60.dp)
             Column(modifier = Modifier.width(300.dp).padding(end = 16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     CircleIndicator(viewModel.isDeviceRegistered, "Register device")
@@ -39,29 +40,21 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val buttonModifier = Modifier.weight(1f).height(60.dp)
-
-                    CommandButton("Selftest (10 sec)", buttonModifier) { viewModel.appendLog("Selftest (10 sec) clicked") }
-                    CommandButton("Reboot", buttonModifier) { viewModel.appendLog("Reboot clicked") }
+                    CommandButton("Selftest (10 sec)", modifier) { viewModel.appendLog("Selftest (10 sec) clicked") }
+                    CommandButton("Reboot", modifier) { viewModel.appendLog("Reboot clicked") }
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val buttonModifier = Modifier.weight(1f).height(60.dp)
-
-                    CommandButton("Light sensor on", buttonModifier) { viewModel.appendLog("Light sensor on (Light) clicked") }
-                    CommandButton("Light sensor off", buttonModifier) { viewModel.appendLog("Light sensor off (Dark) clicked") }
+                    CommandButton("Light sensor on", modifier) { viewModel.appendLog("Light sensor on (Light) clicked") }
+                    CommandButton("Light sensor off", modifier) { viewModel.appendLog("Light sensor off (Dark) clicked") }
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val buttonModifier = Modifier.weight(1f).height(60.dp)
-
-                    CommandButton("Get Status", buttonModifier) { viewModel.appendLog("Get Status clicked") }
-                    CommandButton("Get Configuration", buttonModifier) { viewModel.appendLog("Get Configuration clicked") }
+                    CommandButton("Get Status", modifier) { viewModel.appendLog("Get Status clicked") }
+                    CommandButton("Get Configuration", modifier) { viewModel.appendLog("Get Configuration clicked") }
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val buttonModifier = Modifier.weight(1f).height(60.dp)
+                    CommandButton("Get Firmware versie", modifier) { viewModel.appendLog("Get Firmware versie clicked") }
 
-                    CommandButton("Get Firmware versie", buttonModifier) { viewModel.appendLog("Get Firmware versie clicked") }
-
-                    Spacer(modifier = Modifier.weight(1f).height(60.dp))
+                    Spacer(modifier = modifier)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

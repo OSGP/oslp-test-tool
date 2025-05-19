@@ -1,4 +1,4 @@
-package org.alliander.components
+package nl.alliander.oslp.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
