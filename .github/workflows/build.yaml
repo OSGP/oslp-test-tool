@@ -29,12 +29,12 @@ jobs:
         with:
           dependency-graph: generate-and-submit
       - name: Build binaries
-        run: ./gradlew.bat :composeApp:packageReleaseExe --info
+        run: ./gradlew :composeApp:clean :composeApp:packageReleaseExe --info
       - name: Publish binaries
         uses: actions/upload-artifact@v4
         with:
           name: 'oslp-test-tool'
-          path: 'composeApp/build/compose/binaries/main-release/'
+          path: 'composeApp/build/compose/binaries/main-release/exe/*'
       - name: Upload binaries to release
         if: github.event_name == 'release'
         run: gh release upload ${{github.ref_name}} "composeApp/build/compose/binaries/main-release/*"
