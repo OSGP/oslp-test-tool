@@ -29,7 +29,7 @@ jobs:
         with:
           dependency-graph: generate-and-submit
       - name: Build binaries
-        run: ./gradlew.bat build packageReleaseExe packageReleaseMsi
+        run: ./gradlew.bat build packageReleaseDistributable packageReleaseMsi
       - name: Publish binaries
         uses: actions/upload-artifact@v4
         with:
@@ -37,7 +37,7 @@ jobs:
           path: 'composeApp/build/compose/binaries/main-release/'
       - name: Compress distributable
         if: github.event_name == 'release'
-        run: Compress-Archive -Path 'composeApp/build/compose/binaries/main-release/app/oslp-test-tool' -DestinationPath 'composeApp/build/compose/binaries/main-release/oslp-test-tool.zip'
+        run: Compress-Archive -Path 'composeApp/build/compose/binaries/main-release/app/oslp-test-tool/*' -DestinationPath 'composeApp/build/compose/binaries/main-release/oslp-test-tool.zip'
       - name: Upload binaries to release
         if: github.event_name == 'release'
         run: gh release upload ${{github.ref_name}} "composeApp/build/compose/binaries/main-release/msi/*.msi" "composeApp/build/compose/binaries/main-release/oslp-test-tool.zip"
