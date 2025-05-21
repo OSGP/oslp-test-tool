@@ -37,7 +37,7 @@ compose.desktop {
         mainClass = "nl.alliander.oslp.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Exe)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "oslp-test-tool"
             packageVersion = "1.0.0"
         }
