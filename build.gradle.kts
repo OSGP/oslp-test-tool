@@ -4,4 +4,14 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.gradleWrapperUpgrade)
+}
+
+wrapperUpgrade {
+    gradle {
+        register("oslp-test-tool") {
+            repo.set("OSGP/oslp-test-tool")
+            baseBranch.set("main")
+        }
+    }
 }
