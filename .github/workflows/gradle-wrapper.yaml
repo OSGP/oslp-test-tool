@@ -30,6 +30,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Upgrade Gradle Wrapper
-        run: ./gradlew.bat upgradeGradleWrapperAll --info --stacktrace
+        run: .\gradlew.bat upgradeGradleWrapperAll --info --stacktrace
         env:
           WRAPPER_UPGRADE_GIT_TOKEN: ${{ secrets.GRADLE_WRAPPER_UPDATE_TOKEN }}
