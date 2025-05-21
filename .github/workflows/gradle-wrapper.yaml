@@ -1,0 +1,29 @@
+name: Automatic Gradle Wrapper Upgrade
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
+
+permissions: write-all
+
+jobs:
+  upgradeGradleWrapper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Git credentials
+        env:
+          TOKEN: ${{ secrets.GRADLE_WRAPPER_UPDATE_TOKEN}}
+        run: |
+          git config --global user.email "IoTFDP@alliander.com"
+          git config --global user.name "IOTFDP"
+          git config --global url."https://unused-username:${TOKEN}@github.com/".insteadOf "https://github.com/"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Upgrade Gradle Wrapper
+        run: ./gradlew upgradeGradleWrapperAll
+        env:
+          WRAPPER_UPGRADE_GIT_TOKEN: ${{ secrets.GRADLE_WRAPPER_UPDATE_TOKEN }}
