@@ -18,11 +18,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up JDK 21
+      - name: Set up JDK 18
         uses: actions/setup-java@v4
         with:
           cache: 'gradle'
-          java-version: '21'
+          java-version: '18'
           distribution: 'temurin'
       - name: Setup Gradle to generate and submit dependency graphs
         uses: gradle/actions/setup-gradle@v4
