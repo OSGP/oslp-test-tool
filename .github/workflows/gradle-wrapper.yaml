@@ -30,6 +30,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Upgrade Gradle Wrapper
-        run: ./gradlew upgradeGradleWrapperAll
+        run: ./gradlew upgradeGradleWrapperAll --info --stacktrace
         env:
           WRAPPER_UPGRADE_GIT_TOKEN: ${{ secrets.GRADLE_WRAPPER_UPDATE_TOKEN }}
