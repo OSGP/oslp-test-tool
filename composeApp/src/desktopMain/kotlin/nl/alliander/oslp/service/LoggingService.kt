@@ -1,4 +1,4 @@
-package nl.alliander.oslp.models
+package nl.alliander.oslp.service
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
