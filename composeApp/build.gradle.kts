@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     jvm("desktop")
-    jvmToolchain(21)
+    jvmToolchain(18)
 
     
     sourceSets {
