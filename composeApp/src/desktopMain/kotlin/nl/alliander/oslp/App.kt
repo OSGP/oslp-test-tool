@@ -17,7 +17,7 @@ import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.components.SetLightRow
-import nl.alliander.oslp.models.LoggingService
+import nl.alliander.oslp.service.LoggingService
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
