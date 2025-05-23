@@ -15,14 +15,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
-import nl.alliander.oslp.MainViewModel
+import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.components.SetLightRow
+import nl.alliander.oslp.service.LoggingService
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
-fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
+fun App() {
+    val loggingService = remember { LoggingService() }
+    val viewModel = remember { MainViewModel() }
+
     val scrollState = rememberScrollState()
-    LaunchedEffect(viewModel.loggingText) {
+    LaunchedEffect(loggingService.loggingText) {
         scrollState.animateScrollTo(scrollState.maxValue)
     }
 
@@ -40,19 +44,19 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Selftest (10 sec)", modifier) { viewModel.appendLog("Selftest (10 sec) clicked") }
-                    CommandButton("Reboot", modifier) { viewModel.appendLog("Reboot clicked") }
+                    CommandButton("Selftest (10 sec)", modifier) { loggingService.appendLog("Selftest (10 sec) clicked") }
+                    CommandButton("Reboot", modifier) { loggingService.appendLog("Reboot clicked") }
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Light sensor on", modifier) { viewModel.appendLog("Light sensor on (Light) clicked") }
-                    CommandButton("Light sensor off", modifier) { viewModel.appendLog("Light sensor off (Dark) clicked") }
+                    CommandButton("Light sensor on", modifier) { loggingService.appendLog("Light sensor on (Light) clicked") }
+                    CommandButton("Light sensor off", modifier) { loggingService.appendLog("Light sensor off (Dark) clicked") }
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Get Status", modifier) { viewModel.appendLog("Get Status clicked") }
-                    CommandButton("Get Configuration", modifier) { viewModel.appendLog("Get Configuration clicked") }
+                    CommandButton("Get Status", modifier) { loggingService.appendLog("Get Status clicked") }
+                    CommandButton("Get Configuration", modifier) { loggingService.appendLog("Get Configuration clicked") }
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Get Firmware versie", modifier) { viewModel.appendLog("Get Firmware versie clicked") }
+                    CommandButton("Get Firmware versie", modifier) { loggingService.appendLog("Get Firmware versie clicked") }
 
                     Spacer(modifier = modifier)
                 }
@@ -70,18 +74,18 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
 
                         SetLightRow(
                             label = "Relais 1",
-                            onGreen = { viewModel.appendLog("Relais 1 ON") },
-                            onRed = { viewModel.appendLog("Relais 1 OFF") }
+                            onGreen = { loggingService.appendLog("Relais 1 ON") },
+                            onRed = { loggingService.appendLog("Relais 1 OFF") }
                         )
                         SetLightRow(
                             label = "Relais 2",
-                            onGreen = { viewModel.appendLog("Relais 2 ON") },
-                            onRed = { viewModel.appendLog("Relais 2 OFF") }
+                            onGreen = { loggingService.appendLog("Relais 2 ON") },
+                            onRed = { loggingService.appendLog("Relais 2 OFF") }
                         )
                         SetLightRow(
                             label = "Relais 3",
-                            onGreen = { viewModel.appendLog("Relais 3 ON") },
-                            onRed = { viewModel.appendLog("Relais 3 OFF") }
+                            onGreen = { loggingService.appendLog("Relais 3 ON") },
+                            onRed = { loggingService.appendLog("Relais 3 OFF") }
                         )
                     }
                 }
@@ -89,7 +93,7 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { viewModel.appendLog("Send JSON message clicked") },
+                    onClick = { loggingService.appendLog("Send JSON message clicked") },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
@@ -106,7 +110,7 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
                         .padding(8.dp)
                         .verticalScroll(scrollState)
                 ) {
-                    Text(viewModel.loggingText, fontSize = 14.sp)
+                    Text(loggingService.loggingText, fontSize = 14.sp)
                 }
 
                 Row(
@@ -116,14 +120,14 @@ fun App(viewModel: MainViewModel = remember { MainViewModel() }) {
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = { },
+                        onClick = { loggingService.exportLogFile() },
                         modifier = Modifier
                             .padding(end = 8.dp)
                     ) {
                         Text("Save logging to file")
                     }
                     Button(
-                        onClick = { viewModel.loggingText = "" }
+                        onClick = { loggingService.loggingText = "" }
                     ) {
                         Text("Clear logging")
                     }
