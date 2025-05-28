@@ -1,23 +1,18 @@
 import java.net.ServerSocket
 import kotlinx.coroutines.*
 
-class JvmSocketService : SocketService {
-    override fun startListening() {
-        // Blocking socket code in IO scope
+class JvmSocketService {
+    var onMessage: ((String) -> Unit)? = null
+
+    fun startListening() {
         CoroutineScope(Dispatchers.IO).launch {
             val serverSocket = ServerSocket(12121)
             println("Luistert op poort 12121")
 
             while (true) {
                 val client = serverSocket.accept()
-                println("Nieuwe verbinding: ${client.inetAddress.hostAddress}")
-
-                // Lees eventueel data
-                client.getInputStream().bufferedReader().use {
-                    val line = it.readLine()
-                    println("Ontvangen: $line")
-                }
-
+                val line = client.getInputStream().bufferedReader().readLine()
+                onMessage?.invoke(line ?: "(leeg bericht)")
                 client.close()
             }
         }
