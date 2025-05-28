@@ -15,27 +15,26 @@ class JvmSocketService {
                 while (true) {
                     try {
                         val client = serverSocket.accept()
-                        log?.invoke("✅ Nieuwe verbinding van ${client.inetAddress.hostAddress}")
+                        log?.invoke("Nieuwe verbinding van ${client.inetAddress.hostAddress}")
 
                         val reader = client.getInputStream().bufferedReader()
                         val writer = client.getOutputStream().bufferedWriter()
 
                         val line = reader.readLine()
-                        log?.invoke("📩 Ontvangen: $line")
+                        log?.invoke("Ontvangen: $line")
 
                         onMessage?.invoke(line ?: "(leeg bericht)")
 
-                        writer.write("👋 Hallo client, je zei: $line\n")
+                        writer.write("Hallo client, je zei: $line\n")
                         writer.flush()
 
                         client.close()
-                        log?.invoke("❌ Verbinding gesloten")
                     } catch (e: Exception) {
-                        log?.invoke("⚠️ Fout bij clientverwerking: ${e.message}")
+                        log?.invoke("Fout bij clientverwerking: ${e.message}")
                     }
                 }
             } catch (e: Exception) {
-                log?.invoke("❌ Kon socket niet starten: ${e.message}")
+                log?.invoke("Kon socket niet starten: ${e.message}")
             }
         }
     }
