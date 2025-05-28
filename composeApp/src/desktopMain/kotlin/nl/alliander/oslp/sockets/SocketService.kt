@@ -1,0 +1,3 @@
+interface SocketService {
+    fun startListening()
+}
