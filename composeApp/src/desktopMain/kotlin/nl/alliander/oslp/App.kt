@@ -21,8 +21,8 @@ import nl.alliander.oslp.service.LoggingService
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
-fun App() {
-    val loggingService = remember { LoggingService() }
+fun App(loggingService: LoggingService) {
+
     val viewModel = remember { MainViewModel() }
 
     val scrollState = rememberScrollState()
