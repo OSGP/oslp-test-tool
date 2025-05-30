@@ -1,5 +1,6 @@
 import java.net.ServerSocket
 import kotlinx.coroutines.*
+import java.net.InetSocketAddress
 
 class JvmSocketService {
     var onMessage: ((String) -> Unit)? = null
@@ -9,7 +10,8 @@ class JvmSocketService {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 log?.invoke("Start socket op poort 12121...")
-                val serverSocket = ServerSocket(12121)
+                val serverSocket = ServerSocket()
+                serverSocket.bind(InetSocketAddress("0.0.0.0", 12121))
                 log?.invoke("Socket gestart, wacht op verbindingen")
 
                 while (true) {
