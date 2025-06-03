@@ -13,7 +13,11 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        
+        all {
+            dependencies {
+                implementation(project(":protobuf"))
+            }
+        }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -30,7 +34,6 @@ kotlin {
         }
     }
 }
-
 
 compose.desktop {
     application {
