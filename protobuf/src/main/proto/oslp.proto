@@ -3,116 +3,117 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // import "nanopb.proto";
+edition = "2023";
 
 package oslp;
 
 option java_package = "org.opensmartgridplatform.oslp";
 
 message Message {
-  optional RegisterDeviceRequest registerDeviceRequest = 1;
-  optional RegisterDeviceResponse registerDeviceResponse = 2;
-  optional StartSelfTestRequest startSelfTestRequest = 3;
-  optional StartSelfTestResponse startSelfTestResponse = 4;
-  optional StopSelfTestRequest stopSelfTestRequest = 5;
-  optional StopSelfTestResponse stopSelfTestResponse = 6;
-  optional UpdateFirmwareRequest updateFirmwareRequest = 7;
-  optional UpdateFirmwareResponse updateFirmwareResponse = 8;
-  optional SetLightRequest setLightRequest = 9;
-  optional SetLightResponse setLightResponse = 10;
-  optional GetStatusRequest getStatusRequest = 11;
-  optional GetStatusResponse getStatusResponse = 12;
-  optional ResumeScheduleRequest resumeScheduleRequest = 13;
-  optional ResumeScheduleResponse resumeScheduleResponse = 14;
-  optional SetEventNotificationsRequest setEventNotificationsRequest = 15;
-  optional SetEventNotificationsResponse setEventNotificationsResponse = 16;
-  optional EventNotificationRequest eventNotificationRequest = 17;
-  optional EventNotificationResponse eventNotificationResponse = 18;
-  optional GetFirmwareVersionRequest getFirmwareVersionRequest = 19;
-  optional GetFirmwareVersionResponse getFirmwareVersionResponse = 20;
-  optional SetScheduleRequest setScheduleRequest = 21;
-  optional SetScheduleResponse setScheduleResponse = 22;
-  optional SetConfigurationRequest setConfigurationRequest = 25;
-  optional SetConfigurationResponse setConfigurationResponse = 26;
-  optional GetPowerUsageHistoryRequest getPowerUsageHistoryRequest = 27;
-  optional GetPowerUsageHistoryResponse getPowerUsageHistoryResponse = 28;
-  optional GetActualPowerUsageRequest getActualPowerUsageRequest = 29;
-  optional GetActualPowerUsageResponse getActualPowerUsageResponse = 30;
-  optional SetRebootRequest setRebootRequest = 31;
-  optional SetRebootResponse setRebootResponse = 32;
-  optional SetTransitionRequest setTransitionRequest = 33;
-  optional SetTransitionResponse setTransitionResponse = 34;
-  optional GetConfigurationRequest getConfigurationRequest = 35;
-  optional GetConfigurationResponse getConfigurationResponse = 36;
-  optional ConfirmRegisterDeviceRequest confirmRegisterDeviceRequest = 37;
-  optional ConfirmRegisterDeviceResponse confirmRegisterDeviceResponse =  38;
-  optional UpdateDeviceSslCertificationRequest updateDeviceSslCertificationRequest = 39;
-  optional UpdateDeviceSslCertificationResponse updateDeviceSslCertificationResponse = 40;
-  optional SetDeviceVerificationKeyRequest setDeviceVerificationKeyRequest = 41;
-  optional SetDeviceVerificationKeyResponse setDeviceVerificationKeyResponse = 42;
-  optional SwitchFirmwareRequest switchFirmwareRequest = 43;
-  optional SwitchFirmwareResponse switchFirmwareResponse = 44;
-  optional SwitchConfigurationRequest switchConfigurationRequest = 45;
-  optional SwitchConfigurationResponse switchConfigurationResponse = 46;
+  RegisterDeviceRequest registerDeviceRequest = 1;
+  RegisterDeviceResponse registerDeviceResponse = 2;
+  StartSelfTestRequest startSelfTestRequest = 3;
+  StartSelfTestResponse startSelfTestResponse = 4;
+  StopSelfTestRequest stopSelfTestRequest = 5;
+  StopSelfTestResponse stopSelfTestResponse = 6;
+  UpdateFirmwareRequest updateFirmwareRequest = 7;
+  UpdateFirmwareResponse updateFirmwareResponse = 8;
+  SetLightRequest setLightRequest = 9;
+  SetLightResponse setLightResponse = 10;
+  GetStatusRequest getStatusRequest = 11;
+  GetStatusResponse getStatusResponse = 12;
+  ResumeScheduleRequest resumeScheduleRequest = 13;
+  ResumeScheduleResponse resumeScheduleResponse = 14;
+  SetEventNotificationsRequest setEventNotificationsRequest = 15;
+  SetEventNotificationsResponse setEventNotificationsResponse = 16;
+  EventNotificationRequest eventNotificationRequest = 17;
+  EventNotificationResponse eventNotificationResponse = 18;
+  GetFirmwareVersionRequest getFirmwareVersionRequest = 19;
+  GetFirmwareVersionResponse getFirmwareVersionResponse = 20;
+  SetScheduleRequest setScheduleRequest = 21;
+  SetScheduleResponse setScheduleResponse = 22;
+  SetConfigurationRequest setConfigurationRequest = 25;
+  SetConfigurationResponse setConfigurationResponse = 26;
+  GetPowerUsageHistoryRequest getPowerUsageHistoryRequest = 27;
+  GetPowerUsageHistoryResponse getPowerUsageHistoryResponse = 28;
+  GetActualPowerUsageRequest getActualPowerUsageRequest = 29;
+  GetActualPowerUsageResponse getActualPowerUsageResponse = 30;
+  SetRebootRequest setRebootRequest = 31;
+  SetRebootResponse setRebootResponse = 32;
+  SetTransitionRequest setTransitionRequest = 33;
+  SetTransitionResponse setTransitionResponse = 34;
+  GetConfigurationRequest getConfigurationRequest = 35;
+  GetConfigurationResponse getConfigurationResponse = 36;
+  ConfirmRegisterDeviceRequest confirmRegisterDeviceRequest = 37;
+  ConfirmRegisterDeviceResponse confirmRegisterDeviceResponse =  38;
+  UpdateDeviceSslCertificationRequest updateDeviceSslCertificationRequest = 39;
+  UpdateDeviceSslCertificationResponse updateDeviceSslCertificationResponse = 40;
+  SetDeviceVerificationKeyRequest setDeviceVerificationKeyRequest = 41;
+  SetDeviceVerificationKeyResponse setDeviceVerificationKeyResponse = 42;
+  SwitchFirmwareRequest switchFirmwareRequest = 43;
+  SwitchFirmwareResponse switchFirmwareResponse = 44;
+  SwitchConfigurationRequest switchConfigurationRequest = 45;
+  SwitchConfigurationResponse switchConfigurationResponse = 46;
 }
 
 // ========= Device Installation
 message RegisterDeviceRequest {
-  required string deviceIdentification = 1; // [(nanopb).max_size = 41];
-  required bytes ipAddress = 2; // [(nanopb).max_size = 4];
-  required DeviceType deviceType = 3;
-  required bool hasSchedule = 4;
-  required uint32 randomDevice = 5; // 16 bits
+  string deviceIdentification = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 41];
+  bytes ipAddress = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 4];
+  DeviceType deviceType = 3 [features.field_presence = LEGACY_REQUIRED];
+  bool hasSchedule = 4 [features.field_presence = LEGACY_REQUIRED];
+  uint32 randomDevice = 5 [features.field_presence = LEGACY_REQUIRED]; // 16 bits
 }
 
 message RegisterDeviceResponse {
-  required Status status = 1;
-  required string currentTime = 2; // [(nanopb).max_size = 15];// - Format YYYYMMDDhhmmss UTC.
-  required uint32 randomDevice = 3;
-  required uint32 randomPlatform = 4;
-  optional LocationInfo locationInfo = 5; // Location information of device.
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
+  string currentTime = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 15];// - Format YYYYMMDDhhmmss UTC.
+  uint32 randomDevice = 3 [features.field_presence = LEGACY_REQUIRED];
+  uint32 randomPlatform = 4 [features.field_presence = LEGACY_REQUIRED];
+  LocationInfo locationInfo = 5; // Location information of device.
 }
 
 message StartSelfTestRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 message StartSelfTestResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message StopSelfTestRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 message StopSelfTestResponse {
-  required Status status = 1;
-  required bytes selfTestResult = 2; // [(nanopb).max_size = 1];
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
+  bytes selfTestResult = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 1];
 }
 
 // ========= Firmware Management
 message GetFirmwareVersionRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 message GetFirmwareVersionResponse {
-  required string firmwareVersion = 1; // [(nanopb).max_size = 7]; // RXX
+  string firmwareVersion = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 7]; // RXX
 }
 
 message UpdateFirmwareRequest {
-  required string firmwareDomain = 1; // [(nanopb).max_size = 100]; // Server-name without protocol like this example: localhost.
-  required string firmwareUrl = 2; // [(nanopb).max_size = 255]; // Relative URL like this example: /firmware/PSLD/RXX.
+  string firmwareDomain = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 100]; // Server-name without protocol like this example: localhost.
+  string firmwareUrl = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 255]; // Relative URL like this example: /firmware/PSLD/RXX.
 }
 
 message UpdateFirmwareResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message SwitchFirmwareRequest {
-  required string newFirmwareVersion = 1; // [(nanopb).max_size = 6]; // The version of the firmware which should be installed.
+  string newFirmwareVersion = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 6]; // The version of the firmware which should be installed.
 }
 
 message SwitchFirmwareResponse {
-  required Status status = 1; // FIRMWARE_EVENTS_ACTIVATING Event will be sent, after the firmware change has completed.
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED]; // FIRMWARE_EVENTS_ACTIVATING Event will be sent, after the firmware change has completed.
 }
 
 // ========= Ad-Hoc & Status
@@ -121,71 +122,71 @@ message SetLightRequest {
 }
 
 message SetLightResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message GetStatusRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 message GetStatusResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
   repeated LightValue value = 2; // [(nanopb).max_count = 6];
-  required LinkType preferredLinktype = 3;
-  required LinkType actualLinktype = 4;
-  required LightType lightType = 5;
-  required uint32 eventNotificationMask = 6;         // Bitmask for max 32 events, using NotificationBit for bit positions.
-  optional uint32 numberOfOutputs = 7;               // Hardware - The number of outputs of this device.
-  optional uint32 dcOutputVoltageMaximum = 8;        // Hardware - DC output voltage MAXimum (in mV).
-  optional uint32 dcOutputVoltageCurrent = 9;        // Hardware - DC output current voltage (in mV).
-  optional uint32 maximumOutputPowerOnDcOutput = 10; // Hardware - Maximum output power on DC output (mW).
-  optional bytes serialNumber = 11; // [(nanopb).max_size = 18]; // Hardware - Serial number of this device.
-  optional bytes macAddress = 12; // [(nanopb).max_size = 6]; // Hardware - MAC-address of this device.
-  optional string hardwareId = 13; // [(nanopb).min_size = 10, (nanopd).max_size = 25] ; // Hardware - The hardware ID of this device.
-  optional uint32 internalFlashMemSize = 14;         // Hardware - The internal flash memory size.
-  optional uint32 externalFlashMemSize = 15;         // Hardware - The external flash memory size.
-  optional uint32 lastInternalTestResultCode = 16;   // Hardware - The last internal test result code.
-  optional uint32 startupCounter = 17;               // Hardware - The startup counter.
-  optional string bootLoaderVersion = 18;            // Software - The boot loader version.
-  optional string firmwareVersion = 19;              // Software - The firmware version.
-  optional bytes currentConfigurationBackUsed = 20; // [(nanopb).max_size = 6]; // Software - The current configuration bank in use.
-  optional string name = 21;                         // Device - The name of this device.
-  optional string currentTime = 22;                  // Device - Not UTC, the time used in timing operations (adjusted "offset" + summer timing). YYYYMMDDhhmmss format.
-  optional string currentIp = 23;                    // Device - The current IP address of this device.
+  LinkType preferredLinktype = 3 [features.field_presence = LEGACY_REQUIRED];
+  LinkType actualLinktype = 4 [features.field_presence = LEGACY_REQUIRED];
+  LightType lightType = 5 [features.field_presence = LEGACY_REQUIRED];
+  uint32 eventNotificationMask = 6 [features.field_presence = LEGACY_REQUIRED];         // Bitmask for max 32 events, using NotificationBit for bit positions.
+  uint32 numberOfOutputs = 7;               // Hardware - The number of outputs of this device.
+  uint32 dcOutputVoltageMaximum = 8;        // Hardware - DC output voltage MAXimum (in mV).
+  uint32 dcOutputVoltageCurrent = 9;        // Hardware - DC output current voltage (in mV).
+  uint32 maximumOutputPowerOnDcOutput = 10; // Hardware - Maximum output power on DC output (mW).
+  bytes serialNumber = 11; // [(nanopb).max_size = 18]; // Hardware - Serial number of this device.
+  bytes macAddress = 12; // [(nanopb).max_size = 6]; // Hardware - MAC-address of this device.
+  string hardwareId = 13; // [(nanopb).min_size = 10, (nanopd).max_size = 25] ; // Hardware - The hardware ID of this device.
+  uint32 internalFlashMemSize = 14;         // Hardware - The internal flash memory size.
+  uint32 externalFlashMemSize = 15;         // Hardware - The external flash memory size.
+  uint32 lastInternalTestResultCode = 16;   // Hardware - The last internal test result code.
+  uint32 startupCounter = 17;               // Hardware - The startup counter.
+  string bootLoaderVersion = 18;            // Software - The boot loader version.
+  string firmwareVersion = 19;              // Software - The firmware version.
+  bytes currentConfigurationBackUsed = 20; // [(nanopb).max_size = 6]; // Software - The current configuration bank in use.
+  string name = 21;                         // Device - The name of this device.
+  string currentTime = 22;                  // Device - Not UTC, the time used in timing operations (adjusted "offset" + summer timing). YYYYMMDDhhmmss format.
+  string currentIp = 23;                    // Device - The current IP address of this device.
 }
 
 message ResumeScheduleRequest {
-  optional bytes index = 1; // [(nanopb).max_size = 1]; // Index number of connected light (DALI), none means all connected lights.
-  required bool immediate = 2; // [default = true];     // Resume at next schedule item or direct.
+  bytes index = 1; // [(nanopb).max_size = 1]; // Index number of connected light (DALI), none means all connected lights.
+  bool immediate = 2 [features.field_presence = LEGACY_REQUIRED]; // [default = true];     // Resume at next schedule item or direct.
 }
 
 message ResumeScheduleResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message SetRebootRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 message SetRebootResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message SetTransitionRequest {
-  required TransitionType transitionType = 1; // Night-Day or Day-Night transition.
-  optional string time = 2; // [(nanopb).max_size = 7]; // - Format hhmmss UTC.
+  TransitionType transitionType = 1 [features.field_presence = LEGACY_REQUIRED]; // Night-Day or Day-Night transition.
+  string time = 2; // [(nanopb).max_size = 7]; // - Format hhmmss UTC.
 }
 
 message SetTransitionResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message SetEventNotificationsRequest {
-  required uint32 NotificationMask = 1; // Bitmask for max 32 events, using NotificationBit for bit positions.
+  uint32 NotificationMask = 1 [features.field_presence = LEGACY_REQUIRED]; // Bitmask for max 32 events, using NotificationBit for bit positions.
 }
 
 message SetEventNotificationsResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message EventNotificationRequest {
@@ -193,52 +194,52 @@ message EventNotificationRequest {
 }
 
 message EventNotificationResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // ========= Scheduling
 message SetScheduleRequest {
   repeated Schedule schedules = 1; // [(nanopb).max_count = 50];
-  optional PageInfo pageInfo = 2;
-  required RelayType scheduleType = 3; // RT_NOT_SET is NOT supported!
+  PageInfo pageInfo = 2;
+  RelayType scheduleType = 3 [features.field_presence = LEGACY_REQUIRED]; // RT_NOT_SET is NOT supported!
 }
 
 message SetScheduleResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // ========= Configuration
 message SetConfigurationRequest {
-  optional LightType lightType = 1;
-  optional DaliConfiguration daliConfiguration = 2;                                    // Contains specific configuration for DALI controllers.
-  optional RelayConfiguration relayConfiguration = 3;                                  // Contains specific configuration for Relay.
-  optional uint32 shortTermHistoryIntervalMinutes = 4;                                 // Deprecated, no longer supported by the platform.
-  optional LinkType preferredLinkType = 5;
-  optional MeterType meterType = 6;                                                    // Deprecated, no longer supported by the platform.
-  optional uint32 longTermHistoryInterval = 7;                                         // Deprecated, no longer supported by the platform.
-  optional LongTermIntervalType longTermHistoryIntervalType = 8;                       // Deprecated, no longer supported by the platform.
-  optional uint32 timeSyncFrequency = 9 [default = 86400];                             // Time synch frequency (seconds).
-  optional bytes deviceFixIpValue = 10; // [(nanopb).max_count = 4];                   // The fixed IP address of this device.
-  optional bytes netMask = 11; // [(nanopb).max_count = 4];                            // Network mask for fixed IP address.
-  optional bytes gateWay = 12; // [(nanopb).max_count = 4];                            // Gateway address for fixed IP address.
-  optional bool isDhcpEnabled = 13 [default = true];                                   // Is DHCP enabled for this device?
-  //    optional bool isTlsEnabled = 14;                                                     // Defines if TLS is enabled.
-  //    optional uint32 oslpBindPortNumber = 15;                                             // The port used for TLS connections.
-  //    optional string commonNameString = 16 [default = 'TLS Test']; //[default = 'TLS Test',(nanopb).max_count = 25]; // The common name (CN) used when isTlsEnabled equals true.
-  optional uint32 communicationTimeout = 14 [default = 20];                            // Communication Timeouts (seconds) (wait for answer, socket establish, or server response = comm watchdog for local mode).
-  optional uint32 communicationNumberOfRetries = 15 [default = 3];                     // Communication number of retries.
-  optional uint32 communicationPauseTimeBetweenConnectionTrials = 16 [default = 60];   // Time between communication attempts.
-  optional bytes ospgIpAddress = 17; // [(nanopb).max_count = 4];                      // The IP address of the platform.
-  optional uint32 osgpPortNumber = 18;                                                 // The port number of the platform.
-  optional bool isTestButtonEnabled = 19 [default = true];                             // Is the test button enabled for this device?
-  optional bool isAutomaticSummerTimingEnabled = 20 [default = true];                  // Is the automatic summer timing enabled for this device?
-  optional sint32 astroGateSunRiseOffset = 21 [default = 0];                           // The calculated sunrise time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
-  optional sint32 astroGateSunSetOffset = 22 [default = 0];                            // The calculated sunset time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
+  LightType lightType = 1;
+  DaliConfiguration daliConfiguration = 2;                                    // Contains specific configuration for DALI controllers.
+  RelayConfiguration relayConfiguration = 3;                                  // Contains specific configuration for Relay.
+  uint32 shortTermHistoryIntervalMinutes = 4;                                 // Deprecated, no longer supported by the platform.
+  LinkType preferredLinkType = 5;
+  MeterType meterType = 6;                                                    // Deprecated, no longer supported by the platform.
+  uint32 longTermHistoryInterval = 7;                                         // Deprecated, no longer supported by the platform.
+  LongTermIntervalType longTermHistoryIntervalType = 8;                       // Deprecated, no longer supported by the platform.
+  uint32 timeSyncFrequency = 9 [default = 86400];                             // Time synch frequency (seconds).
+  bytes deviceFixIpValue = 10; // [(nanopb).max_count = 4];                   // The fixed IP address of this device.
+  bytes netMask = 11; // [(nanopb).max_count = 4];                            // Network mask for fixed IP address.
+  bytes gateWay = 12; // [(nanopb).max_count = 4];                            // Gateway address for fixed IP address.
+  bool isDhcpEnabled = 13 [default = true];                                   // Is DHCP enabled for this device?
+  //    bool isTlsEnabled = 14;                                                     // Defines if TLS is enabled.
+  //    uint32 oslpBindPortNumber = 15;                                             // The port used for TLS connections.
+  //    string commonNameString = 16 [default = 'TLS Test']; //[default = 'TLS Test',(nanopb).max_count = 25]; // The common name (CN) used when isTlsEnabled equals true.
+  uint32 communicationTimeout = 14 [default = 20];                            // Communication Timeouts (seconds) (wait for answer, socket establish, or server response = comm watchdog for local mode).
+  uint32 communicationNumberOfRetries = 15 [default = 3];                     // Communication number of retries.
+  uint32 communicationPauseTimeBetweenConnectionTrials = 16 [default = 60];   // Time between communication attempts.
+  bytes ospgIpAddress = 17; // [(nanopb).max_count = 4];                      // The IP address of the platform.
+  uint32 osgpPortNumber = 18;                                                 // The port number of the platform.
+  bool isTestButtonEnabled = 19 [default = true];                             // Is the test button enabled for this device?
+  bool isAutomaticSummerTimingEnabled = 20 [default = true];                  // Is the automatic summer timing enabled for this device?
+  sint32 astroGateSunRiseOffset = 21 [default = 0];                           // The calculated sunrise time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
+  sint32 astroGateSunSetOffset = 22 [default = 0];                            // The calculated sunset time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
   repeated uint32 switchingDelay = 23; // [(nanopb).max_count = 4];                    // Switching delay (seconds), array of 4 values. Default 0, 0, 0, 0.
   repeated RelayMatrix relayLinking = 24;                                              // Relay linking is a software linking, to may link each relay with each other relay. It is a matrix. Example, if relay 1 is linked with relay 3, if relay 1 will be switched (by OSGP or local by internal scheduler), the relay 3 will switch automatically (on or off, as it set) without new command.
-  optional bool relayRefreshing = 25 [default = true];                                 // Is relayRefreshing enabled for this device? Set minutely the nominal relay state and status according to active schedule after power outage and missed switching or anti manipulation.
-  optional string summerTimeDetails = 26 [default = '0360100']; //[default = '0360100',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
-  optional string winterTimeDetails = 27 [default = '1060200']; //[default = '1060200',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
+  bool relayRefreshing = 25 [default = true];                                 // Is relayRefreshing enabled for this device? Set minutely the nominal relay state and status according to active schedule after power outage and missed switching or anti manipulation.
+  string summerTimeDetails = 26 [default = '0360100']; //[default = '0360100',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
+  string winterTimeDetails = 27 [default = '1060200']; //[default = '1060200',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
 }
 // summerTimeDetails string, winterTimeDetails:
 //MMWHHmi
@@ -250,154 +251,154 @@ message SetConfigurationRequest {
 //mi: minutes of the changing time
 
 message SetConfigurationResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message GetConfigurationRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 message GetConfigurationResponse {
-  required Status status = 1;
-  optional LightType lightType = 2;
-  optional DaliConfiguration daliConfiguration = 3;                                    // Contains specific configuration for DALI controllers.
-  optional RelayConfiguration relayConfiguration = 4;                                  // Contains specific configuration for Relay.
-  optional uint32 shortTermHistoryIntervalMinutes = 5;                                 // Deprecated, no longer supported by the platform.
-  optional LinkType preferredLinkType = 6;
-  optional MeterType meterType = 7;                                                    // Deprecated, no longer supported by the platform.
-  optional uint32 longTermHistoryInterval = 8;                                         // Deprecated, no longer supported by the platform.
-  optional LongTermIntervalType longTermHistoryIntervalType = 9;                       // Deprecated, no longer supported by the platform.
-  optional uint32 timeSyncFrequency = 10 [default = 86400];                            // Time synch frequency (seconds).
-  optional bytes deviceFixIpValue = 11; // [(nanopb).max_count = 4];                   // The fixed IP address of this device.
-  optional bytes netMask = 12; // [(nanopb).max_count = 4];                            // Network mask for fixed IP address.
-  optional bytes gateWay = 13; // [(nanopb).max_count = 4];                            // Gateway address for fixed IP address.
-  optional bool isDhcpEnabled = 14 [default = true];                                   // Is DHCP enabled for this device?
-  //    optional bool isTlsEnabled = 15;                                                     // Defines if TLS is enabled.
-  //    optional uint32 oslpBindPortNumber = 16;                                             // The port used for TLS connections.
-  //    optional string commonNameString = 17 [default = 'TLS Test']; //[default = 'TLS Test',(nanopb).max_count = 25]; // The common name (CN) used when isTlsEnabled equals true.
-  optional uint32 communicationTimeout = 15 [default = 20];                            // Communication Timeouts (seconds) (wait for answer, socket establish, or server response = comm watchdog for local mode).
-  optional uint32 communicationNumberOfRetries = 16 [default = 3];                     // Communication number of retries.
-  optional uint32 communicationPauseTimeBetweenConnectionTrials = 17 [default = 60];   // Time between communication attempts.
-  optional bytes ospgIpAddress = 18; // [(nanopb).max_count = 4];                      // The IP address of the platform.
-  optional uint32 osgpPortNumber = 19;                                                 // The port number of the platform.
-  optional bool isTestButtonEnabled = 20 [default = true];                             // Is the test button enabled for this device?
-  optional bool isAutomaticSummerTimingEnabled = 21 [default = true];                  // Is the automatic summer timing enabled for this device?
-  optional sint32 astroGateSunRiseOffset = 22 [default = 0];                           // The calculated sunrise time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
-  optional sint32 astroGateSunSetOffset = 23 [default = 0];                            // The calculated sunset time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
+  LightType lightType = 2;
+  DaliConfiguration daliConfiguration = 3;                                    // Contains specific configuration for DALI controllers.
+  RelayConfiguration relayConfiguration = 4;                                  // Contains specific configuration for Relay.
+  uint32 shortTermHistoryIntervalMinutes = 5;                                 // Deprecated, no longer supported by the platform.
+  LinkType preferredLinkType = 6;
+  MeterType meterType = 7;                                                    // Deprecated, no longer supported by the platform.
+  uint32 longTermHistoryInterval = 8;                                         // Deprecated, no longer supported by the platform.
+  LongTermIntervalType longTermHistoryIntervalType = 9;                       // Deprecated, no longer supported by the platform.
+  uint32 timeSyncFrequency = 10 [default = 86400];                            // Time synch frequency (seconds).
+  bytes deviceFixIpValue = 11; // [(nanopb).max_count = 4];                   // The fixed IP address of this device.
+  bytes netMask = 12; // [(nanopb).max_count = 4];                            // Network mask for fixed IP address.
+  bytes gateWay = 13; // [(nanopb).max_count = 4];                            // Gateway address for fixed IP address.
+  bool isDhcpEnabled = 14 [default = true];                                   // Is DHCP enabled for this device?
+  //    bool isTlsEnabled = 15;                                                     // Defines if TLS is enabled.
+  //    uint32 oslpBindPortNumber = 16;                                             // The port used for TLS connections.
+  //    string commonNameString = 17 [default = 'TLS Test']; //[default = 'TLS Test',(nanopb).max_count = 25]; // The common name (CN) used when isTlsEnabled equals true.
+  uint32 communicationTimeout = 15 [default = 20];                            // Communication Timeouts (seconds) (wait for answer, socket establish, or server response = comm watchdog for local mode).
+  uint32 communicationNumberOfRetries = 16 [default = 3];                     // Communication number of retries.
+  uint32 communicationPauseTimeBetweenConnectionTrials = 17 [default = 60];   // Time between communication attempts.
+  bytes ospgIpAddress = 18; // [(nanopb).max_count = 4];                      // The IP address of the platform.
+  uint32 osgpPortNumber = 19;                                                 // The port number of the platform.
+  bool isTestButtonEnabled = 20 [default = true];                             // Is the test button enabled for this device?
+  bool isAutomaticSummerTimingEnabled = 21 [default = true];                  // Is the automatic summer timing enabled for this device?
+  sint32 astroGateSunRiseOffset = 22 [default = 0];                           // The calculated sunrise time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
+  sint32 astroGateSunSetOffset = 23 [default = 0];                            // The calculated sunset time modified by this value. Time is moved earlier (if offset is negative) or later (if offset is positive). In seconds.
   repeated uint32 switchingDelay = 24; // [(nanopb).max_count = 4];                    // Switching delay (seconds), array of 4 values. Default 0, 0, 0, 0.
   repeated RelayMatrix relayLinking = 25;                                              // Relay linking is a software linking, to may link each relay with each other relay. It is a matrix. Example, if relay 1 is linked with relay 3, if relay 1 will be switched (by OSGP or local by internal scheduler), the relay 3 will switch automatically (on or off, as it set) without new command.
-  optional bool relayRefreshing = 26 [default = true];                                 // Is relayRefreshing enabled for this device? Set minutely the nominal relay state and status according to active schedule after power outage and missed switching or anti manipulation.
-  optional string summerTimeDetails = 27 [default = '0360100']; //[default = '0360100',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
-  optional string winterTimeDetails = 28 [default = '1060200']; //[default = '1060200',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
+  bool relayRefreshing = 26 [default = true];                                 // Is relayRefreshing enabled for this device? Set minutely the nominal relay state and status according to active schedule after power outage and missed switching or anti manipulation.
+  string summerTimeDetails = 27 [default = '0360100']; //[default = '0360100',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
+  string winterTimeDetails = 28 [default = '1060200']; //[default = '1060200',(nanopb).max_count = 7]; // The time point for DST for Europe is not identical in every country. It should be added as parameters the weekday, month and time point for DST/summer and winter.
 }
 
 message SwitchConfigurationRequest {
-  required bytes newConfigurationSet = 1; // [(nanopb).max_count = 1]; // The index of the configuration set (0,1).
+  bytes newConfigurationSet = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_count = 1]; // The index of the configuration set (0,1).
 }
 
 message SwitchConfigurationResponse {
-  required Status status = 1; // FIRMWARE_EVENTS_CONFIGURATION_CHANGED Event will be sent, after the Configuration change.
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED]; // FIRMWARE_EVENTS_CONFIGURATION_CHANGED Event will be sent, after the Configuration change.
 }
 
 message ConfirmRegisterDeviceRequest {
-  required uint32 randomDevice = 1;
-  required uint32 randomPlatform = 2;
+  uint32 randomDevice = 1 [features.field_presence = LEGACY_REQUIRED];
+  uint32 randomPlatform = 2 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message ConfirmRegisterDeviceResponse {
-  required Status status = 1;
-  required uint32 randomDevice = 2;
-  required uint32 randomPlatform = 3;
-  required uint32 sequenceWindow = 4;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
+  uint32 randomDevice = 2 [features.field_presence = LEGACY_REQUIRED];
+  uint32 randomPlatform = 3 [features.field_presence = LEGACY_REQUIRED];
+  uint32 sequenceWindow = 4 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // ========= Monitoring
 
 // Deprecated, no longer supported by the platform.
 message GetPowerUsageHistoryRequest {
-  required TimePeriod timePeriod = 1;
-  optional uint32 page = 2;
-  required HistoryTermType termType = 3;
+  TimePeriod timePeriod = 1 [features.field_presence = LEGACY_REQUIRED];
+  uint32 page = 2;
+  HistoryTermType termType = 3 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // Deprecated, no longer supported by the platform.
 message GetPowerUsageHistoryResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
   repeated PowerUsageData powerUsageData = 2; // [(nanopb).max_count = 20];
-  optional PageInfo pageInfo = 3;
+  PageInfo pageInfo = 3;
 }
 
 // Deprecated, no longer supported by the platform.
 message GetActualPowerUsageRequest {
-  optional bool present = 1 [default = true];
+  bool present = 1 [default = true];
 }
 
 // Deprecated, no longer supported by the platform.
 message GetActualPowerUsageResponse {
-  required Status status = 1;
-  required PowerUsageData powerUsageData = 2;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
+  PowerUsageData powerUsageData = 2 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // ========= Certificate Management
 message UpdateDeviceSslCertificationRequest {
-  required string certificateDomain = 1; // [(nanopb).max_size = 100]; // The domain name of the certificate Server.
-  required string certificateUrl = 2; // [(nanopb).max_size = 255];    // The relative path of the certificate.
+  string certificateDomain = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 100]; // The domain name of the certificate Server.
+  string certificateUrl = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 255];    // The relative path of the certificate.
 }
 
 message UpdateDeviceSslCertificationResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // ========= Key Management
 message SetDeviceVerificationKeyRequest {
-  required bytes certificateChunk = 1; // [(nanopb).max_size = 138]; // Verification key / public key of the platform to check the validity of an incoming message.
+  bytes certificateChunk = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 138]; // Verification key / public key of the platform to check the validity of an incoming message.
 }
 
 message SetDeviceVerificationKeyResponse {
-  required Status status = 1;
+  Status status = 1 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // ========= Types
 message LocationInfo {
-  optional sint32 timeOffset = 1; // Correction in minutes with respect to UTC.
-  optional sint32 latitude = 2;   // Divide by 1000000 to get float value.
-  optional sint32 longitude = 3;  // Divide by 1000000 to get float value.
+  sint32 timeOffset = 1; // Correction in minutes with respect to UTC.
+  sint32 latitude = 2;   // Divide by 1000000 to get float value.
+  sint32 longitude = 3;  // Divide by 1000000 to get float value.
 }
 
 message LightValue {
-  optional bytes index = 1; // [(nanopb).max_size = 1]; // Index number of connected light (DALI), none means all connected lights.
-  required bool on = 2;
-  optional bytes dimValue = 3; // [(nanopb).max_size = 1]; // 1 - 100 %
+  bytes index = 1; // [(nanopb).max_size = 1]; // Index number of connected light (DALI), none means all connected lights.
+  bool on = 2 [features.field_presence = LEGACY_REQUIRED];
+  bytes dimValue = 3; // [(nanopb).max_size = 1]; // 1 - 100 %
 }
 
 message EventNotification {
-  required Event event = 1;
-  optional bytes index = 2; // [(nanopb).max_size=1];
-  optional string description = 3; // [(nanopb).max_size = 81];
-  optional string timestamp = 4; // [(nanopb).max_size = 15]; // - Format YYYYMMDDhhmmss UTC, indicates the date and time of the event.
+  Event event = 1 [features.field_presence = LEGACY_REQUIRED];
+  bytes index = 2; // [(nanopb).max_size=1];
+  string description = 3; // [(nanopb).max_size = 81];
+  string timestamp = 4; // [(nanopb).max_size = 15]; // - Format YYYYMMDDhhmmss UTC, indicates the date and time of the event.
 }
 
 message Schedule {
-  required Weekday weekday = 1;
-  optional string startDay = 2; // [(nanopb).max_size = 9]; //- Format YYYYMMDD UTC, indicates the range of a schedule entry, from startDay.
-  optional string endDay = 3; // [(nanopb).max_size = 9]; // - Format YYYYMMDD UTC, including endDay.
-  required ActionTime actionTime = 4;
-  optional string time = 5; // [(nanopb).max_size = 7]; // - Format hhmmss localtime set when actionTime = ABSOLUTETIME.
-  optional Window window = 6;           // Window to wait for light sensor trigger.
+  Weekday weekday = 1 [features.field_presence = LEGACY_REQUIRED];
+  string startDay = 2; // [(nanopb).max_size = 9]; //- Format YYYYMMDD UTC, indicates the range of a schedule entry, from startDay.
+  string endDay = 3; // [(nanopb).max_size = 9]; // - Format YYYYMMDD UTC, including endDay.
+  ActionTime actionTime = 4 [features.field_presence = LEGACY_REQUIRED];
+  string time = 5; // [(nanopb).max_size = 7]; // - Format hhmmss localtime set when actionTime = ABSOLUTETIME.
+  Window window = 6;           // Window to wait for light sensor trigger.
   repeated LightValue value = 7; // [(nanopb).max_count = 6];
-  optional TriggerType triggerType = 8; // React to setTransition or switch astronomical.
-  optional uint32 minimumLightsOn = 9;  // Minimal time (in seconds) the lights should burn before deciding to switch the lights on.
-  optional uint32 index = 10;           // Index of schedule entry in the schedule list.
-  optional bool isEnabled = 11;         // Is this schedule entry enabled?
+  TriggerType triggerType = 8; // React to setTransition or switch astronomical.
+  uint32 minimumLightsOn = 9;  // Minimal time (in seconds) the lights should burn before deciding to switch the lights on.
+  uint32 index = 10;           // Index of schedule entry in the schedule list.
+  bool isEnabled = 11;         // Is this schedule entry enabled?
 }
 
 message Window {
-  required uint32 minutesBefore = 1; // Minutes before sunset / sunrise.
-  required uint32 minutesAfter = 2;  // Minutes after sunset / sunrise.
+  uint32 minutesBefore = 1 [features.field_presence = LEGACY_REQUIRED]; // Minutes before sunset / sunrise.
+  uint32 minutesAfter = 2 [features.field_presence = LEGACY_REQUIRED];  // Minutes after sunset / sunrise.
 }
 
 message DaliConfiguration {
-  optional bytes numberOfLights = 1; // [(nanopb).max_size = 1]; // Number of lights connected to DALI controller.
+  bytes numberOfLights = 1; // [(nanopb).max_size = 1]; // Number of lights connected to DALI controller.
   repeated IndexAddressMap addressMap = 2; // [(nanopb).max_count = 4];
 }
 
@@ -406,68 +407,69 @@ message RelayConfiguration {
 }
 
 message RelayMatrix {
-  required bytes masterRelayIndex = 1;  // [(nanopb).max_count = 1];
-  required bool masterRelayOn = 2; // [(nanopb).max_count = 1];
-  optional bytes indicesOfControlledRelaysOn = 3; // [(nanopb).max_count = 4];  // IndexNumber of output Relay to switch ON if Master Relay state changes as determined by masterRelayOn.
-  optional bytes indicesOfControlledRelaysOff = 4; // [(nanopb).max_count = 4]; // IndexNumber of output Relay to switch OFF if Master Relay sate changes as determined by MasterRelayOff.
+  bytes masterRelayIndex = 1 [features.field_presence = LEGACY_REQUIRED];  // [(nanopb).max_count = 1];
+  bool masterRelayOn = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_count = 1];
+  bytes indicesOfControlledRelaysOn = 3; // [(nanopb).max_count = 4];  // IndexNumber of output Relay to switch ON if Master Relay state changes as determined by masterRelayOn.
+  bytes indicesOfControlledRelaysOff = 4; // [(nanopb).max_count = 4]; // IndexNumber of output Relay to switch OFF if Master Relay sate changes as determined by MasterRelayOff.
 }
 
 message IndexAddressMap {
-  required bytes index = 1; // [(nanopb).max_size = 1];   // External index, for example 1.
-  required bytes address = 2; // [(nanopb).max_size = 1]; // Internal address, for example 2.
-  required RelayType relayType = 3;
+  bytes index = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 1];   // External index, for example 1.
+  bytes address = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 1]; // Internal address, for example 2.
+  RelayType relayType = 3 [features.field_presence = LEGACY_REQUIRED];
 }
 
 message PageInfo {
-  required uint32 currentPage = 1; // Pages start from 1.
-  required uint32 pageSize = 2;
-  required uint32 totalPages = 3;
+  uint32 currentPage = 1 [features.field_presence = LEGACY_REQUIRED]; // Pages start from 1.
+  uint32 pageSize = 2 [features.field_presence = LEGACY_REQUIRED];
+  uint32 totalPages = 3 [features.field_presence = LEGACY_REQUIRED];
 }
 
 // Deprecated, no longer supported by the platform.
 message TimePeriod {
-  required string startTime = 1; // [(nanopb).max_size = 15]; // - Format YYYYMMDDhhmmss UTC.
-  required string endTime = 2; // [(nanopb).max_size = 15];   // - format YYYYMMDDhhmmss UTC.
+  string startTime = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 15]; // - Format YYYYMMDDhhmmss UTC.
+  string endTime = 2 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 15];   // - format YYYYMMDDhhmmss UTC.
 }
 
 // Deprecated, no longer supported by the platform.
 message PowerUsageData {
-  required string recordTime = 1; // [(nanopb).max_size = 15];    // Record time - format YYYYMMDDhhmmss UTC.
-  required MeterType meterType = 2;                               // Meter type (P1, Pulse, Aux).
-  required uint64 totalConsumedEnergy = 3;                        // Electricity delivered to client (Tariff I + Tarrif II) in 0,001 kWh.
-  required uint32 actualConsumedPower = 4;                        // Actual Electricity power delivered in W.
-  optional PsldData psldData = 5;
-  optional SsldData ssldData = 6;
+  string recordTime = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 15];    // Record time - format YYYYMMDDhhmmss UTC.
+  MeterType meterType = 2 [features.field_presence = LEGACY_REQUIRED];                               // Meter type (P1, Pulse, Aux).
+  uint64 totalConsumedEnergy = 3 [features.field_presence = LEGACY_REQUIRED];                        // Electricity delivered to client (Tariff I + Tarrif II) in 0,001 kWh.
+  uint32 actualConsumedPower = 4 [features.field_presence = LEGACY_REQUIRED];                        // Actual Electricity power delivered in W.
+  PsldData psldData = 5;
+  SsldData ssldData = 6;
 }
 
 message PsldData {
-  required uint32 totalLightingHours = 1; // Total lighting hours
+  uint32 totalLightingHours = 1 [features.field_presence = LEGACY_REQUIRED]; // Total lighting hours
 }
 
 // Deprecated, no longer supported by the platform.
 message SsldData {
-  required uint32 actualCurrent1 = 1;             // Instantaneous current L1 in mA.
-  required uint32 actualCurrent2 = 2;             // Instantaneous current L2 in mA.
-  required uint32 actualCurrent3 = 3;             // Instantaneous current L3 in mA.
-  required uint32 actualPower1 = 4;               // Instantaneous active power L1 in W.
-  required uint32 actualPower2 = 5;               // Instantaneous active power L2 in W.
-  required uint32 actualPower3 = 6;               // Instantaneous active power L3 in W.
-  required uint32 averagePowerFactor1 = 7;        // Power factor L1 (in 1/2^32) in steps of 0.1, 10 equals a power factor of 1.
-  required uint32 averagePowerFactor2 = 8;        // Power factor L2 (in 1/2^32) in steps of 0.1, 10 equals a power factor of 1.
-  required uint32 averagePowerFactor3 = 9;        // Power factor L3 (in 1/2^32) in steps of 0.1, 10 equals a power factor of 1.
+  uint32 actualCurrent1 = 1 [features.field_presence = LEGACY_REQUIRED];             // Instantaneous current L1 in mA.
+  uint32 actualCurrent2 = 2 [features.field_presence = LEGACY_REQUIRED];             // Instantaneous current L2 in mA.
+  uint32 actualCurrent3 = 3 [features.field_presence = LEGACY_REQUIRED];             // Instantaneous current L3 in mA.
+  uint32 actualPower1 = 4 [features.field_presence = LEGACY_REQUIRED];               // Instantaneous active power L1 in W.
+  uint32 actualPower2 = 5 [features.field_presence = LEGACY_REQUIRED];               // Instantaneous active power L2 in W.
+  uint32 actualPower3 = 6 [features.field_presence = LEGACY_REQUIRED];               // Instantaneous active power L3 in W.
+  uint32 averagePowerFactor1 = 7 [features.field_presence = LEGACY_REQUIRED];        // Power factor L1 (in 1/2^32) in steps of 0.1, 10 equals a power factor of 1.
+  uint32 averagePowerFactor2 = 8 [features.field_presence = LEGACY_REQUIRED];        // Power factor L2 (in 1/2^32) in steps of 0.1, 10 equals a power factor of 1.
+  uint32 averagePowerFactor3 = 9 [features.field_presence = LEGACY_REQUIRED];        // Power factor L3 (in 1/2^32) in steps of 0.1, 10 equals a power factor of 1.
   repeated RelayData relayData = 10; // [(nanopb).max_count = 4]; // Measurement data per relay.
 }
 
 // Deprecated, no longer supported by the platform.
 message RelayData {
-  required bytes index = 1; // [(nanopb).max_size = 1]; // external index, for example 1
-  required uint32 totalLightingMinutes = 2; // Total lighting minutes for lighting relay
+  bytes index = 1 [features.field_presence = LEGACY_REQUIRED]; // [(nanopb).max_size = 1]; // external index, for example 1
+  uint32 totalLightingMinutes = 2 [features.field_presence = LEGACY_REQUIRED]; // Total lighting minutes for lighting relay
 }
 
 // ========= Enumerations
 
 // ========= Event Notification
 enum NotificationBit {
+  NOTIFICATION_UNSPECIFIED = 0;
   DIAG_EVENTS = 1;
   HARDWARE_FAILURE = 2;
   LIGHT_EVENTS = 4;      // For example LightValue changes.
@@ -553,6 +555,7 @@ enum TransitionType {
 }
 
 enum Weekday {
+  WEEKDAY_UNSPECIFIED = 0;
   MONDAY = 1;
   TUESDAY = 2;
   WEDNESDAY = 3;
@@ -567,6 +570,7 @@ enum Weekday {
 }
 
 enum ActionTime {
+  AT_UNSPECIFIED = 0;
   ABSOLUTETIME = 1;
   SUNRISE = 2;
   SUNSET = 3;
