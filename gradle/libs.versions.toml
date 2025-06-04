@@ -6,7 +6,7 @@ kotlin = "2.1.21"
 kotlinx-coroutines = "1.10.2"
 gradleWrapperUpgrade = "0.12"
 protobufPlugin = "0.9.5"
-protobuf = "4.31.0"
+protobuf = "4.31.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
