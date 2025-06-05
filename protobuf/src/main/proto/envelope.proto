@@ -1,0 +1,20 @@
+// SPDX-FileCopyrightText: Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
+edition = "2023";
+
+import "oslp.proto";
+
+package oslp;
+
+option java_package = "org.opensmartgridplatform.oslp";
+
+message OslpEnvelope {
+
+  bytes SecurityKey = 1;
+  bytes SequenceNumber = 2;
+  bytes DeviceId = 3;
+  bytes LengthIndicator = 4;
+
+  Message payload = 5;
+}
