@@ -31,6 +31,8 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation("io.ktor:ktor-network:3.1.3")
+            implementation("com.google.protobuf:protobuf-java:4.31.0")
         }
     }
 }
@@ -38,6 +40,13 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "nl.alliander.oslp.MainKt"
+
+        buildTypes.release.proguard {
+            isEnabled = true
+            optimize = false
+            obfuscate = false
+            configurationFiles.from(file("proguard-rules.pro"))
+        }
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
