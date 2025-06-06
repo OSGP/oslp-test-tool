@@ -10,9 +10,9 @@ fun main() = application {
     val socketService = remember { JvmSocketService() }
 
     LaunchedEffect(Unit) {
-        socketService.log = { loggingService.appendLog(it) }
-        socketService.onMessage = { msg -> loggingService.appendLog("Bericht: $msg") }
-        socketService.startListening()
+//        socketService.log = { loggingService.appendLog(it) }
+//        socketService.onMessage = { msg -> loggingService.appendLog("Bericht: $msg") }
+//        socketService.startListening()
     }
 
     Window(
