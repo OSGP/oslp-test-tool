@@ -42,6 +42,9 @@ compose.desktop {
         mainClass = "nl.alliander.oslp.MainKt"
 
         buildTypes.release.proguard {
+            isEnabled = true
+            optimize = false
+            obfuscate = false
             configurationFiles.from(file("proguard-rules.pro"))
         }
 
