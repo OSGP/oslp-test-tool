@@ -41,6 +41,10 @@ compose.desktop {
     application {
         mainClass = "nl.alliander.oslp.MainKt"
 
+        buildTypes.release.proguard {
+            configurationFiles.from(file("proguard-rules.pro"))
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "oslp-test-tool"
