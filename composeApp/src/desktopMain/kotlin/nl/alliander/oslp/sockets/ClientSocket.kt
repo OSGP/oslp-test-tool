@@ -37,7 +37,7 @@ class ClientSocket {
 
             if (bytesRead > 0) {
                 val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
-                logger.logReceive(envelope)
+                logger.logReceive(responseEnvelope)
 
                 return@runBlocking responseEnvelope
             }
