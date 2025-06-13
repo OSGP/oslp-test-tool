@@ -1,24 +1,40 @@
 package nl.alliander.oslp
 
-import JvmSocketService
-import androidx.compose.runtime.*
-import androidx.compose.ui.window.*
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
+import nl.alliander.oslp.models.MainViewModel
+import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.service.LoggingService
+import nl.alliander.oslp.service.RequestService
+import nl.alliander.oslp.sockets.ServerSocket
 
 fun main() = application {
     val loggingService = remember { LoggingService() }
-    val socketService = remember { JvmSocketService() }
+    val requestService = remember { RequestService(loggingService) }
 
-    LaunchedEffect(Unit) {
-//        socketService.log = { loggingService.appendLog(it) }
-//        socketService.onMessage = { msg -> loggingService.appendLog("Bericht: $msg") }
-//        socketService.startListening()
+    val mainViewModel = remember { MainViewModel() }
+
+    DeviceStateService.createInstance(mainViewModel)
+
+    val serverSocket = remember {
+        ServerSocket(loggingService)
     }
+
+    serverSocket.startListening()
+
+    val state = rememberWindowState(
+        width = 1280.dp,
+        height = 720.dp,
+    )
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "oslp-test-tool",
+        title = "OSLP Test Tool",
+        state = state,
     ) {
-        App(loggingService)
+        App(loggingService, requestService, mainViewModel)
     }
 }

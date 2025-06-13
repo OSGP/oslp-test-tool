@@ -10,8 +10,18 @@ import javax.swing.filechooser.FileNameExtensionFilter
 class LoggingService {
     var loggingText by mutableStateOf("")
 
-    fun appendLog(text: String) {
-        loggingText += "$text\n"
+    fun log(message: String) {
+        appendLog(message)
+    }
+
+    fun logReceive(message: String) {
+        val messageToLog = message.replace("\n", "\n< ")
+        log(messageToLog)
+    }
+
+    fun logSend(message: String) {
+        val messageToLog = message.replace("\n", "\n> ")
+        log(messageToLog)
     }
 
     fun exportLogFile() {
@@ -23,10 +33,17 @@ class LoggingService {
         }
     }
 
+    private fun appendLog(text: String) {
+        loggingText += "$text\n"
+    }
+
     private fun JFileChooser.configureForTxtExport(): JFileChooser {
         dialogTitle = "Save Log files"
         fileFilter = FileNameExtensionFilter("Text Files", "txt")
         selectedFile = File("oslp-test-tool.txt")
         return this
+    }
+
+    companion object {
     }
 }
