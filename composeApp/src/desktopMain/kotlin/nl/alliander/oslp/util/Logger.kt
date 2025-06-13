@@ -1,4 +1,4 @@
-package nl.alliander.oslp.service
+package nl.alliander.oslp.util
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import java.io.File
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class LoggingService {
+class Logger private constructor() {
     var loggingText by mutableStateOf("")
 
     fun log(message: String) {
@@ -45,5 +45,8 @@ class LoggingService {
     }
 
     companion object {
+        private val instance = Logger()
+
+        fun getInstance(): Logger = instance
     }
 }

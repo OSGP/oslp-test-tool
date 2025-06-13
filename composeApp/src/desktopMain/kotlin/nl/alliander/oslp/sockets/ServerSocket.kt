@@ -15,23 +15,23 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.service.LoggingService
 import nl.alliander.oslp.sockets.receive.ReceiveStrategy
+import nl.alliander.oslp.util.Logger
 
-class ServerSocket(
-    private val log: LoggingService,
-) {
+class ServerSocket {
+    private val logger = Logger.getInstance()
+
     @OptIn(DelicateCoroutinesApi::class)
     fun startListening() {
         GlobalScope.launch {
             val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
                 .tcp()
                 .bind(InetSocketAddress("localhost", 12122))
-            log.log("Server is listening on port ${serverSocket.port}")
+            logger.log("Server is listening on port ${serverSocket.port}")
 
             while (true) {
                 val socket = serverSocket.accept()
-                log.log("Accepted connection from ${socket.remoteAddress}")
+                logger.log("Accepted connection from ${socket.remoteAddress}")
 
                 val input = socket.openReadChannel()
                 val output = socket.openWriteChannel(autoFlush = true)
@@ -43,9 +43,9 @@ class ServerSocket(
                     if (bytesRead > 0) {
                         val requestEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
 
-                        log.logReceive("SequenceNumber: ${requestEnvelope.sequenceNumber}")
-                        log.logReceive("LengthIndicator: ${requestEnvelope.lengthIndicator}")
-                        log.logReceive("Received payload: ${requestEnvelope.message}")
+                        logger.logReceive("SequenceNumber: ${requestEnvelope.sequenceNumber}")
+                        logger.logReceive("LengthIndicator: ${requestEnvelope.lengthIndicator}")
+                        logger.logReceive("Received payload: ${requestEnvelope.message}")
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
@@ -55,12 +55,12 @@ class ServerSocket(
 
                         val responseBytes = responseEnvelope.getBytes()
                         output.writeFully(responseBytes)
-                        log.logSend("Sent response: ${responseEnvelope.message}")
+                        logger.logSend("Sent response: ${responseEnvelope.message}")
                     }
                 } catch (e: InvalidProtocolBufferException) {
                     println("Failed to parse Protobuf message: ${e.message}")
                 } catch (e: Exception) {
-                    log.log(e.message ?: e.toString())
+                    logger.log(e.message ?: e.toString())
                 } finally {
                     println("Socket closed")
                     socket.close()

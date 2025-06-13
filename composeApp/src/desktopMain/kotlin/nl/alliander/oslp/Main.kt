@@ -7,20 +7,18 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.service.DeviceStateService
-import nl.alliander.oslp.service.LoggingService
 import nl.alliander.oslp.service.RequestService
 import nl.alliander.oslp.sockets.ServerSocket
 
 fun main() = application {
-    val loggingService = remember { LoggingService() }
-    val requestService = remember { RequestService(loggingService) }
+    val requestService = remember { RequestService() }
 
     val mainViewModel = remember { MainViewModel() }
 
     DeviceStateService.createInstance(mainViewModel)
 
     val serverSocket = remember {
-        ServerSocket(loggingService)
+        ServerSocket()
     }
 
     serverSocket.startListening()
@@ -35,6 +33,6 @@ fun main() = application {
         title = "OSLP Test Tool",
         state = state,
     ) {
-        App(loggingService, requestService, mainViewModel)
+        App(requestService, mainViewModel)
     }
 }
