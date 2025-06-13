@@ -28,7 +28,7 @@ class ClientSocket {
 
             val requestEnvelope: ByteArray = envelope.getBytes()
 
-            logger.logSend("Sent: ${envelope.message}")
+            logger.logSend(envelope)
 
             output.writeFully(requestEnvelope, 0, requestEnvelope.size)
 
@@ -37,7 +37,7 @@ class ClientSocket {
 
             if (bytesRead > 0) {
                 val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
-                logger.logReceive("Received: ${responseEnvelope.message}")
+                logger.logReceive(envelope)
 
                 return@runBlocking responseEnvelope
             }

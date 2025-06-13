@@ -43,9 +43,7 @@ class ServerSocket {
                     if (bytesRead > 0) {
                         val requestEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
 
-                        logger.logReceive("SequenceNumber: ${requestEnvelope.sequenceNumber}")
-                        logger.logReceive("LengthIndicator: ${requestEnvelope.lengthIndicator}")
-                        logger.logReceive("Received payload: ${requestEnvelope.message}")
+                        logger.logReceive(requestEnvelope)
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
@@ -55,7 +53,8 @@ class ServerSocket {
 
                         val responseBytes = responseEnvelope.getBytes()
                         output.writeFully(responseBytes)
-                        logger.logSend("Sent response: ${responseEnvelope.message}")
+
+                        logger.logSend(responseEnvelope)
                     }
                 } catch (e: InvalidProtocolBufferException) {
                     println("Failed to parse Protobuf message: ${e.message}")
