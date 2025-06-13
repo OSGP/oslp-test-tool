@@ -31,8 +31,8 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation("io.ktor:ktor-network:3.1.3")
-            implementation("com.google.protobuf:protobuf-java:4.31.0")
+            implementation(libs.protobufKotlin)
+            implementation(libs.ktor)
         }
     }
 }
