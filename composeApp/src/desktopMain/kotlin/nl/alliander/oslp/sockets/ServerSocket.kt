@@ -62,7 +62,6 @@ class ServerSocket {
                 } catch (e: Exception) {
                     logger.log(e.message ?: e.toString())
                 } finally {
-                    println("Socket closed")
                     socket.close()
                 }
             }

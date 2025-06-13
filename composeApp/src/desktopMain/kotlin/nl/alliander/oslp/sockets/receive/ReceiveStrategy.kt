@@ -1,11 +1,14 @@
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp.Message
 
 abstract class ReceiveStrategy {
+    private val logger = Logger.getInstance()
+
     abstract fun matches(message: Message): Boolean
 
     abstract fun handle(requestEnvelope: Envelope)
@@ -25,7 +28,7 @@ abstract class ReceiveStrategy {
         }
 
         if (!verified) {
-            println("Message not verified!")
+            logger.logReceive("Message not verified!")
         }
 
         handle(requestEnvelope)

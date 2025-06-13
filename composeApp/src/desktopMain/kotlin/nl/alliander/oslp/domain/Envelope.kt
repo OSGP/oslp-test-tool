@@ -67,7 +67,7 @@ data class Envelope(
             )
         }
 
-        private infix fun Int.slicing(int: Int): IntRange = this until (this + int)
+        private infix fun Int.size(int: Int): IntRange = this until (this + int)
 
         private const val SECURITY_KEY_LEN = 128
         private const val SEQUENCE_NUMBER_LEN = 2
@@ -76,9 +76,9 @@ data class Envelope(
 
         private val HEADER_LEN = SECURITY_KEY_LEN + SEQUENCE_NUMBER_LEN + DEVICE_ID_LEN + LENGTH_INDICATOR_LEN
 
-        private val SECURITY_KEY_RANGE = 0 slicing SECURITY_KEY_LEN
-        private val SEQUENCE_NUMBER_RANGE = 128 slicing SEQUENCE_NUMBER_LEN
-        private val DEVICE_ID_RANGE = 130 slicing DEVICE_ID_LEN
-        private val LENGTH_INDICATOR_RANGE = 142 slicing LENGTH_INDICATOR_LEN
+        private val SECURITY_KEY_RANGE = 0 size SECURITY_KEY_LEN
+        private val SEQUENCE_NUMBER_RANGE = 128 size SEQUENCE_NUMBER_LEN
+        private val DEVICE_ID_RANGE = 130 size DEVICE_ID_LEN
+        private val LENGTH_INDICATOR_RANGE = 142 size LENGTH_INDICATOR_LEN
     }
 }

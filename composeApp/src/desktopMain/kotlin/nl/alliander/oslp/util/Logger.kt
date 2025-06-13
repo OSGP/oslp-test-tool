@@ -15,12 +15,12 @@ class Logger private constructor() {
     }
 
     fun logReceive(message: String) {
-        val messageToLog = message.replace("\n", "\n< ")
+        val messageToLog = message.prependIndent("< ")
         log(messageToLog)
     }
 
     fun logSend(message: String) {
-        val messageToLog = message.replace("\n", "\n> ")
+        val messageToLog = message.prependIndent("> ")
         log(messageToLog)
     }
 
