@@ -7,8 +7,6 @@ import nl.alliander.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp.Message
 
 abstract class ReceiveStrategy {
-    private val logger = Logger.getInstance()
-
     abstract fun matches(message: Message): Boolean
 
     abstract fun handle(requestEnvelope: Envelope)
@@ -28,7 +26,7 @@ abstract class ReceiveStrategy {
         }
 
         if (!verified) {
-            logger.logReceive("Message not verified!")
+            Logger.logReceive("Message not verified!")
         }
 
         handle(requestEnvelope)

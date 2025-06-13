@@ -8,7 +8,7 @@ import java.io.File
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-class Logger private constructor() {
+object Logger {
     var loggingText by mutableStateOf("")
 
     fun log(message: String) {
@@ -59,11 +59,5 @@ class Logger private constructor() {
         fileFilter = FileNameExtensionFilter("Text Files", "txt")
         selectedFile = File("oslp-test-tool.txt")
         return this
-    }
-
-    companion object {
-        private val instance = Logger()
-
-        fun getInstance(): Logger = instance
     }
 }

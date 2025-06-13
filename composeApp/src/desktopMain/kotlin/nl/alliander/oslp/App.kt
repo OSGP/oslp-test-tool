@@ -26,10 +26,8 @@ fun App(
     requestService: RequestService,
     viewModel: MainViewModel,
 ) {
-    val logger = Logger.getInstance()
-
     val scrollState = rememberScrollState()
-    LaunchedEffect(logger.loggingText) {
+    LaunchedEffect(Logger.loggingText) {
         scrollState.animateScrollTo(scrollState.maxValue)
     }
 
@@ -50,25 +48,25 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Selftest (10 sec)", modifier) { logger.log("Selftest (10 sec) clicked") }
-                    CommandButton("Reboot", modifier) { logger.log("Reboot clicked") }
+                    CommandButton("Selftest (10 sec)", modifier) { Logger.log("Selftest (10 sec) clicked") }
+                    CommandButton("Reboot", modifier) { Logger.log("Reboot clicked") }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Light sensor on", modifier) { logger.log("Light sensor on (Light) clicked") }
+                    CommandButton("Light sensor on", modifier) { Logger.log("Light sensor on (Light) clicked") }
                     CommandButton(
                         "Light sensor off",
                         modifier
-                    ) { logger.log("Light sensor off (Dark) clicked") }
+                    ) { Logger.log("Light sensor off (Dark) clicked") }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Status", modifier) { logger.log("Get Status clicked") }
-                    CommandButton("Get Configuration", modifier) { logger.log("Get Configuration clicked") }
+                    CommandButton("Get Status", modifier) { Logger.log("Get Status clicked") }
+                    CommandButton("Get Configuration", modifier) { Logger.log("Get Configuration clicked") }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -92,18 +90,18 @@ fun App(
 
                         SetLightRow(
                             label = "Relais 1",
-                            onGreen = { logger.log("Relais 1 ON") },
-                            onRed = { logger.log("Relais 1 OFF") }
+                            onGreen = { Logger.log("Relais 1 ON") },
+                            onRed = { Logger.log("Relais 1 OFF") }
                         )
                         SetLightRow(
                             label = "Relais 2",
-                            onGreen = { logger.log("Relais 2 ON") },
-                            onRed = { logger.log("Relais 2 OFF") }
+                            onGreen = { Logger.log("Relais 2 ON") },
+                            onRed = { Logger.log("Relais 2 OFF") }
                         )
                         SetLightRow(
                             label = "Relais 3",
-                            onGreen = { logger.log("Relais 3 ON") },
-                            onRed = { logger.log("Relais 3 OFF") }
+                            onGreen = { Logger.log("Relais 3 ON") },
+                            onRed = { Logger.log("Relais 3 OFF") }
                         )
                     }
                 }
@@ -111,7 +109,7 @@ fun App(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { logger.log("Send JSON message clicked") },
+                    onClick = { Logger.log("Send JSON message clicked") },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
@@ -128,7 +126,7 @@ fun App(
                         .padding(8.dp)
                         .verticalScroll(scrollState)
                 ) {
-                    Text(logger.loggingText, fontSize = 14.sp)
+                    Text(Logger.loggingText, fontSize = 14.sp)
                 }
 
                 Row(
@@ -138,14 +136,14 @@ fun App(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = { logger.exportLogFile() },
+                        onClick = { Logger.exportLogFile() },
                         modifier = Modifier
                             .padding(end = 8.dp)
                     ) {
                         Text("Save logging to file")
                     }
                     Button(
-                        onClick = { logger.loggingText = "" }
+                        onClick = { Logger.loggingText = "" }
                     ) {
                         Text("Clear logging")
                     }

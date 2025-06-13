@@ -11,6 +11,8 @@ class DeviceStateService private constructor(
 
     var deviceId: ByteArray = byteArrayOf()
     var sequenceNumber: Int = 0
+    var randomPlatform: Int = 0
+    var randomDevice: Int = 0
 
     fun registerDevice(deviceId: ByteArray) {
         this.deviceId = deviceId
@@ -29,6 +31,9 @@ class DeviceStateService private constructor(
         deviceId = byteArrayOf()
         deviceRegistrationConfirmed = false
         deviceRegistered = false
+        sequenceNumber = 0
+        randomPlatform = 0
+        randomDevice  = 0
         relayEnabled = mutableListOf(false, false, false)
         syncState()
     }

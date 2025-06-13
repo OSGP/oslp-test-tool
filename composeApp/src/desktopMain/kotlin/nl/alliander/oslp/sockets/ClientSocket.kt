@@ -14,7 +14,6 @@ import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.util.Logger
 
 class ClientSocket {
-    private val logger = Logger.getInstance()
 
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
 
@@ -28,7 +27,7 @@ class ClientSocket {
 
             val requestEnvelope: ByteArray = envelope.getBytes()
 
-            logger.logSend(envelope)
+            Logger.logSend(envelope)
 
             output.writeFully(requestEnvelope, 0, requestEnvelope.size)
 
@@ -37,7 +36,7 @@ class ClientSocket {
 
             if (bytesRead > 0) {
                 val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
-                logger.logReceive(responseEnvelope)
+                Logger.logReceive(responseEnvelope)
 
                 return@runBlocking responseEnvelope
             }

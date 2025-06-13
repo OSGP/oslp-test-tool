@@ -19,19 +19,17 @@ import nl.alliander.oslp.sockets.receive.ReceiveStrategy
 import nl.alliander.oslp.util.Logger
 
 class ServerSocket {
-    private val logger = Logger.getInstance()
-
     @OptIn(DelicateCoroutinesApi::class)
     fun startListening() {
         GlobalScope.launch {
             val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
                 .tcp()
                 .bind(InetSocketAddress("localhost", 12122))
-            logger.log("Server is listening on port ${serverSocket.port}")
+            Logger.log("Server is listening on port ${serverSocket.port}")
 
             while (true) {
                 val socket = serverSocket.accept()
-                logger.log("Accepted connection from ${socket.remoteAddress}")
+                Logger.log("Accepted connection from ${socket.remoteAddress}")
 
                 val input = socket.openReadChannel()
                 val output = socket.openWriteChannel(autoFlush = true)
@@ -43,7 +41,7 @@ class ServerSocket {
                     if (bytesRead > 0) {
                         val requestEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
 
-                        logger.logReceive(requestEnvelope)
+                        Logger.logReceive(requestEnvelope)
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
@@ -54,12 +52,12 @@ class ServerSocket {
                         val responseBytes = responseEnvelope.getBytes()
                         output.writeFully(responseBytes)
 
-                        logger.logSend(responseEnvelope)
+                        Logger.logSend(responseEnvelope)
                     }
                 } catch (e: InvalidProtocolBufferException) {
                     println("Failed to parse Protobuf message: ${e.message}")
                 } catch (e: Exception) {
-                    logger.log(e.message ?: e.toString())
+                    Logger.log(e.message ?: e.toString())
                 } finally {
                     socket.close()
                 }
