@@ -56,7 +56,7 @@ data class Envelope(
             val sequenceNumber = bytes.sliceArray(SEQUENCE_NUMBER_RANGE).toInt()
             val deviceId = bytes.sliceArray(DEVICE_ID_RANGE)
             val lengthIndicator = bytes.sliceArray(LENGTH_INDICATOR_RANGE).toInt()
-            val payload = bytes.sliceArray(144 until bytes.size)
+            val payload = bytes.sliceArray(HEADER_LEN until bytes.size)
 
             return Envelope(
                 securityKey,
@@ -74,7 +74,7 @@ data class Envelope(
         private const val DEVICE_ID_LEN = 12
         private const val LENGTH_INDICATOR_LEN = 2
 
-        private val HEADER_LEN = SECURITY_KEY_LEN + SEQUENCE_NUMBER_LEN + DEVICE_ID_LEN + LENGTH_INDICATOR_LEN
+        private const val HEADER_LEN = SECURITY_KEY_LEN + SEQUENCE_NUMBER_LEN + DEVICE_ID_LEN + LENGTH_INDICATOR_LEN
 
         private val SECURITY_KEY_RANGE = 0 size SECURITY_KEY_LEN
         private val SEQUENCE_NUMBER_RANGE = 128 size SEQUENCE_NUMBER_LEN
