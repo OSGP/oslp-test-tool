@@ -7,10 +7,8 @@ import nl.alliander.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.Message
 
-class RequestService(
-    loggingService: LoggingService
-) {
-    private val clientSocket = ClientSocket(loggingService)
+class RequestService {
+    private val clientSocket = ClientSocket()
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(
@@ -39,6 +37,6 @@ class RequestService(
             messageBytes,
         )
 
-        val response = clientSocket.sendAndReceive(request)
+        clientSocket.sendAndReceive(request)
     }
 }

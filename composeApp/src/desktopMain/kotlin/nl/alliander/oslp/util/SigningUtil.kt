@@ -58,7 +58,7 @@ object SigningUtil {
         return keyFactory.generatePublic(X509EncodedKeySpec(key)) ?: throw Exception("No Key")
     }
 
-    const val SECURITY_PROVIDER = "SunEC"
-    const val SECURITY_KEYTYPE = "EC"
-    const val SECURITY_ALGORITHM = "SHA256withECDSA"
+    private const val SECURITY_PROVIDER = "SunEC"
+    private const val SECURITY_KEYTYPE = "EC"
+    private const val SECURITY_ALGORITHM = "SHA256withECDSA"
 }

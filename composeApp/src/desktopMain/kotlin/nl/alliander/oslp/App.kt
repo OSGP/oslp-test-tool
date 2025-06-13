@@ -17,19 +17,19 @@ import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.components.SetLightRow
-import nl.alliander.oslp.service.LoggingService
 import nl.alliander.oslp.service.RequestService
+import nl.alliander.oslp.util.Logger
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
 fun App(
-    loggingService: LoggingService,
     requestService: RequestService,
     viewModel: MainViewModel,
 ) {
+    val logger = Logger.getInstance()
 
     val scrollState = rememberScrollState()
-    LaunchedEffect(loggingService.loggingText) {
+    LaunchedEffect(logger.loggingText) {
         scrollState.animateScrollTo(scrollState.maxValue)
     }
 
@@ -50,25 +50,25 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Selftest (10 sec)", modifier) { loggingService.log("Selftest (10 sec) clicked") }
-                    CommandButton("Reboot", modifier) { loggingService.log("Reboot clicked") }
+                    CommandButton("Selftest (10 sec)", modifier) { logger.log("Selftest (10 sec) clicked") }
+                    CommandButton("Reboot", modifier) { logger.log("Reboot clicked") }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Light sensor on", modifier) { loggingService.log("Light sensor on (Light) clicked") }
+                    CommandButton("Light sensor on", modifier) { logger.log("Light sensor on (Light) clicked") }
                     CommandButton(
                         "Light sensor off",
                         modifier
-                    ) { loggingService.log("Light sensor off (Dark) clicked") }
+                    ) { logger.log("Light sensor off (Dark) clicked") }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Status", modifier) { loggingService.log("Get Status clicked") }
-                    CommandButton("Get Configuration", modifier) { loggingService.log("Get Configuration clicked") }
+                    CommandButton("Get Status", modifier) { logger.log("Get Status clicked") }
+                    CommandButton("Get Configuration", modifier) { logger.log("Get Configuration clicked") }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -92,18 +92,18 @@ fun App(
 
                         SetLightRow(
                             label = "Relais 1",
-                            onGreen = { loggingService.log("Relais 1 ON") },
-                            onRed = { loggingService.log("Relais 1 OFF") }
+                            onGreen = { logger.log("Relais 1 ON") },
+                            onRed = { logger.log("Relais 1 OFF") }
                         )
                         SetLightRow(
                             label = "Relais 2",
-                            onGreen = { loggingService.log("Relais 2 ON") },
-                            onRed = { loggingService.log("Relais 2 OFF") }
+                            onGreen = { logger.log("Relais 2 ON") },
+                            onRed = { logger.log("Relais 2 OFF") }
                         )
                         SetLightRow(
                             label = "Relais 3",
-                            onGreen = { loggingService.log("Relais 3 ON") },
-                            onRed = { loggingService.log("Relais 3 OFF") }
+                            onGreen = { logger.log("Relais 3 ON") },
+                            onRed = { logger.log("Relais 3 OFF") }
                         )
                     }
                 }
@@ -111,7 +111,7 @@ fun App(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { loggingService.log("Send JSON message clicked") },
+                    onClick = { logger.log("Send JSON message clicked") },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
@@ -128,7 +128,7 @@ fun App(
                         .padding(8.dp)
                         .verticalScroll(scrollState)
                 ) {
-                    Text(loggingService.loggingText, fontSize = 14.sp)
+                    Text(logger.loggingText, fontSize = 14.sp)
                 }
 
                 Row(
@@ -138,14 +138,14 @@ fun App(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = { loggingService.exportLogFile() },
+                        onClick = { logger.exportLogFile() },
                         modifier = Modifier
                             .padding(end = 8.dp)
                     ) {
                         Text("Save logging to file")
                     }
                     Button(
-                        onClick = { loggingService.loggingText = "" }
+                        onClick = { logger.loggingText = "" }
                     ) {
                         Text("Clear logging")
                     }
