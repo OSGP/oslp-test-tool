@@ -1,9 +1,12 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.service
 
 import nl.alliander.oslp.models.MainViewModel
 
 class DeviceStateService private constructor(
-    private val mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel,
 ) {
     private var deviceRegistered = false
     private var deviceRegistrationConfirmed = false
@@ -33,7 +36,7 @@ class DeviceStateService private constructor(
         deviceRegistered = false
         sequenceNumber = 0
         randomPlatform = 0
-        randomDevice  = 0
+        randomDevice = 0
         relayEnabled = mutableListOf(false, false, false)
         syncState()
     }
@@ -50,7 +53,6 @@ class DeviceStateService private constructor(
             instance = DeviceStateService(mainViewModel)
         }
 
-        fun getInstance(): DeviceStateService =
-            instance ?: throw IllegalStateException("No DeviceStateService instance found!")
+        fun getInstance(): DeviceStateService = instance ?: throw IllegalStateException("No DeviceStateService instance found!")
     }
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.domain
 
 import nl.alliander.oslp.util.toByteArray
@@ -10,7 +13,7 @@ data class Envelope(
     val sequenceNumber: Int,
     val deviceId: ByteArray,
     val lengthIndicator: Int,
-    val messageBytes: ByteArray
+    val messageBytes: ByteArray,
 ) {
     private var cachedMessage: Oslp.Message? = null
 
@@ -63,7 +66,7 @@ data class Envelope(
                 sequenceNumber,
                 deviceId,
                 lengthIndicator,
-                payload
+                payload,
             )
         }
 

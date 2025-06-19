@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.util
 
 import kotlinx.coroutines.runBlocking
@@ -11,7 +14,6 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 
 object SigningUtil {
-
     private val publicKey: PublicKey by lazy {
         createPublicKey("files/oslp_sim_ecdsa_public.der")
     }
@@ -20,22 +22,23 @@ object SigningUtil {
         createPrivateKey("files/oslp_test_ecdsa_private.der")
     }
 
-    fun createSignature(
-        message: ByteArray,
-    ): ByteArray =
-        Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER).apply {
-            initSign(privateKey, SecureRandom())
-            update(message)
-        }.sign()
+    fun createSignature(message: ByteArray): ByteArray =
+        Signature
+            .getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER)
+            .apply {
+                initSign(privateKey, SecureRandom())
+                update(message)
+            }.sign()
 
     fun verifySignature(
         message: ByteArray,
         securityKey: ByteArray,
     ): Boolean {
-        val builder = Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER).apply {
-            initVerify(publicKey)
-            update(message)
-        }
+        val builder =
+            Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER).apply {
+                initVerify(publicKey)
+                update(message)
+            }
 
         // Truncation needed for some signature types, including the used SHA256withECDSA
         val len = securityKey[1] + 2 and 0xff

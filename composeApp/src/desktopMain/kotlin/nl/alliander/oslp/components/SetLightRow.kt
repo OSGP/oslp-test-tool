@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.components
 
 import androidx.compose.foundation.layout.Row
@@ -15,19 +18,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
+fun setLightRow(
+    label: String,
+    onGreen: () -> Unit,
+    onRed: () -> Unit,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
     ) {
         Text(label, modifier = Modifier.width(70.dp))
         Spacer(modifier = Modifier.width(8.dp))
         Button(
             onClick = onGreen,
             modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green),
         ) {
             Text("On", color = Color.White)
         }
@@ -35,7 +43,7 @@ fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
         Button(
             onClick = onRed,
             modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
         ) {
             Text("Off", color = Color.White)
         }

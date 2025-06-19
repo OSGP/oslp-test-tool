@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.service
 
 import nl.alliander.oslp.domain.Envelope
@@ -11,9 +14,12 @@ class RequestService {
     private val clientSocket = ClientSocket()
 
     fun getFirmwareVersion() {
-        val payload = Message.newBuilder().setGetFirmwareVersionRequest(
-            Oslp.GetFirmwareVersionRequest.newBuilder().build()
-        ).build()
+        val payload =
+            Message
+                .newBuilder()
+                .setGetFirmwareVersionRequest(
+                    Oslp.GetFirmwareVersionRequest.newBuilder().build(),
+                ).build()
 
         val deviceStateService = DeviceStateService.getInstance()
 
@@ -22,20 +28,22 @@ class RequestService {
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()
 
-        val signature = SigningUtil.createSignature(
-            sequenceNumber.toByteArray(2) +
+        val signature =
+            SigningUtil.createSignature(
+                sequenceNumber.toByteArray(2) +
                     deviceId +
                     lengthIndicator.toByteArray(2) +
-                    messageBytes
-        )
+                    messageBytes,
+            )
 
-        val request = Envelope(
-            signature,
-            sequenceNumber,
-            deviceId,
-            lengthIndicator,
-            messageBytes,
-        )
+        val request =
+            Envelope(
+                signature,
+                sequenceNumber,
+                deviceId,
+                lengthIndicator,
+                messageBytes,
+            )
 
         clientSocket.sendAndReceive(request)
     }

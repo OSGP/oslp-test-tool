@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
@@ -14,16 +17,16 @@ abstract class ReceiveStrategy {
     abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
     operator fun invoke(requestEnvelope: Envelope): Envelope {
-
-        val verified = with(requestEnvelope) {
-            SigningUtil.verifySignature(
-                sequenceNumber.toByteArray(2) +
+        val verified =
+            with(requestEnvelope) {
+                SigningUtil.verifySignature(
+                    sequenceNumber.toByteArray(2) +
                         deviceId +
                         lengthIndicator.toByteArray(2) +
                         messageBytes,
-                securityKey,
-            )
-        }
+                    securityKey,
+                )
+            }
 
         if (!verified) {
             Logger.logReceive("Message not verified!")
@@ -33,22 +36,24 @@ abstract class ReceiveStrategy {
 
         val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
 
-        val securityKey = with(requestEnvelope) {
-            SigningUtil.createSignature(
-                sequenceNumber.toByteArray(2) +
+        val securityKey =
+            with(requestEnvelope) {
+                SigningUtil.createSignature(
+                    sequenceNumber.toByteArray(2) +
                         deviceId +
                         lengthIndicator.toByteArray(2) +
-                        messageBytes
-            )
-        }
+                        messageBytes,
+                )
+            }
 
-        val response = Envelope(
-            securityKey,
-            requestEnvelope.sequenceNumber,
-            requestEnvelope.deviceId,
-            responsePayload.size,
-            responsePayload
-        )
+        val response =
+            Envelope(
+                securityKey,
+                requestEnvelope.sequenceNumber,
+                requestEnvelope.deviceId,
+                responsePayload.size,
+                responsePayload,
+            )
 
         return response
     }

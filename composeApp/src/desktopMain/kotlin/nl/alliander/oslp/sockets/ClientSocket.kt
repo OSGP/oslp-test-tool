@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets
 
 import io.ktor.network.selector.ActorSelectorManager
@@ -14,34 +17,33 @@ import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.util.Logger
 
 class ClientSocket {
+    fun sendAndReceive(envelope: Envelope): Envelope =
+        runBlocking(Dispatchers.IO) {
+            val clientSocket: Socket =
+                aSocket(ActorSelectorManager(Dispatchers.IO))
+                    .tcp()
+                    .connect(InetSocketAddress("localhost", 12121))
 
-    fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
+            clientSocket.use {
+                val output = it.openWriteChannel(autoFlush = true)
+                val input = it.openReadChannel()
 
-        val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
-            .tcp()
-            .connect(InetSocketAddress("localhost", 12121))
+                val requestEnvelope: ByteArray = envelope.getBytes()
 
-        clientSocket.use {
-            val output = it.openWriteChannel(autoFlush = true)
-            val input = it.openReadChannel()
+                Logger.logSend(envelope)
 
-            val requestEnvelope: ByteArray = envelope.getBytes()
+                output.writeFully(requestEnvelope, 0, requestEnvelope.size)
 
-            Logger.logSend(envelope)
+                val buffer = ByteArray(1024)
+                val bytesRead = input.readAvailable(buffer)
 
-            output.writeFully(requestEnvelope, 0, requestEnvelope.size)
+                if (bytesRead > 0) {
+                    val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
+                    Logger.logReceive(responseEnvelope)
 
-            val buffer = ByteArray(1024)
-            val bytesRead = input.readAvailable(buffer)
-
-            if (bytesRead > 0) {
-                val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
-                Logger.logReceive(responseEnvelope)
-
-                return@runBlocking responseEnvelope
+                    return@runBlocking responseEnvelope
+                }
             }
+            throw Exception()
         }
-        throw Exception()
-    }
-
 }

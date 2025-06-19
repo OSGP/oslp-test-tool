@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.util
 
 import androidx.compose.runtime.getValue
@@ -21,9 +24,9 @@ object Logger {
     }
 
     fun logReceive(envelope: Envelope) {
-        with (envelope) {
+        with(envelope) {
             logReceive("Received:")
-            logReceive("Seq: $sequenceNumber - Len: $lengthIndicator");
+            logReceive("Seq: $sequenceNumber - Len: $lengthIndicator")
             logReceive(message.toString())
         }
     }
@@ -34,9 +37,9 @@ object Logger {
     }
 
     fun logSend(envelope: Envelope) {
-        with (envelope) {
+        with(envelope) {
             logSend("Sent:")
-            logSend("Seq: $sequenceNumber - Len: $lengthIndicator");
+            logSend("Seq: $sequenceNumber - Len: $lengthIndicator")
             logSend(message.toString())
         }
     }

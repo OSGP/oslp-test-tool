@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
@@ -22,23 +25,25 @@ class RegisterDeviceStrategy : ReceiveStrategy() {
         deviceStateService.sequenceNumber = requestEnvelope.sequenceNumber
         deviceStateService.randomPlatform = Random.nextInt(65536)
 
-        val response = Message.newBuilder()
-            .setRegisterDeviceResponse(
-                Oslp.RegisterDeviceResponse.newBuilder()
-                    .setRandomDevice(requestEnvelope.message.registerDeviceRequest.randomDevice)
-                    .setCurrentTime(System.currentTimeMillis().toString())
-                    .setStatus(Oslp.Status.OK)
-                    .setRandomPlatform(deviceStateService.randomPlatform)
-                    .setLocationInfo(
-                        Oslp.LocationInfo.newBuilder()
-                            .setLatitude(52132632)
-                            .setLongitude(5291266)
-                            .setTimeOffset(60)
-                    )
-                    .build()
-            ).build()
+        val response =
+            Message
+                .newBuilder()
+                .setRegisterDeviceResponse(
+                    Oslp.RegisterDeviceResponse
+                        .newBuilder()
+                        .setRandomDevice(requestEnvelope.message.registerDeviceRequest.randomDevice)
+                        .setCurrentTime(System.currentTimeMillis().toString())
+                        .setStatus(Oslp.Status.OK)
+                        .setRandomPlatform(deviceStateService.randomPlatform)
+                        .setLocationInfo(
+                            Oslp.LocationInfo
+                                .newBuilder()
+                                .setLatitude(52132632)
+                                .setLongitude(5291266)
+                                .setTimeOffset(60),
+                        ).build(),
+                ).build()
 
         return response
     }
-
 }

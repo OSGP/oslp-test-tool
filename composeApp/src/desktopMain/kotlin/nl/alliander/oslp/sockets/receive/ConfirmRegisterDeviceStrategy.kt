@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
@@ -12,26 +15,31 @@ class ConfirmRegisterDeviceStrategy : ReceiveStrategy() {
     override fun matches(message: Message): Boolean = message.hasConfirmRegisterDeviceRequest()
 
     override fun handle(requestEnvelope: Envelope) {
-
         with(requestEnvelope.message.confirmRegisterDeviceRequest) {
-            if (randomDevice != deviceStateService.randomDevice)
+            if (randomDevice != deviceStateService.randomDevice) {
                 Logger.logReceive("Invalid randomDevice! Expected: ${deviceStateService.randomDevice} - Got: $randomDevice")
-            if (randomPlatform != deviceStateService.randomPlatform)
+            }
+            if (randomPlatform != deviceStateService.randomPlatform) {
                 Logger.logReceive("Invalid randomPlatform! Expected: ${deviceStateService.randomPlatform} - Got: $randomPlatform")
+            }
         }
 
         deviceStateService.confirmRegisterDevice()
     }
 
     override fun buildResponsePayload(requestEnvelope: Envelope): Message {
-        val response = Message.newBuilder().setConfirmRegisterDeviceResponse(
-            Oslp.ConfirmRegisterDeviceResponse.newBuilder()
-                .setRandomDevice(deviceStateService.randomDevice)
-                .setRandomPlatform(deviceStateService.randomPlatform)
-                .setSequenceWindow(1)
-                .setStatusValue(0)
-                .build()
-        ).build()
+        val response =
+            Message
+                .newBuilder()
+                .setConfirmRegisterDeviceResponse(
+                    Oslp.ConfirmRegisterDeviceResponse
+                        .newBuilder()
+                        .setRandomDevice(deviceStateService.randomDevice)
+                        .setRandomPlatform(deviceStateService.randomPlatform)
+                        .setSequenceWindow(1)
+                        .setStatusValue(0)
+                        .build(),
+                ).build()
         return response
     }
 }
