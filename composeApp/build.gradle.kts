@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.spotless)
 }
 
 kotlin {
@@ -34,6 +35,17 @@ kotlin {
             implementation(libs.protobufKotlin)
             implementation(libs.ktor)
         }
+    }
+}
+
+spotless {
+
+    kotlin {
+        target("src/desktopMain/kotlin/**/*.kt")
+
+        ktlint("1.6.0")
+
+        licenseHeaderFile(file("spotless/license-header-template.kt")).updateYearWithLatest(false)
     }
 }
 
