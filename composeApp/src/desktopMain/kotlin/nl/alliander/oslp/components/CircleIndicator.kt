@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.components
 
 import androidx.compose.foundation.background
@@ -17,13 +20,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CircleIndicator(status: Boolean, label: String) {
+fun circleIndicator(
+    status: Boolean,
+    label: String,
+) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 8.dp)) {
         Box(
-            modifier = Modifier
-                .size(20.dp)
-                .background(if (status) Color.Green else Color.Red, CircleShape)
-                .border(1.dp, Color.Black, CircleShape)
+            modifier =
+                Modifier
+                    .size(20.dp)
+                    .background(if (status) Color.Green else Color.Red, CircleShape)
+                    .border(1.dp, Color.Black, CircleShape),
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(label)
