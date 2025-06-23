@@ -13,8 +13,32 @@ abstract class ReceiveStrategy {
 
     abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
-    operator fun invoke(requestEnvelope: Envelope): Envelope {
+    operator fun invoke(requestEnvelope: Envelope): Envelope? {
+        return requestEnvelope.takeIf { validateSignature(it) }?.let {
+            handle(it)
 
+            val responsePayload = buildResponsePayload(it).toByteArray()
+
+            val securityKey = with(it) {
+                SigningUtil.createSignature(
+                    sequenceNumber.toByteArray(2) +
+                            deviceId +
+                            lengthIndicator.toByteArray(2) +
+                            messageBytes
+                )
+            }
+
+            Envelope(
+                securityKey,
+                it.sequenceNumber,
+                it.deviceId,
+                responsePayload.size,
+                responsePayload
+            )
+        }
+    }
+
+    private fun validateSignature(requestEnvelope: Envelope): Boolean {
         val verified = with(requestEnvelope) {
             SigningUtil.verifySignature(
                 sequenceNumber.toByteArray(2) +
@@ -25,32 +49,11 @@ abstract class ReceiveStrategy {
             )
         }
 
-        if (!verified) {
-            Logger.logReceive("Message not verified!")
+        if (verified) {
+            Logger.logReceive("The signature is not valid!")
+            return false
         }
-
-        handle(requestEnvelope)
-
-        val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
-
-        val securityKey = with(requestEnvelope) {
-            SigningUtil.createSignature(
-                sequenceNumber.toByteArray(2) +
-                        deviceId +
-                        lengthIndicator.toByteArray(2) +
-                        messageBytes
-            )
-        }
-
-        val response = Envelope(
-            securityKey,
-            requestEnvelope.sequenceNumber,
-            requestEnvelope.deviceId,
-            responsePayload.size,
-            responsePayload
-        )
-
-        return response
+        return true
     }
 
     companion object {

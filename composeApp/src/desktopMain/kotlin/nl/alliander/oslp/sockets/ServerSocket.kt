@@ -45,14 +45,12 @@ class ServerSocket {
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
-                        val responseEnvelope: Envelope = responseStrategy(requestEnvelope)
+                        responseStrategy(requestEnvelope)?.let { envelope ->
+                            val responseBytes = envelope.getBytes()
+                            output.writeFully(responseBytes)
 
-                        delay(1000)
-
-                        val responseBytes = responseEnvelope.getBytes()
-                        output.writeFully(responseBytes)
-
-                        Logger.logSend(responseEnvelope)
+                            Logger.logSend(envelope)
+                        }
                     }
                 } catch (e: InvalidProtocolBufferException) {
                     println("Failed to parse Protobuf message: ${e.message}")

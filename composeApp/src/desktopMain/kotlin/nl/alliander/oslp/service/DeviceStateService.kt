@@ -25,8 +25,6 @@ class DeviceStateService private constructor(
         syncState()
     }
 
-    fun incrementSequenceNumber(): Int = ++sequenceNumber
-
     fun reset() {
         deviceId = byteArrayOf()
         deviceRegistrationConfirmed = false

@@ -17,7 +17,7 @@ class RequestService {
 
         val deviceStateService = DeviceStateService.getInstance()
 
-        val sequenceNumber = deviceStateService.incrementSequenceNumber()
+        val sequenceNumber = deviceStateService.sequenceNumber
         val deviceId = deviceStateService.deviceId
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()

@@ -72,7 +72,7 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Firmware versie", modifier) { requestService.getFirmwareVersion() }
+                    CommandButton("Get Firmware version", modifier) { requestService.getFirmwareVersion() }
 
                     Spacer(modifier = modifier)
                 }
