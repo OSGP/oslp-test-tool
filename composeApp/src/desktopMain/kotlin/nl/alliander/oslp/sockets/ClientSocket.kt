@@ -19,7 +19,7 @@ class ClientSocket {
 
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
             .tcp()
-            .connect(InetSocketAddress("localhost", 12121))
+            .connect(InetSocketAddress("localhost", 12124))
 
         clientSocket.use {
             val output = it.openWriteChannel(autoFlush = true)
