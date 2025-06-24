@@ -49,7 +49,7 @@ abstract class ReceiveStrategy {
             )
         }
 
-        if (verified) {
+        if (!verified) {
             Logger.logReceive("The signature is not valid!")
             return false
         }
