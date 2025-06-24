@@ -27,7 +27,8 @@ fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
         Button(
             onClick = onGreen,
             modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green),
+            enabled = false
         ) {
             Text("On", color = Color.White)
         }
@@ -35,7 +36,8 @@ fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
         Button(
             onClick = onRed,
             modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+            enabled = false
         ) {
             Text("Off", color = Color.White)
         }

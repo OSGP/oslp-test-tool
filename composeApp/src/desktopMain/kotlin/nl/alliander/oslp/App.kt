@@ -72,7 +72,7 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Firmware version", modifier) { requestService.getFirmwareVersion() }
+                    CommandButton("Get Firmware version", modifier, viewModel.isConfirmed) { requestService.getFirmwareVersion() }
 
                     Spacer(modifier = modifier)
                 }
@@ -110,6 +110,7 @@ fun App(
 
                 Button(
                     onClick = { Logger.log("Send JSON message clicked") },
+                    enabled = false,
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
