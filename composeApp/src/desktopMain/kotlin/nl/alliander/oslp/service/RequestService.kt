@@ -65,7 +65,7 @@ class RequestService {
     fun setLightRequest(index: Int, on: Boolean) {
         val lightValue = LightValue.newBuilder()
         lightValue.setOn(on)
-        lightValue.setIndex(index.toByteArray(2).toByteString())
+        lightValue.setIndex(index.toByteArray(1).toByteString())
 
         val payload = Message.newBuilder().setSetLightRequest(
             Oslp.SetLightRequest.newBuilder()
