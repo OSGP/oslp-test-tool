@@ -35,15 +35,15 @@ fun ConfigurationScreen(
                 TextField(
                     value = portConfigurationModel.serverSocketAddress,
                     onValueChange = { portConfigurationModel.serverSocketAddress = it },
-                    label = { Text("Server Address") },
+                    label = { Text("Test tool address") },
                     singleLine = true
                 )
                 TextField(
                     value = portConfigurationModel.serverSocketPort.toString(),
                     onValueChange = { portConfigurationModel.serverSocketPort = it.toInt() },
-                    label = { Text("Server Port") },
+                    label = { Text("Test tool port") },
                     singleLine = true,
-                    modifier = Modifier.width(100.dp)
+                    modifier = Modifier.width(150.dp)
                 )
             }
 
@@ -51,15 +51,15 @@ fun ConfigurationScreen(
                 TextField(
                     value = portConfigurationModel.clientAddress,
                     onValueChange = { portConfigurationModel.clientAddress = it },
-                    label = { Text("Client Address") },
+                    label = { Text("Device address") },
                     singleLine = true
                 )
                 TextField(
                     value = portConfigurationModel.clientPort.toString(),
                     onValueChange = { portConfigurationModel.clientPort = it.toInt() },
-                    label = { Text("Client Port") },
+                    label = { Text("Device port") },
                     singleLine = true,
-                    modifier = Modifier.width(100.dp)
+                    modifier = Modifier.width(150.dp)
                 )
             }
 
