@@ -12,7 +12,6 @@ import io.ktor.utils.io.writeFully
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.sockets.receive.ReceiveStrategy

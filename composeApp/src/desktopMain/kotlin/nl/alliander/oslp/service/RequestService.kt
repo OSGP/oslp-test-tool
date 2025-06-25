@@ -78,7 +78,7 @@ class RequestService {
     private fun sendAndReceiveRequest(payload: Message) {
         val deviceStateService = DeviceStateService.getInstance()
 
-        val sequenceNumber = deviceStateService.increaseSequenceNumber() //TODO fix this properly
+        val sequenceNumber = deviceStateService.sequenceNumber
         val deviceId = deviceStateService.deviceId
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()

@@ -20,7 +20,7 @@ class ConfirmRegisterDeviceStrategy : ReceiveStrategy() {
                 Logger.logReceive("Invalid randomPlatform! Expected: ${deviceStateService.randomPlatform} - Got: $randomPlatform")
         }
 
-        deviceStateService.confirmRegisterDevice()
+        deviceStateService.confirmRegisterDevice(requestEnvelope.sequenceNumber)
     }
 
     override fun buildResponsePayload(requestEnvelope: Envelope): Message {

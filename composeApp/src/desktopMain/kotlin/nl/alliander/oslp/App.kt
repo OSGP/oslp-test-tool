@@ -66,8 +66,8 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Status", modifier, viewModel.isDeviceRegistered) { requestService.getStatus()}
-                    CommandButton("Get Configuration", modifier, viewModel.isDeviceRegistered) { requestService.getConfiguration() }
+                    CommandButton("Get Status", modifier, viewModel.isConfirmed) { requestService.getStatus()}
+                    CommandButton("Get Configuration", modifier, viewModel.isConfirmed) { requestService.getConfiguration() }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),

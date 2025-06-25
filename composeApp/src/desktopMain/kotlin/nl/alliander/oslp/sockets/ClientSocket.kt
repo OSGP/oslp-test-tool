@@ -11,10 +11,10 @@ import io.ktor.utils.io.writeFully
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 
 class ClientSocket {
-
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
 
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
@@ -35,7 +35,11 @@ class ClientSocket {
             val bytesRead = input.readAvailable(buffer)
 
             if (bytesRead > 0) {
+                val deviceStateService = DeviceStateService.getInstance()
+
                 val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
+                deviceStateService.updateSequenceNumber(responseEnvelope.sequenceNumber)
+
                 Logger.logReceive(responseEnvelope)
 
                 return@runBlocking responseEnvelope

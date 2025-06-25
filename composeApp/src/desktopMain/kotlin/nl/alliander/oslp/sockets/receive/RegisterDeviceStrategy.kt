@@ -19,7 +19,6 @@ class RegisterDeviceStrategy : ReceiveStrategy() {
         val deviceStateService = DeviceStateService.getInstance()
 
         deviceStateService.deviceId = requestEnvelope.deviceId
-        deviceStateService.sequenceNumber = requestEnvelope.sequenceNumber
         deviceStateService.randomPlatform = Random.nextInt(65536)
 
         val response = Message.newBuilder()
