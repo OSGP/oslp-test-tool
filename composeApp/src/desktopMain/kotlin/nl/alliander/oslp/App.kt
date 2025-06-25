@@ -91,18 +91,21 @@ fun App(
 
                         SetLightRow(
                             label = "Relais 1",
-                            onGreen = { Logger.log("Relais 1 ON") },
-                            onRed = { Logger.log("Relais 1 OFF") }
+                            enabled = viewModel.isConfirmed,
+                            onGreen = { requestService.setLightRequest(1, true) },
+                            onRed = { requestService.setLightRequest(1, false) }
                         )
                         SetLightRow(
                             label = "Relais 2",
-                            onGreen = { Logger.log("Relais 2 ON") },
-                            onRed = { Logger.log("Relais 2 OFF") }
+                            enabled = viewModel.isConfirmed,
+                            onGreen = { requestService.setLightRequest(2, true) },
+                            onRed = { requestService.setLightRequest(2, false) }
                         )
                         SetLightRow(
                             label = "Relais 3",
-                            onGreen = { Logger.log("Relais 3 ON") },
-                            onRed = { Logger.log("Relais 3 OFF") }
+                            enabled = viewModel.isConfirmed,
+                            onGreen = { requestService.setLightRequest(3, true) },
+                            onRed = { requestService.setLightRequest(3, false) }
                         )
                     }
                 }

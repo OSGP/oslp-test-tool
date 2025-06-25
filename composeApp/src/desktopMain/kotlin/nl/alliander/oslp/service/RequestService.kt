@@ -1,10 +1,12 @@
 package nl.alliander.oslp.service
 
+import com.google.protobuf.kotlin.toByteString
 import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp
+import org.opensmartgridplatform.oslp.Oslp.LightValue
 import org.opensmartgridplatform.oslp.Oslp.Message
 
 class RequestService {
@@ -55,6 +57,19 @@ class RequestService {
     fun getConfiguration() {
         val payload = Message.newBuilder().setGetConfigurationRequest(
             Oslp.GetConfigurationRequest.newBuilder().build()
+        ).build()
+
+        sendAndReceiveRequest(payload)
+    }
+
+    fun setLightRequest(index: Int, on: Boolean) {
+        val lightValue = LightValue.newBuilder()
+        lightValue.setOn(on)
+        lightValue.setIndex(index.toByteArray(2).toByteString())
+
+        val payload = Message.newBuilder().setSetLightRequest(
+            Oslp.SetLightRequest.newBuilder()
+                .addValues(lightValue).build()
         ).build()
 
         sendAndReceiveRequest(payload)
