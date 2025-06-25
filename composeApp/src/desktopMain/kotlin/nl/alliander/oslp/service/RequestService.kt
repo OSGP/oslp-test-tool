@@ -2,6 +2,8 @@ package nl.alliander.oslp.service
 
 import com.google.protobuf.kotlin.toByteString
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.models.MainViewModel
+import nl.alliander.oslp.models.PortConfigurationModel
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -9,8 +11,10 @@ import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.LightValue
 import org.opensmartgridplatform.oslp.Oslp.Message
 
-class RequestService {
-    private val clientSocket = ClientSocket()
+class RequestService(
+    portConfigurationModel: PortConfigurationModel,
+) {
+    private val clientSocket = ClientSocket(portConfigurationModel)
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(
@@ -34,6 +38,7 @@ class RequestService {
         ).build()
 
         sendAndReceiveRequest(payload)
+        //TODO ALSO DISABLE SOME VALUES
     }
 
     fun setLightSensor(num: Int) {

@@ -14,17 +14,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.models.PortConfigurationModel
 import nl.alliander.oslp.sockets.receive.ReceiveStrategy
 import nl.alliander.oslp.util.Logger
 
 class ServerSocket {
     @OptIn(DelicateCoroutinesApi::class)
-    fun startListening() {
+    fun startListening(portConfigurationModel: PortConfigurationModel) {
         GlobalScope.launch {
             val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
                 .tcp()
-                .bind(InetSocketAddress("localhost", 12122))
-            Logger.log("Server is listening on port ${serverSocket.port}")
+                .bind(InetSocketAddress(portConfigurationModel.serverSocketAddress, portConfigurationModel.serverSocketPort))
+            Logger.log("Server is listening on address: ${serverSocket.localAddress}")
 
             while (true) {
                 val socket = serverSocket.accept()
