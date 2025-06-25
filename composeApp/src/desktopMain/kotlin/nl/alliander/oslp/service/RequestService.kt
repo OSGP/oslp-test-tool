@@ -1,8 +1,8 @@
 package nl.alliander.oslp.service
 
 import com.google.protobuf.kotlin.toByteString
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
@@ -27,6 +27,7 @@ class RequestService(
         sendAndReceiveRequest(payload)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun startSelfTest() {
         val payload = Message.newBuilder().setStartSelfTestRequest(
             Oslp.StartSelfTestRequest.newBuilder().build()
@@ -34,7 +35,7 @@ class RequestService(
 
         sendAndReceiveRequest(payload)
 
-        CoroutineScope(Dispatchers.Default).launch {
+        GlobalScope.launch {
             delay(10_000)
             stopSelfTest()
         }
