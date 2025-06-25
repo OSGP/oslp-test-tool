@@ -15,9 +15,55 @@ class RequestService {
             Oslp.GetFirmwareVersionRequest.newBuilder().build()
         ).build()
 
+        sendAndReceiveRequest(payload)
+    }
+
+    fun startSelfTest() {
+        val payload = Message.newBuilder().setStartSelfTestRequest(
+            Oslp.StartSelfTestRequest.newBuilder().build()
+        ).build()
+
+        sendAndReceiveRequest(payload)
+    }
+
+    fun startReboot() {
+        val payload = Message.newBuilder().setSetRebootRequest(
+            Oslp.SetRebootRequest.newBuilder().build()
+        ).build()
+
+        sendAndReceiveRequest(payload)
+    }
+
+    fun setLightSensor(num: Int) {
+        val payload = Message.newBuilder().setSetTransitionRequest(
+            Oslp.SetTransitionRequest.newBuilder().setTransitionTypeValue(
+                num
+            )
+        ).build()
+
+        sendAndReceiveRequest(payload)
+    }
+
+    fun getStatus() {
+        val payload = Message.newBuilder().setGetStatusRequest(
+            Oslp.GetStatusRequest.newBuilder().build()
+        ).build()
+
+        sendAndReceiveRequest(payload)
+    }
+
+    fun getConfiguration() {
+        val payload = Message.newBuilder().setGetConfigurationRequest(
+            Oslp.GetConfigurationRequest.newBuilder().build()
+        ).build()
+
+        sendAndReceiveRequest(payload)
+    }
+
+    private fun sendAndReceiveRequest(payload: Message) {
         val deviceStateService = DeviceStateService.getInstance()
 
-        val sequenceNumber = deviceStateService.sequenceNumber
+        val sequenceNumber = deviceStateService.increaseSequenceNumber() //TODO fix this properly
         val deviceId = deviceStateService.deviceId
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()

@@ -20,6 +20,10 @@ class DeviceStateService private constructor(
         syncState()
     }
 
+    fun increaseSequenceNumber(): Int {
+        return ++sequenceNumber
+    }
+
     fun confirmRegisterDevice() {
         deviceRegistrationConfirmed = true
         syncState()

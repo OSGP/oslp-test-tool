@@ -48,25 +48,26 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Selftest (10 sec)", modifier) { Logger.log("Selftest (10 sec) clicked") }
-                    CommandButton("Reboot", modifier) { Logger.log("Reboot clicked") }
+                    CommandButton("Selftest (10 sec)", modifier, viewModel.isConfirmed) { requestService.startSelfTest() }
+                    CommandButton("Reboot", modifier, viewModel.isConfirmed) { requestService.startReboot() }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Light sensor on", modifier) { Logger.log("Light sensor on (Light) clicked") }
+                    CommandButton("Light sensor on", modifier, viewModel.isConfirmed) { requestService.setLightSensor(0) }
                     CommandButton(
                         "Light sensor off",
-                        modifier
-                    ) { Logger.log("Light sensor off (Dark) clicked") }
+                        modifier,
+                        viewModel.isConfirmed
+                    ) { requestService.setLightSensor(1) }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Status", modifier) { Logger.log("Get Status clicked") }
-                    CommandButton("Get Configuration", modifier) { Logger.log("Get Configuration clicked") }
+                    CommandButton("Get Status", modifier, viewModel.isDeviceRegistered) { requestService.getStatus()}
+                    CommandButton("Get Configuration", modifier, viewModel.isDeviceRegistered) { requestService.getConfiguration() }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
