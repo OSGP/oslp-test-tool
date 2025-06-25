@@ -30,8 +30,8 @@ class RegisterDeviceStrategy : ReceiveStrategy() {
                     .setRandomPlatform(deviceStateService.randomPlatform)
                     .setLocationInfo(
                         Oslp.LocationInfo.newBuilder()
-                            .setLatitude(52132632)
-                            .setLongitude(5291266)
+                            .setLatitude(52260857)
+                            .setLongitude(5263121)
                             .setTimeOffset(60)
                     )
                     .build()
