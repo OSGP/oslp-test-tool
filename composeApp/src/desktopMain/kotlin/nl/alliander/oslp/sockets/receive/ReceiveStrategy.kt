@@ -14,28 +14,10 @@ abstract class ReceiveStrategy {
     abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
     operator fun invoke(requestEnvelope: Envelope): Envelope? {
-        return requestEnvelope.takeIf { validateSignature(it) }?.let {
-            handle(it)
-
-            val responsePayload = buildResponsePayload(it).toByteArray()
-
-            val securityKey = with(it) {
-                SigningUtil.createSignature(
-                    sequenceNumber.toByteArray(2) +
-                            deviceId +
-                            lengthIndicator.toByteArray(2) +
-                            messageBytes
-                )
-            }
-
-            Envelope(
-                securityKey,
-                it.sequenceNumber,
-                it.deviceId,
-                responsePayload.size,
-                responsePayload
-            )
-        }
+        if (!validateSignature(requestEnvelope)) return null
+        handle(requestEnvelope)
+        val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
+        return createResponseEnvelope(requestEnvelope, responsePayload)
     }
 
     private fun validateSignature(requestEnvelope: Envelope): Boolean {
@@ -54,6 +36,26 @@ abstract class ReceiveStrategy {
             return false
         }
         return true
+    }
+
+    private fun createResponseEnvelope(
+        requestEnvelope: Envelope,
+        responsePayload: ByteArray
+    ): Envelope {
+        val securityKey = SigningUtil.createSignature(
+            requestEnvelope.sequenceNumber.toByteArray(2) +
+                    requestEnvelope.deviceId +
+                    responsePayload.size.toByteArray(2) +
+                    responsePayload
+        )
+
+        return Envelope(
+            securityKey,
+            requestEnvelope.sequenceNumber,
+            requestEnvelope.deviceId,
+            responsePayload.size,
+            responsePayload
+        )
     }
 
     companion object {
