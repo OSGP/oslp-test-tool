@@ -2,7 +2,6 @@ package nl.alliander.oslp.service
 
 import com.google.protobuf.kotlin.toByteString
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.models.PortConfigurationModel
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
@@ -34,7 +33,7 @@ class RequestService(
 
     fun startReboot() {
         val deviceStateService = DeviceStateService.getInstance()
-        deviceStateService.rebootAndResetValues()
+        deviceStateService.resetRegistrationValues()
 
         val payload = Message.newBuilder().setSetRebootRequest(
             Oslp.SetRebootRequest.newBuilder().build()

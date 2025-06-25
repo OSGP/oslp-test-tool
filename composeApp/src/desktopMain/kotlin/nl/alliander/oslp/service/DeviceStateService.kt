@@ -30,7 +30,7 @@ class DeviceStateService private constructor(
         syncState()
     }
 
-    fun rebootAndResetValues() {
+    fun resetRegistrationValues() {
         deviceRegistered = false
         deviceRegistrationConfirmed = false
         syncState()
