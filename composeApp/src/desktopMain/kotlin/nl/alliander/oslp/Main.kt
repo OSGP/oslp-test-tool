@@ -1,17 +1,24 @@
 package nl.alliander.oslp
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import nl.alliander.oslp.models.MainViewModel
+import nl.alliander.oslp.models.PortConfigurationModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.service.RequestService
 import nl.alliander.oslp.sockets.ServerSocket
 
 fun main() = application {
-    val requestService = remember { RequestService() }
+    val portConfigurationModel = remember { PortConfigurationModel() }
+
+    val requestService = remember { RequestService(portConfigurationModel) }
 
     val mainViewModel = remember { MainViewModel() }
 
@@ -20,8 +27,6 @@ fun main() = application {
     val serverSocket = remember {
         ServerSocket()
     }
-
-    serverSocket.startListening()
 
     val state = rememberWindowState(
         width = 1280.dp,
@@ -33,6 +38,16 @@ fun main() = application {
         title = "OSLP Test Tool",
         state = state,
     ) {
-        App(requestService, mainViewModel)
+        var isConfigured by remember { mutableStateOf(false) }
+
+        if (!isConfigured) {
+            ConfigurationScreen(onContinue = { isConfigured = true }, portConfigurationModel)
+        } else {
+            LaunchedEffect(Unit) {
+                serverSocket.startListening(portConfigurationModel)
+            }
+            App(requestService, mainViewModel)
+        }
+
     }
 }

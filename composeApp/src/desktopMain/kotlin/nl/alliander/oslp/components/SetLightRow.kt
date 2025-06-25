@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
+fun SetLightRow(label: String, enabled: Boolean, onGreen: () -> Unit, onRed: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -28,7 +28,7 @@ fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
             onClick = onGreen,
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green),
-            enabled = false
+            enabled = enabled
         ) {
             Text("On", color = Color.White)
         }
@@ -37,7 +37,7 @@ fun SetLightRow(label: String, onGreen: () -> Unit, onRed: () -> Unit) {
             onClick = onRed,
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
-            enabled = false
+            enabled = enabled
         ) {
             Text("Off", color = Color.White)
         }

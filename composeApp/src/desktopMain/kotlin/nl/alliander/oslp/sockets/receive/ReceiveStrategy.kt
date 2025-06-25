@@ -62,6 +62,7 @@ abstract class ReceiveStrategy {
                 return when {
                     hasRegisterDeviceRequest() -> RegisterDeviceStrategy()
                     hasConfirmRegisterDeviceRequest() -> ConfirmRegisterDeviceStrategy()
+                    hasEventNotificationRequest() -> EventNotificationRequestStrategy()
                     else -> error("Unexpected request message: $message")
                 }
             }

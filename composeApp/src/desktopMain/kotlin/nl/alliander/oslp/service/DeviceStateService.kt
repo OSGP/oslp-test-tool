@@ -20,19 +20,19 @@ class DeviceStateService private constructor(
         syncState()
     }
 
-    fun confirmRegisterDevice() {
+    fun updateSequenceNumber(newSequenceNumber: Int) {
+        sequenceNumber = newSequenceNumber
+    }
+
+    fun confirmRegisterDevice(newSequenceNumber: Int) {
         deviceRegistrationConfirmed = true
+        sequenceNumber = newSequenceNumber
         syncState()
     }
 
-    fun reset() {
-        deviceId = byteArrayOf()
-        deviceRegistrationConfirmed = false
+    fun resetRegistrationValues() {
         deviceRegistered = false
-        sequenceNumber = 0
-        randomPlatform = 0
-        randomDevice  = 0
-        relayEnabled = mutableListOf(false, false, false)
+        deviceRegistrationConfirmed = false
         syncState()
     }
 
