@@ -17,8 +17,6 @@ class EventNotificationRequestStrategy  : ReceiveStrategy() {
     }
 
     override fun buildResponsePayload(requestEnvelope: Envelope): Message {
-        //TODO increase the sequence number in the old code we increased it in the oslpDeviceSettingsService
-        //TODO We also did something with the eventnotification in the db? not necessary I guess?
         return Message.newBuilder()
             .setEventNotificationResponse(
                 Oslp.EventNotificationResponse.newBuilder().setStatus(Oslp.Status.OK)

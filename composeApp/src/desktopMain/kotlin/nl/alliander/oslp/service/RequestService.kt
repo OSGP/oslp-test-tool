@@ -33,12 +33,14 @@ class RequestService(
     }
 
     fun startReboot() {
+        val deviceStateService = DeviceStateService.getInstance()
+        deviceStateService.rebootAndResetValues()
+
         val payload = Message.newBuilder().setSetRebootRequest(
             Oslp.SetRebootRequest.newBuilder().build()
         ).build()
 
         sendAndReceiveRequest(payload)
-        //TODO ALSO DISABLE SOME VALUES
     }
 
     fun setLightSensor(num: Int) {
