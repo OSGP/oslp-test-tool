@@ -1,6 +1,7 @@
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.models.KeyConfiguration
 import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -13,14 +14,14 @@ abstract class ReceiveStrategy {
 
     abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
-    operator fun invoke(requestEnvelope: Envelope): Envelope? {
-        if (!validateSignature(requestEnvelope)) return null
+    operator fun invoke(requestEnvelope: Envelope, keys: KeyConfiguration): Envelope? {
+        if (!validateSignature(requestEnvelope, keys)) return null
         handle(requestEnvelope)
         val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
-        return createResponseEnvelope(requestEnvelope, responsePayload)
+        return createResponseEnvelope(requestEnvelope, responsePayload, keys)
     }
 
-    private fun validateSignature(requestEnvelope: Envelope): Boolean {
+    private fun validateSignature(requestEnvelope: Envelope, keys: KeyConfiguration): Boolean {
         val verified = with(requestEnvelope) {
             SigningUtil.verifySignature(
                 sequenceNumber.toByteArray(2) +
@@ -28,6 +29,7 @@ abstract class ReceiveStrategy {
                         lengthIndicator.toByteArray(2) +
                         messageBytes,
                 securityKey,
+                keys.publicKey!!
             )
         }
 
@@ -40,13 +42,15 @@ abstract class ReceiveStrategy {
 
     private fun createResponseEnvelope(
         requestEnvelope: Envelope,
-        responsePayload: ByteArray
+        responsePayload: ByteArray,
+        keys: KeyConfiguration
     ): Envelope {
         val securityKey = SigningUtil.createSignature(
             requestEnvelope.sequenceNumber.toByteArray(2) +
                     requestEnvelope.deviceId +
                     responsePayload.size.toByteArray(2) +
-                    responsePayload
+                    responsePayload,
+            keys.privateKey!!
         )
 
         return Envelope(

@@ -18,6 +18,7 @@ class RequestService(
     configurationModel: ConfigurationModel,
 ) {
     private val clientSocket = ClientSocket(configurationModel)
+    private val keys = configurationModel.keys
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(
@@ -107,11 +108,13 @@ class RequestService(
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()
 
+
         val signature = SigningUtil.createSignature(
             sequenceNumber.toByteArray(2) +
                     deviceId +
                     lengthIndicator.toByteArray(2) +
-                    messageBytes
+                    messageBytes,
+            keys.privateKey!!
         )
 
         val request = Envelope(
