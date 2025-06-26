@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import nl.alliander.oslp.components.KeyUploadRow
 import nl.alliander.oslp.models.PortConfigurationModel
+import javax.swing.JFileChooser
 
 @Composable
 fun ConfigurationScreen(
@@ -62,6 +64,34 @@ fun ConfigurationScreen(
                     modifier = Modifier.width(150.dp)
                 )
             }
+
+            KeyUploadRow(
+                label = "Upload Private Key",
+                uploadedBytes = portConfigurationModel.privateKeyBytes,
+                onUploadClick = {
+                    val fileChooser = JFileChooser()
+                    val result = fileChooser.showOpenDialog(null)
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        val file = fileChooser.selectedFile
+                        val bytes = file.readBytes()
+                        portConfigurationModel.privateKeyBytes = bytes
+                    }
+                }
+            )
+
+            KeyUploadRow(
+                label = "Upload Public Key",
+                uploadedBytes = portConfigurationModel.publicKeyBytes,
+                onUploadClick = {
+                    val fileChooser = JFileChooser()
+                    val result = fileChooser.showOpenDialog(null)
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        val file = fileChooser.selectedFile
+                        val bytes = file.readBytes()
+                        portConfigurationModel.publicKeyBytes = bytes
+                    }
+                }
+            )
 
             Button(onClick = onContinue) {
                 Text("Continue")

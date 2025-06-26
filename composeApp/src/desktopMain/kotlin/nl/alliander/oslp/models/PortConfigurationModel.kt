@@ -9,4 +9,6 @@ class PortConfigurationModel {
     var clientPort by mutableStateOf(12124)
     var serverSocketAddress by mutableStateOf("localhost")
     var serverSocketPort by mutableStateOf(12122)
+    var privateKeyBytes by mutableStateOf<ByteArray?>(null)
+    var publicKeyBytes by mutableStateOf<ByteArray?>(null)
 }
