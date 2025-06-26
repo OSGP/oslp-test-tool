@@ -6,7 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.PortConfigurationModel
+import nl.alliander.oslp.models.ConfigurationModel
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -15,9 +15,9 @@ import org.opensmartgridplatform.oslp.Oslp.LightValue
 import org.opensmartgridplatform.oslp.Oslp.Message
 
 class RequestService(
-    portConfigurationModel: PortConfigurationModel,
+    configurationModel: ConfigurationModel,
 ) {
-    private val clientSocket = ClientSocket(portConfigurationModel)
+    private val clientSocket = ClientSocket(configurationModel)
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(

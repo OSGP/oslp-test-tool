@@ -1,29 +1,23 @@
 package nl.alliander.oslp.sockets
 
-import androidx.compose.runtime.remember
-import io.ktor.network.selector.ActorSelectorManager
-import io.ktor.network.sockets.InetSocketAddress
-import io.ktor.network.sockets.Socket
-import io.ktor.network.sockets.aSocket
-import io.ktor.network.sockets.openReadChannel
-import io.ktor.network.sockets.openWriteChannel
-import io.ktor.utils.io.readAvailable
-import io.ktor.utils.io.writeFully
+import io.ktor.network.selector.*
+import io.ktor.network.sockets.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.PortConfigurationModel
+import nl.alliander.oslp.models.ConfigurationModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 
 class ClientSocket(
-    private val portConfigurationModel: PortConfigurationModel
+    private val configurationModel: ConfigurationModel
 ) {
 
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
             .tcp()
-            .connect(InetSocketAddress(portConfigurationModel.clientAddress, portConfigurationModel.clientPort))
+            .connect(InetSocketAddress(configurationModel.clientAddress, configurationModel.clientPort))
 
         clientSocket.use {
             val output = it.openWriteChannel(autoFlush = true)

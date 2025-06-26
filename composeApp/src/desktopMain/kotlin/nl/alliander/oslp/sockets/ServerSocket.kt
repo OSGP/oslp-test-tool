@@ -1,29 +1,25 @@
 package nl.alliander.oslp.sockets
 
 import com.google.protobuf.InvalidProtocolBufferException
-import io.ktor.network.selector.ActorSelectorManager
-import io.ktor.network.sockets.InetSocketAddress
-import io.ktor.network.sockets.aSocket
-import io.ktor.network.sockets.openReadChannel
-import io.ktor.network.sockets.openWriteChannel
-import io.ktor.utils.io.readAvailable
-import io.ktor.utils.io.writeFully
+import io.ktor.network.selector.*
+import io.ktor.network.sockets.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.PortConfigurationModel
+import nl.alliander.oslp.models.ConfigurationModel
 import nl.alliander.oslp.sockets.receive.ReceiveStrategy
 import nl.alliander.oslp.util.Logger
 
 class ServerSocket {
     @OptIn(DelicateCoroutinesApi::class)
-    fun startListening(portConfigurationModel: PortConfigurationModel) {
+    fun startListening(configurationModel: ConfigurationModel) {
         GlobalScope.launch {
             val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
                 .tcp()
-                .bind(InetSocketAddress(portConfigurationModel.serverSocketAddress, portConfigurationModel.serverSocketPort))
+                .bind(InetSocketAddress(configurationModel.serverSocketAddress, configurationModel.serverSocketPort))
             Logger.log("Server is listening on address: ${serverSocket.localAddress}")
 
             while (true) {
