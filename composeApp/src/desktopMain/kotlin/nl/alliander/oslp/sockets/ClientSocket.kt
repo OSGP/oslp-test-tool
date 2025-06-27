@@ -17,7 +17,12 @@ class ClientSocket(
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
             .tcp()
-            .connect(InetSocketAddress(appConfiguration.clientAddress, appConfiguration.clientPort))
+            .connect(
+                InetSocketAddress(
+                    appConfiguration.connectionConfiguration.clientAddress,
+                    appConfiguration.connectionConfiguration.clientPort
+                )
+            )
 
         clientSocket.use {
             val output = it.openWriteChannel(autoFlush = true)

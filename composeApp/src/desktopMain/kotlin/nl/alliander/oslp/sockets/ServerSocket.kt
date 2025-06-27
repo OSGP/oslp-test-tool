@@ -19,7 +19,12 @@ class ServerSocket {
         GlobalScope.launch {
             val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
                 .tcp()
-                .bind(InetSocketAddress(appConfiguration.serverSocketAddress, appConfiguration.serverSocketPort))
+                .bind(
+                    InetSocketAddress(
+                        appConfiguration.connectionConfiguration.serverSocketAddress,
+                        appConfiguration.connectionConfiguration.serverSocketPort
+                    )
+                )
             Logger.log("Server is listening on address: ${serverSocket.localAddress}")
 
             while (true) {

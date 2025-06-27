@@ -35,14 +35,14 @@ fun ConfigurationScreen(
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = appConfiguration.serverSocketAddress,
-                    onValueChange = { appConfiguration.serverSocketAddress = it },
+                    value = appConfiguration.connectionConfiguration.serverSocketAddress,
+                    onValueChange = { appConfiguration.connectionConfiguration.serverSocketAddress = it },
                     label = { Text("Test tool address") },
                     singleLine = true
                 )
                 TextField(
-                    value = appConfiguration.serverSocketPort.toString(),
-                    onValueChange = { appConfiguration.serverSocketPort = it.toInt() },
+                    value = appConfiguration.connectionConfiguration.serverSocketPort.toString(),
+                    onValueChange = { appConfiguration.connectionConfiguration.serverSocketPort = it.toInt() },
                     label = { Text("Test tool port") },
                     singleLine = true,
                     modifier = Modifier.width(150.dp)
@@ -51,14 +51,14 @@ fun ConfigurationScreen(
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = appConfiguration.clientAddress,
-                    onValueChange = { appConfiguration.clientAddress = it },
+                    value = appConfiguration.connectionConfiguration.clientAddress,
+                    onValueChange = { appConfiguration.connectionConfiguration.clientAddress = it },
                     label = { Text("Device address") },
                     singleLine = true
                 )
                 TextField(
-                    value = appConfiguration.clientPort.toString(),
-                    onValueChange = { appConfiguration.clientPort = it.toInt() },
+                    value = appConfiguration.connectionConfiguration.clientPort.toString(),
+                    onValueChange = { appConfiguration.connectionConfiguration.clientPort = it.toInt() },
                     label = { Text("Device port") },
                     singleLine = true,
                     modifier = Modifier.width(150.dp)
