@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
@@ -16,13 +19,9 @@ class EventNotificationRequestStrategy : ReceiveStrategy() {
         Logger.logReceive("Received event notification request: ${requestEnvelope.message.eventNotificationRequest}")
     }
 
-    override fun buildResponsePayload(
-        requestEnvelope: Envelope
-    ): Message {
+    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
         return Message.newBuilder()
-            .setEventNotificationResponse(
-                Oslp.EventNotificationResponse.newBuilder().setStatus(Oslp.Status.OK)
-            )
+            .setEventNotificationResponse(Oslp.EventNotificationResponse.newBuilder().setStatus(Oslp.Status.OK))
             .build()
     }
 }

@@ -1,4 +1,5 @@
 rootProject.name = "oslp-test-tool"
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -29,4 +30,5 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+
 include(":protobuf")

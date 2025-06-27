@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.components
 
 import androidx.compose.foundation.background
@@ -20,10 +23,10 @@ import androidx.compose.ui.unit.dp
 fun CircleIndicator(status: Boolean, label: String) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 8.dp)) {
         Box(
-            modifier = Modifier
-                .size(20.dp)
-                .background(if (status) Color.Green else Color.Red, CircleShape)
-                .border(1.dp, Color.Black, CircleShape)
+            modifier =
+                Modifier.size(20.dp)
+                    .background(if (status) Color.Green else Color.Red, CircleShape)
+                    .border(1.dp, Color.Black, CircleShape)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(label)

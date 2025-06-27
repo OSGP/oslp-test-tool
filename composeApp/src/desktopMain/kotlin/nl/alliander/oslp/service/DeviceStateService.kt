@@ -1,10 +1,11 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.service
 
 import nl.alliander.oslp.models.MainViewModel
 
-class DeviceStateService private constructor(
-    private val mainViewModel: MainViewModel
-) {
+class DeviceStateService private constructor(private val mainViewModel: MainViewModel) {
     private var deviceRegistered = false
     private var deviceRegistrationConfirmed = false
     private var relayEnabled = mutableListOf(false, false, false)

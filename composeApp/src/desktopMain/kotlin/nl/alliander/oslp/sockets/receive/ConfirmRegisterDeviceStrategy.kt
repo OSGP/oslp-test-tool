@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
@@ -15,25 +18,30 @@ class ConfirmRegisterDeviceStrategy : ReceiveStrategy() {
 
         with(requestEnvelope.message.confirmRegisterDeviceRequest) {
             if (randomDevice != deviceStateService.randomDevice)
-                Logger.logReceive("Invalid randomDevice! Expected: ${deviceStateService.randomDevice} - Got: $randomDevice")
+                Logger.logReceive(
+                    "Invalid randomDevice! Expected: ${deviceStateService.randomDevice} - Got: $randomDevice"
+                )
             if (randomPlatform != deviceStateService.randomPlatform)
-                Logger.logReceive("Invalid randomPlatform! Expected: ${deviceStateService.randomPlatform} - Got: $randomPlatform")
+                Logger.logReceive(
+                    "Invalid randomPlatform! Expected: ${deviceStateService.randomPlatform} - Got: $randomPlatform"
+                )
         }
 
         deviceStateService.confirmRegisterDevice(requestEnvelope.sequenceNumber)
     }
 
-    override fun buildResponsePayload(
-        requestEnvelope: Envelope
-    ): Message {
-        val response = Message.newBuilder().setConfirmRegisterDeviceResponse(
-            Oslp.ConfirmRegisterDeviceResponse.newBuilder()
-                .setRandomDevice(deviceStateService.randomDevice)
-                .setRandomPlatform(deviceStateService.randomPlatform)
-                .setSequenceWindow(1)
-                .setStatusValue(0)
+    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
+        val response =
+            Message.newBuilder()
+                .setConfirmRegisterDeviceResponse(
+                    Oslp.ConfirmRegisterDeviceResponse.newBuilder()
+                        .setRandomDevice(deviceStateService.randomDevice)
+                        .setRandomPlatform(deviceStateService.randomPlatform)
+                        .setSequenceWindow(1)
+                        .setStatusValue(0)
+                        .build()
+                )
                 .build()
-        ).build()
         return response
     }
 }

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.sockets
 
 import io.ktor.network.selector.ActorSelectorManager
@@ -17,41 +20,39 @@ import nl.alliander.oslp.util.Logger
 
 class ClientSocket() {
 
-    fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
-        val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
-            .tcp()
-            .connect(
-                InetSocketAddress(
-                    ConnectionConfiguration.clientAddress,
-                    ConnectionConfiguration.clientPort
-                )
-            )
+    fun sendAndReceive(envelope: Envelope): Envelope =
+        runBlocking(Dispatchers.IO) {
+            val clientSocket: Socket =
+                aSocket(ActorSelectorManager(Dispatchers.IO))
+                    .tcp()
+                    .connect(
+                        InetSocketAddress(ConnectionConfiguration.clientAddress, ConnectionConfiguration.clientPort)
+                    )
 
-        clientSocket.use {
-            val output = it.openWriteChannel(autoFlush = true)
-            val input = it.openReadChannel()
+            clientSocket.use {
+                val output = it.openWriteChannel(autoFlush = true)
+                val input = it.openReadChannel()
 
-            val requestEnvelope: ByteArray = envelope.getBytes()
+                val requestEnvelope: ByteArray = envelope.getBytes()
 
-            Logger.logSend(envelope)
+                Logger.logSend(envelope)
 
-            output.writeFully(requestEnvelope, 0, requestEnvelope.size)
+                output.writeFully(requestEnvelope, 0, requestEnvelope.size)
 
-            val buffer = ByteArray(1024)
-            val bytesRead = input.readAvailable(buffer)
+                val buffer = ByteArray(1024)
+                val bytesRead = input.readAvailable(buffer)
 
-            if (bytesRead > 0) {
-                val deviceStateService = DeviceStateService.getInstance()
+                if (bytesRead > 0) {
+                    val deviceStateService = DeviceStateService.getInstance()
 
-                val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
-                deviceStateService.updateSequenceNumber(responseEnvelope.sequenceNumber)
+                    val responseEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
+                    deviceStateService.updateSequenceNumber(responseEnvelope.sequenceNumber)
 
-                Logger.logReceive(responseEnvelope)
+                    Logger.logReceive(responseEnvelope)
 
-                return@runBlocking responseEnvelope
+                    return@runBlocking responseEnvelope
+                }
             }
+            throw Exception()
         }
-        throw Exception()
-    }
-
 }

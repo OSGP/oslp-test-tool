@@ -1,20 +1,24 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.domain
 
+import java.nio.ByteBuffer
 import nl.alliander.oslp.util.toByteArray
 import nl.alliander.oslp.util.toInt
 import org.opensmartgridplatform.oslp.Oslp
-import java.nio.ByteBuffer
 
 data class Envelope(
     val securityKey: ByteArray,
     val sequenceNumber: Int,
     val deviceId: ByteArray,
     val lengthIndicator: Int,
-    val messageBytes: ByteArray
+    val messageBytes: ByteArray,
 ) {
     private var cachedMessage: Oslp.Message? = null
 
-    val message: Oslp.Message get() = cachedMessage ?: Oslp.Message.parseFrom(messageBytes).also { cachedMessage = it }
+    val message: Oslp.Message
+        get() = cachedMessage ?: Oslp.Message.parseFrom(messageBytes).also { cachedMessage = it }
 
     fun getBytes(): ByteArray {
         val buf = ByteBuffer.allocate(HEADER_LEN + lengthIndicator)
@@ -58,13 +62,7 @@ data class Envelope(
             val lengthIndicator = bytes.sliceArray(LENGTH_INDICATOR_RANGE).toInt()
             val payload = bytes.sliceArray(HEADER_LEN until bytes.size)
 
-            return Envelope(
-                securityKey,
-                sequenceNumber,
-                deviceId,
-                lengthIndicator,
-                payload
-            )
+            return Envelope(securityKey, sequenceNumber, deviceId, lengthIndicator, payload)
         }
 
         private infix fun Int.size(int: Int): IntRange = this until (this + int)
