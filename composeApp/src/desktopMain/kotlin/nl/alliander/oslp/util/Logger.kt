@@ -23,7 +23,7 @@ object Logger {
     fun logReceive(envelope: Envelope) {
         with(envelope) {
             logReceive("Received:")
-            logReceive("Seq: $sequenceNumber - Len: $lengthIndicator");
+            logReceive("Seq: $sequenceNumber - Len: $lengthIndicator")
             logReceive(message.toString())
         }
     }
@@ -36,7 +36,7 @@ object Logger {
     fun logSend(envelope: Envelope) {
         with(envelope) {
             logSend("Sent:")
-            logSend("Seq: $sequenceNumber - Len: $lengthIndicator");
+            logSend("Seq: $sequenceNumber - Len: $lengthIndicator")
             logSend(message.toString())
         }
     }
