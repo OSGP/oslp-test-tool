@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
@@ -16,4 +18,16 @@ wrapperUpgrade {
             baseBranch.set("main")
         }
     }
+}
+
+tasks.register<Copy>("updateGitHooks") {
+    description = "Copies the pre-commit Git Hook to the .git/hooks folder."
+    group = "verification"
+    from(file("spotless/pre-commit"))
+    into(file(".git/hooks"))
+}
+
+tasks.withType<KotlinCompile> {
+    dependsOn(tasks.named("updateGitHooks"))
+    compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") }
 }
