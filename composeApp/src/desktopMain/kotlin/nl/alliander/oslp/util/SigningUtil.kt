@@ -1,28 +1,25 @@
 package nl.alliander.oslp.util
 
-import java.security.PrivateKey
-import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.Signature
+import nl.alliander.oslp.models.KeyConfiguration
 
 object SigningUtil {
 
     fun createSignature(
-        message: ByteArray,
-        privateKey: PrivateKey
+        message: ByteArray
     ): ByteArray =
         Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER).apply {
-            initSign(privateKey, SecureRandom())
+            initSign(KeyConfiguration.privateKey, SecureRandom())
             update(message)
         }.sign()
 
     fun verifySignature(
         message: ByteArray,
-        securityKey: ByteArray,
-        publicKey: PublicKey,
+        securityKey: ByteArray
     ): Boolean {
         val builder = Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER).apply {
-            initVerify(publicKey)
+            initVerify(KeyConfiguration.publicKey)
             update(message)
         }
 

@@ -1,8 +1,6 @@
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.exception.InvalidKeyException
-import nl.alliander.oslp.models.KeyConfiguration
 import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -31,8 +29,7 @@ abstract class ReceiveStrategy {
                         deviceId +
                         lengthIndicator.toByteArray(2) +
                         messageBytes,
-                securityKey,
-                KeyConfiguration.publicKey ?: throw InvalidKeyException("Missing public key")
+                securityKey
             )
         }
 
@@ -51,8 +48,7 @@ abstract class ReceiveStrategy {
             requestEnvelope.sequenceNumber.toByteArray(2) +
                     requestEnvelope.deviceId +
                     responsePayload.size.toByteArray(2) +
-                    responsePayload,
-            KeyConfiguration.privateKey ?: throw InvalidKeyException("Missing private key")
+                    responsePayload
         )
 
         return Envelope(

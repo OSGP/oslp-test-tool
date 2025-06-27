@@ -6,8 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.exception.InvalidKeyException
-import nl.alliander.oslp.models.KeyConfiguration
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -111,8 +109,7 @@ class RequestService() {
             sequenceNumber.toByteArray(2) +
                     deviceId +
                     lengthIndicator.toByteArray(2) +
-                    messageBytes,
-            KeyConfiguration.privateKey ?: throw InvalidKeyException("Missing private key")
+                    messageBytes
         )
 
         val request = Envelope(
