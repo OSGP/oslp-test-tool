@@ -6,7 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.PortConfigurationModel
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -14,10 +13,8 @@ import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.LightValue
 import org.opensmartgridplatform.oslp.Oslp.Message
 
-class RequestService(
-    portConfigurationModel: PortConfigurationModel,
-) {
-    private val clientSocket = ClientSocket(portConfigurationModel)
+class RequestService() {
+    private val clientSocket = ClientSocket()
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(
@@ -106,6 +103,7 @@ class RequestService(
         val deviceId = deviceStateService.deviceId
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()
+
 
         val signature = SigningUtil.createSignature(
             sequenceNumber.toByteArray(2) +

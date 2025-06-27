@@ -1,6 +1,5 @@
 package nl.alliander.oslp.sockets
 
-import androidx.compose.runtime.remember
 import io.ktor.network.selector.ActorSelectorManager
 import io.ktor.network.sockets.InetSocketAddress
 import io.ktor.network.sockets.Socket
@@ -12,18 +11,21 @@ import io.ktor.utils.io.writeFully
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.PortConfigurationModel
+import nl.alliander.oslp.models.ConnectionConfiguration
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 
-class ClientSocket(
-    private val portConfigurationModel: PortConfigurationModel
-) {
+class ClientSocket() {
 
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
             .tcp()
-            .connect(InetSocketAddress(portConfigurationModel.clientAddress, portConfigurationModel.clientPort))
+            .connect(
+                InetSocketAddress(
+                    ConnectionConfiguration.clientAddress,
+                    ConnectionConfiguration.clientPort
+                )
+            )
 
         clientSocket.use {
             val output = it.openWriteChannel(autoFlush = true)

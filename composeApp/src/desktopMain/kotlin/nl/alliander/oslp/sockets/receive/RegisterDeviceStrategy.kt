@@ -1,10 +1,11 @@
 package nl.alliander.oslp.sockets.receive
 
+import kotlin.random.Random
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.models.LocationConfiguration
 import nl.alliander.oslp.service.DeviceStateService
 import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.Message
-import kotlin.random.Random
 
 class RegisterDeviceStrategy : ReceiveStrategy() {
     override fun matches(message: Message): Boolean = message.hasRegisterDeviceRequest()
@@ -15,7 +16,9 @@ class RegisterDeviceStrategy : ReceiveStrategy() {
         deviceStateService.randomDevice = requestEnvelope.message.registerDeviceRequest.randomDevice
     }
 
-    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
+    override fun buildResponsePayload(
+        requestEnvelope: Envelope
+    ): Message {
         val deviceStateService = DeviceStateService.getInstance()
 
         deviceStateService.deviceId = requestEnvelope.deviceId
@@ -30,8 +33,8 @@ class RegisterDeviceStrategy : ReceiveStrategy() {
                     .setRandomPlatform(deviceStateService.randomPlatform)
                     .setLocationInfo(
                         Oslp.LocationInfo.newBuilder()
-                            .setLatitude(52260857)
-                            .setLongitude(5263121)
+                            .setLatitude(LocationConfiguration.latitude)
+                            .setLongitude(LocationConfiguration.longitude)
                             .setTimeOffset(60)
                     )
                     .build()

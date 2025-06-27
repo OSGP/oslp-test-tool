@@ -13,17 +13,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.PortConfigurationModel
+import nl.alliander.oslp.models.ConnectionConfiguration
 import nl.alliander.oslp.sockets.receive.ReceiveStrategy
 import nl.alliander.oslp.util.Logger
 
 class ServerSocket {
     @OptIn(DelicateCoroutinesApi::class)
-    fun startListening(portConfigurationModel: PortConfigurationModel) {
+    fun startListening() {
         GlobalScope.launch {
             val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
                 .tcp()
-                .bind(InetSocketAddress(portConfigurationModel.serverSocketAddress, portConfigurationModel.serverSocketPort))
+                .bind(
+                    InetSocketAddress(
+                        ConnectionConfiguration.serverSocketAddress,
+                        ConnectionConfiguration.serverSocketPort
+                    )
+                )
             Logger.log("Server is listening on address: ${serverSocket.localAddress}")
 
             while (true) {
@@ -44,7 +49,9 @@ class ServerSocket {
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
-                        responseStrategy(requestEnvelope)?.let { envelope ->
+                        responseStrategy(
+                            requestEnvelope
+                        )?.let { envelope ->
                             val responseBytes = envelope.getBytes()
                             output.writeFully(responseBytes)
 

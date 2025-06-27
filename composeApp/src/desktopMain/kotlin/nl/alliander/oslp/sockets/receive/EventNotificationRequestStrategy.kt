@@ -6,7 +6,7 @@ import nl.alliander.oslp.util.Logger
 import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.Message
 
-class EventNotificationRequestStrategy  : ReceiveStrategy() {
+class EventNotificationRequestStrategy : ReceiveStrategy() {
     private val deviceStateService = DeviceStateService.getInstance()
 
     override fun matches(message: Message): Boolean = message.hasEventNotificationRequest()
@@ -16,7 +16,9 @@ class EventNotificationRequestStrategy  : ReceiveStrategy() {
         Logger.logReceive("Received event notification request: ${requestEnvelope.message.eventNotificationRequest}")
     }
 
-    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
+    override fun buildResponsePayload(
+        requestEnvelope: Envelope
+    ): Message {
         return Message.newBuilder()
             .setEventNotificationResponse(
                 Oslp.EventNotificationResponse.newBuilder().setStatus(Oslp.Status.OK)

@@ -23,7 +23,9 @@ class ConfirmRegisterDeviceStrategy : ReceiveStrategy() {
         deviceStateService.confirmRegisterDevice(requestEnvelope.sequenceNumber)
     }
 
-    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
+    override fun buildResponsePayload(
+        requestEnvelope: Envelope
+    ): Message {
         val response = Message.newBuilder().setConfirmRegisterDeviceResponse(
             Oslp.ConfirmRegisterDeviceResponse.newBuilder()
                 .setRandomDevice(deviceStateService.randomDevice)

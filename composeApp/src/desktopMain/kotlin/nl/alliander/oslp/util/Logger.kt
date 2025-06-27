@@ -3,10 +3,10 @@ package nl.alliander.oslp.util
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import nl.alliander.oslp.domain.Envelope
 import java.io.File
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
+import nl.alliander.oslp.domain.Envelope
 
 object Logger {
     var loggingText by mutableStateOf("")
@@ -21,9 +21,9 @@ object Logger {
     }
 
     fun logReceive(envelope: Envelope) {
-        with (envelope) {
+        with(envelope) {
             logReceive("Received:")
-            logReceive("Seq: $sequenceNumber - Len: $lengthIndicator");
+            logReceive("Seq: $sequenceNumber - Len: $lengthIndicator")
             logReceive(message.toString())
         }
     }
@@ -34,9 +34,9 @@ object Logger {
     }
 
     fun logSend(envelope: Envelope) {
-        with (envelope) {
+        with(envelope) {
             logSend("Sent:")
-            logSend("Seq: $sequenceNumber - Len: $lengthIndicator");
+            logSend("Seq: $sequenceNumber - Len: $lengthIndicator")
             logSend(message.toString())
         }
     }

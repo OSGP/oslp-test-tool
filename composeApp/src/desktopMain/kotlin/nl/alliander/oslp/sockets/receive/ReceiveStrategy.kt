@@ -13,7 +13,9 @@ abstract class ReceiveStrategy {
 
     abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
-    operator fun invoke(requestEnvelope: Envelope): Envelope? {
+    operator fun invoke(
+        requestEnvelope: Envelope
+    ): Envelope? {
         if (!validateSignature(requestEnvelope)) return null
         handle(requestEnvelope)
         val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
@@ -27,7 +29,7 @@ abstract class ReceiveStrategy {
                         deviceId +
                         lengthIndicator.toByteArray(2) +
                         messageBytes,
-                securityKey,
+                securityKey
             )
         }
 
