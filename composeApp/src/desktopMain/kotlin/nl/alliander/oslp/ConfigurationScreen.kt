@@ -44,7 +44,7 @@ fun ConfigurationScreen(
                 )
                 TextField(
                     value = ConnectionConfiguration.serverSocketPort.toString(),
-                    onValueChange = { ConnectionConfiguration.serverSocketPort = it.toInt() },
+                    onValueChange = { ConnectionConfiguration.serverSocketPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Test tool port") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp)
@@ -61,7 +61,7 @@ fun ConfigurationScreen(
                 )
                 TextField(
                     value = ConnectionConfiguration.clientPort.toString(),
-                    onValueChange = { ConnectionConfiguration.clientPort = it.toInt() },
+                    onValueChange = { ConnectionConfiguration.clientPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Device port") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp)
@@ -71,14 +71,14 @@ fun ConfigurationScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
                     value = LocationConfiguration.latitude.toString(),
-                    onValueChange = { LocationConfiguration.latitude = it.toInt() },
+                    onValueChange = { LocationConfiguration.latitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Latitude") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp)
                 )
                 TextField(
                     value = LocationConfiguration.longitude.toString(),
-                    onValueChange = { LocationConfiguration.longitude = it.toInt() },
+                    onValueChange = { LocationConfiguration.longitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Longitude") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp)
@@ -115,7 +115,10 @@ fun ConfigurationScreen(
                 )
             }
 
-            Button(onClick = onContinue) {
+            Button(
+                onClick = onContinue,
+                enabled = KeyConfiguration.validKeys() && ConnectionConfiguration.validConnectionConfiguration() && LocationConfiguration.validLocationConfiguration()
+            ) {
                 Text("Continue")
             }
         }

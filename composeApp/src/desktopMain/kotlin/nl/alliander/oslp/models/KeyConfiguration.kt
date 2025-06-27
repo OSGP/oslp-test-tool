@@ -43,6 +43,8 @@ object KeyConfiguration {
     var publicKey: PublicKey? = null
         private set
 
+    fun validKeys() = publicKey != null && privateKey != null
+
     private fun createPrivateKey(key: ByteArray): PrivateKey? =
         runCatching {
             KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
