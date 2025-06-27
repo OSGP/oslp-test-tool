@@ -45,7 +45,11 @@ class ServerSocket {
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
-                        responseStrategy(requestEnvelope, appConfiguration.keys)?.let { envelope ->
+                        responseStrategy(
+                            requestEnvelope,
+                            appConfiguration.keys,
+                            appConfiguration.locationConfiguration
+                        )?.let { envelope ->
                             val responseBytes = envelope.getBytes()
                             output.writeFully(responseBytes)
 

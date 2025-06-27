@@ -38,14 +38,15 @@ fun ConfigurationScreen(
                     value = appConfiguration.connectionConfiguration.serverSocketAddress,
                     onValueChange = { appConfiguration.connectionConfiguration.serverSocketAddress = it },
                     label = { Text("Test tool address") },
-                    singleLine = true
+                    singleLine = true,
+                    modifier = Modifier.width(250.dp)
                 )
                 TextField(
                     value = appConfiguration.connectionConfiguration.serverSocketPort.toString(),
                     onValueChange = { appConfiguration.connectionConfiguration.serverSocketPort = it.toInt() },
                     label = { Text("Test tool port") },
                     singleLine = true,
-                    modifier = Modifier.width(150.dp)
+                    modifier = Modifier.width(250.dp)
                 )
             }
 
@@ -54,14 +55,32 @@ fun ConfigurationScreen(
                     value = appConfiguration.connectionConfiguration.clientAddress,
                     onValueChange = { appConfiguration.connectionConfiguration.clientAddress = it },
                     label = { Text("Device address") },
-                    singleLine = true
+                    singleLine = true,
+                    modifier = Modifier.width(250.dp)
                 )
                 TextField(
                     value = appConfiguration.connectionConfiguration.clientPort.toString(),
                     onValueChange = { appConfiguration.connectionConfiguration.clientPort = it.toInt() },
                     label = { Text("Device port") },
                     singleLine = true,
-                    modifier = Modifier.width(150.dp)
+                    modifier = Modifier.width(250.dp)
+                )
+            }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                TextField(
+                    value = appConfiguration.locationConfiguration.latitude.toString(),
+                    onValueChange = { appConfiguration.locationConfiguration.latitude = it.toInt() },
+                    label = { Text("Latitude") },
+                    singleLine = true,
+                    modifier = Modifier.width(250.dp)
+                )
+                TextField(
+                    value = appConfiguration.locationConfiguration.longitude.toString(),
+                    onValueChange = { appConfiguration.locationConfiguration.longitude = it.toInt() },
+                    label = { Text("Longitude") },
+                    singleLine = true,
+                    modifier = Modifier.width(250.dp)
                 )
             }
 

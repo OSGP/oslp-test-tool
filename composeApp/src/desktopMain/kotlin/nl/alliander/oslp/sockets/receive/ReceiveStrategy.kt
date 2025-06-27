@@ -2,6 +2,7 @@ package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.models.KeyConfiguration
+import nl.alliander.oslp.models.LocationConfiguration
 import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -12,12 +13,16 @@ abstract class ReceiveStrategy {
 
     abstract fun handle(requestEnvelope: Envelope)
 
-    abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
+    abstract fun buildResponsePayload(requestEnvelope: Envelope, locationConfiguration: LocationConfiguration): Message
 
-    operator fun invoke(requestEnvelope: Envelope, keys: KeyConfiguration): Envelope? {
+    operator fun invoke(
+        requestEnvelope: Envelope,
+        keys: KeyConfiguration,
+        locationConfiguration: LocationConfiguration
+    ): Envelope? {
         if (!validateSignature(requestEnvelope, keys)) return null
         handle(requestEnvelope)
-        val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
+        val responsePayload = buildResponsePayload(requestEnvelope, locationConfiguration).toByteArray()
         return createResponseEnvelope(requestEnvelope, responsePayload, keys)
     }
 

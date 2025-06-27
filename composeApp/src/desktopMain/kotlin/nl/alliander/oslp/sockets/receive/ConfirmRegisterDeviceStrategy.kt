@@ -1,6 +1,7 @@
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.models.LocationConfiguration
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 import org.opensmartgridplatform.oslp.Oslp
@@ -23,7 +24,10 @@ class ConfirmRegisterDeviceStrategy : ReceiveStrategy() {
         deviceStateService.confirmRegisterDevice(requestEnvelope.sequenceNumber)
     }
 
-    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
+    override fun buildResponsePayload(
+        requestEnvelope: Envelope,
+        locationConfiguration: LocationConfiguration
+    ): Message {
         val response = Message.newBuilder().setConfirmRegisterDeviceResponse(
             Oslp.ConfirmRegisterDeviceResponse.newBuilder()
                 .setRandomDevice(deviceStateService.randomDevice)
