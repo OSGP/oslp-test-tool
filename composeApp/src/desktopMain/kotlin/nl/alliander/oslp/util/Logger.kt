@@ -3,10 +3,10 @@ package nl.alliander.oslp.util
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import nl.alliander.oslp.domain.Envelope
 import java.io.File
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
+import nl.alliander.oslp.domain.Envelope
 
 object Logger {
     var loggingText by mutableStateOf("")
@@ -52,11 +52,6 @@ object Logger {
 
     private fun appendLog(text: String) {
         loggingText += "$text\n"
-    }
-
-    fun logAndThrowError(string: String): Nothing {
-        loggingText += string
-        throw Error(string)
     }
 
     private fun JFileChooser.configureForTxtExport(): JFileChooser {

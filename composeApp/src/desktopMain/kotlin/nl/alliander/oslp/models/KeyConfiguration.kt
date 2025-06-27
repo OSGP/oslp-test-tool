@@ -39,11 +39,11 @@ object KeyConfiguration {
     private fun createPrivateKey(key: ByteArray): PrivateKey {
         val keyFactory = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
 
-        return keyFactory.generatePrivate(PKCS8EncodedKeySpec(key)) ?: throw Exception("No Key")
+        return keyFactory.generatePrivate(PKCS8EncodedKeySpec(key))
     }
 
     private fun createPublicKey(key: ByteArray): PublicKey {
         val keyFactory = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
-        return keyFactory.generatePublic(X509EncodedKeySpec(key)) ?: throw Exception("No Key")
+        return keyFactory.generatePublic(X509EncodedKeySpec(key))
     }
 }
