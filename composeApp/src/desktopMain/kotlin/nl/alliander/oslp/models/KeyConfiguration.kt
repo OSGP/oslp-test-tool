@@ -9,7 +9,7 @@ import java.security.PublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 
-class KeyConfiguration {
+object KeyConfiguration {
     private val SECURITY_PROVIDER = "SunEC"
     private val SECURITY_KEYTYPE = "EC"
 
@@ -36,7 +36,6 @@ class KeyConfiguration {
     var publicKey: PublicKey? = null
         private set
 
-    //TODO: maybe for later, if you upload something which is not a valid key, the app crashes, might want to handle that more gracefully.
     private fun createPrivateKey(key: ByteArray): PrivateKey {
         val keyFactory = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
 

@@ -9,16 +9,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import nl.alliander.oslp.models.AppConfiguration
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.service.RequestService
 import nl.alliander.oslp.sockets.ServerSocket
 
 fun main() = application {
-    val appConfiguration = remember { AppConfiguration() }
-
-    val requestService = remember { RequestService(appConfiguration) }
+    val requestService = remember { RequestService() }
 
     val mainViewModel = remember { MainViewModel() }
 
@@ -41,10 +38,10 @@ fun main() = application {
         var isConfigured by remember { mutableStateOf(false) }
 
         if (!isConfigured) {
-            ConfigurationScreen(onContinue = { isConfigured = true }, appConfiguration)
+            ConfigurationScreen(onContinue = { isConfigured = true })
         } else {
             LaunchedEffect(Unit) {
-                serverSocket.startListening(appConfiguration)
+                serverSocket.startListening()
             }
             App(requestService, mainViewModel)
         }

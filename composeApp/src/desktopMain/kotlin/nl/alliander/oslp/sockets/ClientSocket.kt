@@ -11,21 +11,19 @@ import io.ktor.utils.io.writeFully
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.AppConfiguration
+import nl.alliander.oslp.models.ConnectionConfiguration
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 
-class ClientSocket(
-    private val appConfiguration: AppConfiguration
-) {
+class ClientSocket() {
 
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
             .tcp()
             .connect(
                 InetSocketAddress(
-                    appConfiguration.connectionConfiguration.clientAddress,
-                    appConfiguration.connectionConfiguration.clientPort
+                    ConnectionConfiguration.clientAddress,
+                    ConnectionConfiguration.clientPort
                 )
             )
 

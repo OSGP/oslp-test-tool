@@ -6,7 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.AppConfiguration
+import nl.alliander.oslp.models.KeyConfiguration
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
@@ -15,11 +15,8 @@ import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.LightValue
 import org.opensmartgridplatform.oslp.Oslp.Message
 
-class RequestService(
-    appConfiguration: AppConfiguration,
-) {
-    private val clientSocket = ClientSocket(appConfiguration)
-    private val keys = appConfiguration.keyConfiguration
+class RequestService() {
+    private val clientSocket = ClientSocket()
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(
@@ -115,7 +112,7 @@ class RequestService(
                     deviceId +
                     lengthIndicator.toByteArray(2) +
                     messageBytes,
-            keys.privateKey ?: Logger.logAndThrowError("Missing private key")
+            KeyConfiguration.privateKey ?: Logger.logAndThrowError("Missing private key")
         )
 
         val request = Envelope(

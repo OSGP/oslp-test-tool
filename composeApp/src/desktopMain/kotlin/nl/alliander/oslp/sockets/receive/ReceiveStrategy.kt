@@ -2,7 +2,6 @@ package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.models.KeyConfiguration
-import nl.alliander.oslp.models.LocationConfiguration
 import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
@@ -13,20 +12,18 @@ abstract class ReceiveStrategy {
 
     abstract fun handle(requestEnvelope: Envelope)
 
-    abstract fun buildResponsePayload(requestEnvelope: Envelope, locationConfiguration: LocationConfiguration): Message
+    abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
     operator fun invoke(
-        requestEnvelope: Envelope,
-        keys: KeyConfiguration,
-        locationConfiguration: LocationConfiguration
+        requestEnvelope: Envelope
     ): Envelope? {
-        if (!validateSignature(requestEnvelope, keys)) return null
+        if (!validateSignature(requestEnvelope)) return null
         handle(requestEnvelope)
-        val responsePayload = buildResponsePayload(requestEnvelope, locationConfiguration).toByteArray()
-        return createResponseEnvelope(requestEnvelope, responsePayload, keys)
+        val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
+        return createResponseEnvelope(requestEnvelope, responsePayload)
     }
 
-    private fun validateSignature(requestEnvelope: Envelope, keys: KeyConfiguration): Boolean {
+    private fun validateSignature(requestEnvelope: Envelope): Boolean {
         val verified = with(requestEnvelope) {
             SigningUtil.verifySignature(
                 sequenceNumber.toByteArray(2) +
@@ -34,7 +31,7 @@ abstract class ReceiveStrategy {
                         lengthIndicator.toByteArray(2) +
                         messageBytes,
                 securityKey,
-                keys.publicKey ?: Logger.logAndThrowError("Missing public key")
+                KeyConfiguration.publicKey ?: Logger.logAndThrowError("Missing public key")
             )
         }
 
@@ -47,15 +44,14 @@ abstract class ReceiveStrategy {
 
     private fun createResponseEnvelope(
         requestEnvelope: Envelope,
-        responsePayload: ByteArray,
-        keys: KeyConfiguration
+        responsePayload: ByteArray
     ): Envelope {
         val securityKey = SigningUtil.createSignature(
             requestEnvelope.sequenceNumber.toByteArray(2) +
                     requestEnvelope.deviceId +
                     responsePayload.size.toByteArray(2) +
                     responsePayload,
-            keys.privateKey ?: Logger.logAndThrowError("Missing private key")
+            KeyConfiguration.privateKey ?: Logger.logAndThrowError("Missing private key")
         )
 
         return Envelope(

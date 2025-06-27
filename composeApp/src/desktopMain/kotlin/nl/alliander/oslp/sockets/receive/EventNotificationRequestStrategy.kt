@@ -1,7 +1,6 @@
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.LocationConfiguration
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 import org.opensmartgridplatform.oslp.Oslp
@@ -18,8 +17,7 @@ class EventNotificationRequestStrategy : ReceiveStrategy() {
     }
 
     override fun buildResponsePayload(
-        requestEnvelope: Envelope,
-        locationConfiguration: LocationConfiguration
+        requestEnvelope: Envelope
     ): Message {
         return Message.newBuilder()
             .setEventNotificationResponse(
