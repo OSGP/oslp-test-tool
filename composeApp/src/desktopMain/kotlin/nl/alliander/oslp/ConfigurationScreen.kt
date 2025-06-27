@@ -87,28 +87,28 @@ fun ConfigurationScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 KeyUploadButton(
                     label = "Upload Private Key",
-                    uploadedBytes = appConfiguration.keys.privateKeyBytes,
+                    uploadedBytes = appConfiguration.keyConfiguration.privateKeyBytes,
                     onUploadClick = {
                         val fileChooser = JFileChooser()
                         val result = fileChooser.showOpenDialog(null)
                         if (result == JFileChooser.APPROVE_OPTION) {
                             val file = fileChooser.selectedFile
                             val bytes = file.readBytes()
-                            appConfiguration.keys.privateKeyBytes = bytes
+                            appConfiguration.keyConfiguration.privateKeyBytes = bytes
                         }
                     }
                 )
 
                 KeyUploadButton(
                     label = "Upload Public Key",
-                    uploadedBytes = appConfiguration.keys.publicKeyBytes,
+                    uploadedBytes = appConfiguration.keyConfiguration.publicKeyBytes,
                     onUploadClick = {
                         val fileChooser = JFileChooser()
                         val result = fileChooser.showOpenDialog(null)
                         if (result == JFileChooser.APPROVE_OPTION) {
                             val file = fileChooser.selectedFile
                             val bytes = file.readBytes()
-                            appConfiguration.keys.publicKeyBytes = bytes
+                            appConfiguration.keyConfiguration.publicKeyBytes = bytes
                         }
                     }
                 )

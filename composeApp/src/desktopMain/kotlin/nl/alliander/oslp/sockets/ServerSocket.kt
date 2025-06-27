@@ -1,9 +1,13 @@
 package nl.alliander.oslp.sockets
 
 import com.google.protobuf.InvalidProtocolBufferException
-import io.ktor.network.selector.*
-import io.ktor.network.sockets.*
-import io.ktor.utils.io.*
+import io.ktor.network.selector.ActorSelectorManager
+import io.ktor.network.sockets.InetSocketAddress
+import io.ktor.network.sockets.aSocket
+import io.ktor.network.sockets.openReadChannel
+import io.ktor.network.sockets.openWriteChannel
+import io.ktor.utils.io.readAvailable
+import io.ktor.utils.io.writeFully
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -47,7 +51,7 @@ class ServerSocket {
 
                         responseStrategy(
                             requestEnvelope,
-                            appConfiguration.keys,
+                            appConfiguration.keyConfiguration,
                             appConfiguration.locationConfiguration
                         )?.let { envelope ->
                             val responseBytes = envelope.getBytes()

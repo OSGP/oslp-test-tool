@@ -19,7 +19,7 @@ class RequestService(
     appConfiguration: AppConfiguration,
 ) {
     private val clientSocket = ClientSocket(appConfiguration)
-    private val keys = appConfiguration.keys
+    private val keys = appConfiguration.keyConfiguration
 
     fun getFirmwareVersion() {
         val payload = Message.newBuilder().setGetFirmwareVersionRequest(

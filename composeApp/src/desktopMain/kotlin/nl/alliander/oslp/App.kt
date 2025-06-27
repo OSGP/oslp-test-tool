@@ -1,13 +1,23 @@
 package nl.alliander.oslp
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
-import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.components.SetLightRow
+import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.service.RequestService
 import nl.alliander.oslp.util.Logger
 
@@ -48,14 +58,22 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Selftest (10 sec)", modifier, viewModel.isConfirmed) { requestService.startSelfTest() }
+                    CommandButton(
+                        "Selftest (10 sec)",
+                        modifier,
+                        viewModel.isConfirmed
+                    ) { requestService.startSelfTest() }
                     CommandButton("Reboot", modifier, viewModel.isConfirmed) { requestService.startReboot() }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Light sensor on", modifier, viewModel.isConfirmed) { requestService.setLightSensor(0) }
+                    CommandButton(
+                        "Light sensor on",
+                        modifier,
+                        viewModel.isConfirmed
+                    ) { requestService.setLightSensor(0) }
                     CommandButton(
                         "Light sensor off",
                         modifier,
@@ -66,14 +84,22 @@ fun App(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Status", modifier, viewModel.isConfirmed) { requestService.getStatus()}
-                    CommandButton("Get Configuration", modifier, viewModel.isConfirmed) { requestService.getConfiguration() }
+                    CommandButton("Get Status", modifier, viewModel.isConfirmed) { requestService.getStatus() }
+                    CommandButton(
+                        "Get Configuration",
+                        modifier,
+                        viewModel.isConfirmed
+                    ) { requestService.getConfiguration() }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CommandButton("Get Firmware version", modifier, viewModel.isConfirmed) { requestService.getFirmwareVersion() }
+                    CommandButton(
+                        "Get Firmware version",
+                        modifier,
+                        viewModel.isConfirmed
+                    ) { requestService.getFirmwareVersion() }
 
                     Spacer(modifier = modifier)
                 }

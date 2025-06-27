@@ -3,5 +3,5 @@ package nl.alliander.oslp.models
 class AppConfiguration {
     var connectionConfiguration = ConnectionConfiguration()
     var locationConfiguration = LocationConfiguration()
-    var keys = KeyConfiguration()
+    var keyConfiguration = KeyConfiguration()
 }
