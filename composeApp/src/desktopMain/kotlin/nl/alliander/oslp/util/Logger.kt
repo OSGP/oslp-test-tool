@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.util
 
 import androidx.compose.runtime.getValue

@@ -1,10 +1,11 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.service
 
 import nl.alliander.oslp.models.MainViewModel
 
-class DeviceStateService private constructor(
-    private val mainViewModel: MainViewModel
-) {
+class DeviceStateService private constructor(private val mainViewModel: MainViewModel) {
     private var deviceRegistered = false
     private var deviceRegistrationConfirmed = false
     private var relayEnabled = mutableListOf(false, false, false)

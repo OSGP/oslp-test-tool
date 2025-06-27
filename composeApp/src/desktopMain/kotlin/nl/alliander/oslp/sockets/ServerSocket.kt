@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets
 
 import com.google.protobuf.InvalidProtocolBufferException
@@ -21,14 +24,15 @@ class ServerSocket {
     @OptIn(DelicateCoroutinesApi::class)
     fun startListening() {
         GlobalScope.launch {
-            val serverSocket = aSocket(ActorSelectorManager(Dispatchers.IO))
-                .tcp()
-                .bind(
-                    InetSocketAddress(
-                        ConnectionConfiguration.serverSocketAddress,
-                        ConnectionConfiguration.serverSocketPort
+            val serverSocket =
+                aSocket(ActorSelectorManager(Dispatchers.IO))
+                    .tcp()
+                    .bind(
+                        InetSocketAddress(
+                            ConnectionConfiguration.serverSocketAddress,
+                            ConnectionConfiguration.serverSocketPort,
+                        )
                     )
-                )
             Logger.log("Server is listening on address: ${serverSocket.localAddress}")
 
             while (true) {
@@ -49,9 +53,7 @@ class ServerSocket {
 
                         val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
-                        responseStrategy(
-                            requestEnvelope
-                        )?.let { envelope ->
+                        responseStrategy(requestEnvelope)?.let { envelope ->
                             val responseBytes = envelope.getBytes()
                             output.writeFully(responseBytes)
 
@@ -69,4 +71,3 @@ class ServerSocket {
         }
     }
 }
-

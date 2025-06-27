@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp
 
 import androidx.compose.foundation.layout.Arrangement
@@ -21,17 +24,9 @@ import nl.alliander.oslp.models.KeyConfiguration
 import nl.alliander.oslp.models.LocationConfiguration
 
 @Composable
-fun ConfigurationScreen(
-    onContinue: () -> Unit
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+fun ConfigurationScreen(onContinue: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text("Configuration", style = MaterialTheme.typography.h6)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -40,14 +35,14 @@ fun ConfigurationScreen(
                     onValueChange = { ConnectionConfiguration.serverSocketAddress = it },
                     label = { Text("Test tool address") },
                     singleLine = true,
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
                 )
                 TextField(
                     value = ConnectionConfiguration.serverSocketPort.toString(),
                     onValueChange = { ConnectionConfiguration.serverSocketPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Test tool port") },
                     singleLine = true,
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
                 )
             }
 
@@ -57,14 +52,14 @@ fun ConfigurationScreen(
                     onValueChange = { ConnectionConfiguration.clientAddress = it },
                     label = { Text("Device address") },
                     singleLine = true,
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
                 )
                 TextField(
                     value = ConnectionConfiguration.clientPort.toString(),
                     onValueChange = { ConnectionConfiguration.clientPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Device port") },
                     singleLine = true,
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
                 )
             }
 
@@ -74,14 +69,14 @@ fun ConfigurationScreen(
                     onValueChange = { LocationConfiguration.latitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Latitude") },
                     singleLine = true,
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
                 )
                 TextField(
                     value = LocationConfiguration.longitude.toString(),
                     onValueChange = { LocationConfiguration.longitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Longitude") },
                     singleLine = true,
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
                 )
             }
 
@@ -97,7 +92,7 @@ fun ConfigurationScreen(
                             val bytes = file.readBytes()
                             KeyConfiguration.privateKeyBytes = bytes
                         }
-                    }
+                    },
                 )
 
                 KeyUploadButton(
@@ -111,13 +106,16 @@ fun ConfigurationScreen(
                             val bytes = file.readBytes()
                             KeyConfiguration.publicKeyBytes = bytes
                         }
-                    }
+                    },
                 )
             }
 
             Button(
                 onClick = onContinue,
-                enabled = KeyConfiguration.validKeys() && ConnectionConfiguration.validConnectionConfiguration() && LocationConfiguration.validLocationConfiguration()
+                enabled =
+                    KeyConfiguration.validKeys() &&
+                        ConnectionConfiguration.validConnectionConfiguration() &&
+                        LocationConfiguration.validLocationConfiguration(),
             ) {
                 Text("Continue")
             }

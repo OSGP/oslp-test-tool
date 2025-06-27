@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp
 
 import androidx.compose.runtime.LaunchedEffect
@@ -21,30 +24,18 @@ fun main() = application {
 
     DeviceStateService.createInstance(mainViewModel)
 
-    val serverSocket = remember {
-        ServerSocket()
-    }
+    val serverSocket = remember { ServerSocket() }
 
-    val state = rememberWindowState(
-        width = 1280.dp,
-        height = 720.dp,
-    )
+    val state = rememberWindowState(width = 1280.dp, height = 720.dp)
 
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "OSLP Test Tool",
-        state = state,
-    ) {
+    Window(onCloseRequest = ::exitApplication, title = "OSLP Test Tool", state = state) {
         var isConfigured by remember { mutableStateOf(false) }
 
         if (!isConfigured) {
             ConfigurationScreen(onContinue = { isConfigured = true })
         } else {
-            LaunchedEffect(Unit) {
-                serverSocket.startListening()
-            }
+            LaunchedEffect(Unit) { serverSocket.startListening() }
             App(requestService, mainViewModel)
         }
-
     }
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.service
 
 import com.google.protobuf.kotlin.toByteString
@@ -17,18 +20,18 @@ class RequestService() {
     private val clientSocket = ClientSocket()
 
     fun getFirmwareVersion() {
-        val payload = Message.newBuilder().setGetFirmwareVersionRequest(
-            Oslp.GetFirmwareVersionRequest.newBuilder().build()
-        ).build()
+        val payload =
+            Message.newBuilder()
+                .setGetFirmwareVersionRequest(Oslp.GetFirmwareVersionRequest.newBuilder().build())
+                .build()
 
         sendAndReceiveRequest(payload)
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     fun startSelfTest() {
-        val payload = Message.newBuilder().setStartSelfTestRequest(
-            Oslp.StartSelfTestRequest.newBuilder().build()
-        ).build()
+        val payload =
+            Message.newBuilder().setStartSelfTestRequest(Oslp.StartSelfTestRequest.newBuilder().build()).build()
 
         sendAndReceiveRequest(payload)
 
@@ -39,9 +42,7 @@ class RequestService() {
     }
 
     private fun stopSelfTest() {
-        val payload = Message.newBuilder().setStopSelfTestRequest(
-            Oslp.StopSelfTestRequest.newBuilder().build()
-        ).build()
+        val payload = Message.newBuilder().setStopSelfTestRequest(Oslp.StopSelfTestRequest.newBuilder().build()).build()
 
         sendAndReceiveRequest(payload)
     }
@@ -50,35 +51,29 @@ class RequestService() {
         val deviceStateService = DeviceStateService.getInstance()
         deviceStateService.resetRegistrationValues()
 
-        val payload = Message.newBuilder().setSetRebootRequest(
-            Oslp.SetRebootRequest.newBuilder().build()
-        ).build()
+        val payload = Message.newBuilder().setSetRebootRequest(Oslp.SetRebootRequest.newBuilder().build()).build()
 
         sendAndReceiveRequest(payload)
     }
 
     fun setLightSensor(num: Int) {
-        val payload = Message.newBuilder().setSetTransitionRequest(
-            Oslp.SetTransitionRequest.newBuilder().setTransitionTypeValue(
-                num
-            )
-        ).build()
+        val payload =
+            Message.newBuilder()
+                .setSetTransitionRequest(Oslp.SetTransitionRequest.newBuilder().setTransitionTypeValue(num))
+                .build()
 
         sendAndReceiveRequest(payload)
     }
 
     fun getStatus() {
-        val payload = Message.newBuilder().setGetStatusRequest(
-            Oslp.GetStatusRequest.newBuilder().build()
-        ).build()
+        val payload = Message.newBuilder().setGetStatusRequest(Oslp.GetStatusRequest.newBuilder().build()).build()
 
         sendAndReceiveRequest(payload)
     }
 
     fun getConfiguration() {
-        val payload = Message.newBuilder().setGetConfigurationRequest(
-            Oslp.GetConfigurationRequest.newBuilder().build()
-        ).build()
+        val payload =
+            Message.newBuilder().setGetConfigurationRequest(Oslp.GetConfigurationRequest.newBuilder().build()).build()
 
         sendAndReceiveRequest(payload)
     }
@@ -88,10 +83,10 @@ class RequestService() {
         lightValue.setOn(on)
         lightValue.setIndex(index.toByteArray(1).toByteString())
 
-        val payload = Message.newBuilder().setSetLightRequest(
-            Oslp.SetLightRequest.newBuilder()
-                .addValues(lightValue).build()
-        ).build()
+        val payload =
+            Message.newBuilder()
+                .setSetLightRequest(Oslp.SetLightRequest.newBuilder().addValues(lightValue).build())
+                .build()
 
         sendAndReceiveRequest(payload)
     }
@@ -104,21 +99,12 @@ class RequestService() {
         val lengthIndicator = payload.serializedSize
         val messageBytes = payload.toByteArray()
 
+        val signature =
+            SigningUtil.createSignature(
+                sequenceNumber.toByteArray(2) + deviceId + lengthIndicator.toByteArray(2) + messageBytes
+            )
 
-        val signature = SigningUtil.createSignature(
-            sequenceNumber.toByteArray(2) +
-                    deviceId +
-                    lengthIndicator.toByteArray(2) +
-                    messageBytes
-        )
-
-        val request = Envelope(
-            signature,
-            sequenceNumber,
-            deviceId,
-            lengthIndicator,
-            messageBytes,
-        )
+        val request = Envelope(signature, sequenceNumber, deviceId, lengthIndicator, messageBytes)
 
         clientSocket.sendAndReceive(request)
     }

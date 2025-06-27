@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets.receive
 
 import kotlin.random.Random
@@ -16,31 +19,30 @@ class RegisterDeviceStrategy : ReceiveStrategy() {
         deviceStateService.randomDevice = requestEnvelope.message.registerDeviceRequest.randomDevice
     }
 
-    override fun buildResponsePayload(
-        requestEnvelope: Envelope
-    ): Message {
+    override fun buildResponsePayload(requestEnvelope: Envelope): Message {
         val deviceStateService = DeviceStateService.getInstance()
 
         deviceStateService.deviceId = requestEnvelope.deviceId
         deviceStateService.randomPlatform = Random.nextInt(65536)
 
-        val response = Message.newBuilder()
-            .setRegisterDeviceResponse(
-                Oslp.RegisterDeviceResponse.newBuilder()
-                    .setRandomDevice(requestEnvelope.message.registerDeviceRequest.randomDevice)
-                    .setCurrentTime(System.currentTimeMillis().toString())
-                    .setStatus(Oslp.Status.OK)
-                    .setRandomPlatform(deviceStateService.randomPlatform)
-                    .setLocationInfo(
-                        Oslp.LocationInfo.newBuilder()
-                            .setLatitude(LocationConfiguration.latitude)
-                            .setLongitude(LocationConfiguration.longitude)
-                            .setTimeOffset(60)
-                    )
-                    .build()
-            ).build()
+        val response =
+            Message.newBuilder()
+                .setRegisterDeviceResponse(
+                    Oslp.RegisterDeviceResponse.newBuilder()
+                        .setRandomDevice(requestEnvelope.message.registerDeviceRequest.randomDevice)
+                        .setCurrentTime(System.currentTimeMillis().toString())
+                        .setStatus(Oslp.Status.OK)
+                        .setRandomPlatform(deviceStateService.randomPlatform)
+                        .setLocationInfo(
+                            Oslp.LocationInfo.newBuilder()
+                                .setLatitude(LocationConfiguration.latitude)
+                                .setLongitude(LocationConfiguration.longitude)
+                                .setTimeOffset(60)
+                        )
+                        .build()
+                )
+                .build()
 
         return response
     }
-
 }

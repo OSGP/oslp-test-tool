@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.sockets.receive
 
 import nl.alliander.oslp.domain.Envelope
@@ -13,9 +16,7 @@ abstract class ReceiveStrategy {
 
     abstract fun buildResponsePayload(requestEnvelope: Envelope): Message
 
-    operator fun invoke(
-        requestEnvelope: Envelope
-    ): Envelope? {
+    operator fun invoke(requestEnvelope: Envelope): Envelope? {
         if (!validateSignature(requestEnvelope)) return null
         handle(requestEnvelope)
         val responsePayload = buildResponsePayload(requestEnvelope).toByteArray()
@@ -23,15 +24,13 @@ abstract class ReceiveStrategy {
     }
 
     private fun validateSignature(requestEnvelope: Envelope): Boolean {
-        val verified = with(requestEnvelope) {
-            SigningUtil.verifySignature(
-                sequenceNumber.toByteArray(2) +
-                        deviceId +
-                        lengthIndicator.toByteArray(2) +
-                        messageBytes,
-                securityKey
-            )
-        }
+        val verified =
+            with(requestEnvelope) {
+                SigningUtil.verifySignature(
+                    sequenceNumber.toByteArray(2) + deviceId + lengthIndicator.toByteArray(2) + messageBytes,
+                    securityKey,
+                )
+            }
 
         if (!verified) {
             Logger.logReceive("The signature is not valid!")
@@ -40,23 +39,21 @@ abstract class ReceiveStrategy {
         return true
     }
 
-    private fun createResponseEnvelope(
-        requestEnvelope: Envelope,
-        responsePayload: ByteArray
-    ): Envelope {
-        val securityKey = SigningUtil.createSignature(
-            requestEnvelope.sequenceNumber.toByteArray(2) +
+    private fun createResponseEnvelope(requestEnvelope: Envelope, responsePayload: ByteArray): Envelope {
+        val securityKey =
+            SigningUtil.createSignature(
+                requestEnvelope.sequenceNumber.toByteArray(2) +
                     requestEnvelope.deviceId +
                     responsePayload.size.toByteArray(2) +
                     responsePayload
-        )
+            )
 
         return Envelope(
             securityKey,
             requestEnvelope.sequenceNumber,
             requestEnvelope.deviceId,
             responsePayload.size,
-            responsePayload
+            responsePayload,
         )
     }
 

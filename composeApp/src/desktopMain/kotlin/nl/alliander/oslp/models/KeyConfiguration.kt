@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Alliander N.V.
+ */
 package nl.alliander.oslp.models
 
 import androidx.compose.runtime.getValue
@@ -22,9 +25,7 @@ object KeyConfiguration {
         set(value) {
             _privateKeyBytes = null
             privateKey = value?.let { createPrivateKey(it) }
-            privateKey?.let {
-                _privateKeyBytes = value
-            }
+            privateKey?.let { _privateKeyBytes = value }
         }
 
     var publicKeyBytes: ByteArray?
@@ -32,9 +33,7 @@ object KeyConfiguration {
         set(value) {
             _publicKeyBytes = null
             publicKey = value?.let { createPublicKey(it) }
-            publicKey?.let {
-                _publicKeyBytes = value
-            }
+            publicKey?.let { _publicKeyBytes = value }
         }
 
     var privateKey: PrivateKey? = null
@@ -47,26 +46,19 @@ object KeyConfiguration {
 
     private fun createPrivateKey(key: ByteArray): PrivateKey? =
         runCatching {
-            KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
-                .generatePrivate(PKCS8EncodedKeySpec(key))
-        }.onFailure {
-            showErrorDialog("Failed to create private key: ${it.message}")
-        }.getOrNull()
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(PKCS8EncodedKeySpec(key))
+            }
+            .onFailure { showErrorDialog("Failed to create private key: ${it.message}") }
+            .getOrNull()
 
     private fun createPublicKey(key: ByteArray): PublicKey? =
         runCatching {
-            KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
-                .generatePublic(X509EncodedKeySpec(key))
-        }.onFailure {
-            showErrorDialog("Failed to create public key: ${it.message}")
-        }.getOrNull()
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(X509EncodedKeySpec(key))
+            }
+            .onFailure { showErrorDialog("Failed to create public key: ${it.message}") }
+            .getOrNull()
 
     private fun showErrorDialog(message: String) {
-        JOptionPane.showMessageDialog(
-            null,
-            message,
-            "Invalid key",
-            JOptionPane.ERROR_MESSAGE
-        )
+        JOptionPane.showMessageDialog(null, message, "Invalid key", JOptionPane.ERROR_MESSAGE)
     }
 }
