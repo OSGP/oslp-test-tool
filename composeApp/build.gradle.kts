@@ -60,6 +60,6 @@ extensions.configure<SpotlessExtension> {
         target("src/**/*.kt")
         ktfmt().kotlinlangStyle().configure { it.setMaxWidth(120) }
 
-        licenseHeaderFile(file("../spotless/license-header-template.kt")).updateYearWithLatest(false)
+        licenseHeaderFile(file("../spotless/license-header-template.kt"))
     }
 }
