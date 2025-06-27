@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import nl.alliander.oslp.components.KeyUploadRow
+import nl.alliander.oslp.components.KeyUploadButton
 import nl.alliander.oslp.models.AppConfiguration
 import javax.swing.JFileChooser
 
@@ -84,33 +84,35 @@ fun ConfigurationScreen(
                 )
             }
 
-            KeyUploadRow(
-                label = "Upload Private Key",
-                uploadedBytes = appConfiguration.keys.privateKeyBytes,
-                onUploadClick = {
-                    val fileChooser = JFileChooser()
-                    val result = fileChooser.showOpenDialog(null)
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        val file = fileChooser.selectedFile
-                        val bytes = file.readBytes()
-                        appConfiguration.keys.privateKeyBytes = bytes
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                KeyUploadButton(
+                    label = "Upload Private Key",
+                    uploadedBytes = appConfiguration.keys.privateKeyBytes,
+                    onUploadClick = {
+                        val fileChooser = JFileChooser()
+                        val result = fileChooser.showOpenDialog(null)
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            val file = fileChooser.selectedFile
+                            val bytes = file.readBytes()
+                            appConfiguration.keys.privateKeyBytes = bytes
+                        }
                     }
-                }
-            )
+                )
 
-            KeyUploadRow(
-                label = "Upload Public Key",
-                uploadedBytes = appConfiguration.keys.publicKeyBytes,
-                onUploadClick = {
-                    val fileChooser = JFileChooser()
-                    val result = fileChooser.showOpenDialog(null)
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        val file = fileChooser.selectedFile
-                        val bytes = file.readBytes()
-                        appConfiguration.keys.publicKeyBytes = bytes
+                KeyUploadButton(
+                    label = "Upload Public Key",
+                    uploadedBytes = appConfiguration.keys.publicKeyBytes,
+                    onUploadClick = {
+                        val fileChooser = JFileChooser()
+                        val result = fileChooser.showOpenDialog(null)
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            val file = fileChooser.selectedFile
+                            val bytes = file.readBytes()
+                            appConfiguration.keys.publicKeyBytes = bytes
+                        }
                     }
-                }
-            )
+                )
+            }
 
             Button(onClick = onContinue) {
                 Text("Continue")
