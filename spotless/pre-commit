@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 echo "*********************************************************"
-echo "Running git pre-commit hook. Running Spotless Apply... "
+echo "Running git pre-commit hook. Running Spotless Check... "
 echo "*********************************************************"
 
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
