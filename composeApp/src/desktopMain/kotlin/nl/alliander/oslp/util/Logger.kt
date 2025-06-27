@@ -21,7 +21,7 @@ object Logger {
     }
 
     fun logReceive(envelope: Envelope) {
-        with (envelope) {
+        with(envelope) {
             logReceive("Received:")
             logReceive("Seq: $sequenceNumber - Len: $lengthIndicator");
             logReceive(message.toString())
@@ -34,7 +34,7 @@ object Logger {
     }
 
     fun logSend(envelope: Envelope) {
-        with (envelope) {
+        with(envelope) {
             logSend("Sent:")
             logSend("Seq: $sequenceNumber - Len: $lengthIndicator");
             logSend(message.toString())
@@ -52,6 +52,11 @@ object Logger {
 
     private fun appendLog(text: String) {
         loggingText += "$text\n"
+    }
+
+    fun logAndThrowError(string: String): Nothing {
+        loggingText += string
+        throw Error(string)
     }
 
     private fun JFileChooser.configureForTxtExport(): JFileChooser {

@@ -36,7 +36,7 @@ class KeyConfiguration {
     var publicKey: PublicKey? = null
         private set
 
-
+    //TODO: maybe for later, if you upload something which is not a valid key, the app crashes, might want to handle that more gracefully.
     private fun createPrivateKey(key: ByteArray): PrivateKey {
         val keyFactory = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
 
@@ -45,7 +45,6 @@ class KeyConfiguration {
 
     private fun createPublicKey(key: ByteArray): PublicKey {
         val keyFactory = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
-
         return keyFactory.generatePublic(X509EncodedKeySpec(key)) ?: throw Exception("No Key")
     }
 }

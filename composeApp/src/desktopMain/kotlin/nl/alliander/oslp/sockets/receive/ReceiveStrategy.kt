@@ -29,7 +29,7 @@ abstract class ReceiveStrategy {
                         lengthIndicator.toByteArray(2) +
                         messageBytes,
                 securityKey,
-                keys.publicKey!!
+                keys.publicKey ?: Logger.logAndThrowError("Missing public key")
             )
         }
 
@@ -50,7 +50,7 @@ abstract class ReceiveStrategy {
                     requestEnvelope.deviceId +
                     responsePayload.size.toByteArray(2) +
                     responsePayload,
-            keys.privateKey!!
+            keys.privateKey ?: Logger.logAndThrowError("Missing private key")
         )
 
         return Envelope(

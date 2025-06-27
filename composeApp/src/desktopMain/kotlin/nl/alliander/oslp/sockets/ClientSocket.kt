@@ -6,18 +6,18 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.ConfigurationModel
+import nl.alliander.oslp.models.AppConfiguration
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 
 class ClientSocket(
-    private val configurationModel: ConfigurationModel
+    private val appConfiguration: AppConfiguration
 ) {
 
     fun sendAndReceive(envelope: Envelope): Envelope = runBlocking(Dispatchers.IO) {
         val clientSocket: Socket = aSocket(ActorSelectorManager(Dispatchers.IO))
             .tcp()
-            .connect(InetSocketAddress(configurationModel.clientAddress, configurationModel.clientPort))
+            .connect(InetSocketAddress(appConfiguration.clientAddress, appConfiguration.clientPort))
 
         clientSocket.use {
             val output = it.openWriteChannel(autoFlush = true)
