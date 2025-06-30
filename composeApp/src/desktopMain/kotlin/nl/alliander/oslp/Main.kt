@@ -54,6 +54,4 @@ fun storeConfiguration() {
     val config = ApplicationConfigurationViewModel.getInstance()
     val file = File("app_config.json")
     file.writeText(Json.encodeToString(ApplicationConfiguration.fromModel(config)))
-
-    println("Configuratie opgeslagen naar ${file.absolutePath}")
 }
