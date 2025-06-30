@@ -4,10 +4,15 @@
 package nl.alliander.oslp.service
 
 import com.google.protobuf.kotlin.toByteString
+import com.google.protobuf.util.JsonFormat
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import nl.alliander.oslp.domain.Envelope
 import nl.alliander.oslp.sockets.ClientSocket
 import nl.alliander.oslp.util.SigningUtil
@@ -89,6 +94,19 @@ class RequestService() {
                 .build()
 
         sendAndReceiveRequest(payload)
+    }
+
+    fun sendJsonCommands(bytes: ByteArray) {
+        val jsonString = bytes.toString(Charsets.UTF_8)
+
+        val root = Json.parseToJsonElement(jsonString).jsonObject
+        val requests: JsonArray = root["requests"]?.jsonArray ?: error("Missing 'requests' array")
+
+        for (request in requests) {
+            val message = Message.newBuilder()
+            JsonFormat.parser().merge(request.jsonObject.toString(), message)
+            sendAndReceiveRequest(message.build())
+        }
     }
 
     private fun sendAndReceiveRequest(payload: Message) {
