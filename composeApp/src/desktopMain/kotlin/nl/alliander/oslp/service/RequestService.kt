@@ -99,7 +99,6 @@ class RequestService() {
     fun sendJsonCommands(bytes: ByteArray) {
         val requests = parseBytesToJsonArray(bytes)
 
-
         for (request in requests) {
             val message = Message.newBuilder()
             JsonFormat.parser().merge(request.jsonObject.toString(), message)
