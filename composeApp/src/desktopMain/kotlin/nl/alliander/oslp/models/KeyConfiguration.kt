@@ -14,8 +14,8 @@ import java.security.spec.X509EncodedKeySpec
 import javax.swing.JOptionPane
 
 object KeyConfiguration {
-    private val SECURITY_PROVIDER = "SunEC"
-    private val SECURITY_KEYTYPE = "EC"
+    private const val SECURITY_PROVIDER = "SunEC"
+    private const val SECURITY_KEYTYPE = "EC"
 
     private var _privateKeyBytes by mutableStateOf<ByteArray?>(null)
     private var _publicKeyBytes by mutableStateOf<ByteArray?>(null)
@@ -46,15 +46,15 @@ object KeyConfiguration {
 
     private fun createPrivateKey(key: ByteArray): PrivateKey? =
         runCatching {
-                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(PKCS8EncodedKeySpec(key))
-            }
+            KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(PKCS8EncodedKeySpec(key))
+        }
             .onFailure { showErrorDialog("Failed to create private key: ${it.message}") }
             .getOrNull()
 
     private fun createPublicKey(key: ByteArray): PublicKey? =
         runCatching {
-                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(X509EncodedKeySpec(key))
-            }
+            KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(X509EncodedKeySpec(key))
+        }
             .onFailure { showErrorDialog("Failed to create public key: ${it.message}") }
             .getOrNull()
 
