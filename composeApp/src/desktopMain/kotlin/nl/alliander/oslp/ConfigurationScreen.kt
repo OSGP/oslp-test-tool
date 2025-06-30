@@ -112,7 +112,7 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
                 onClick = onContinue,
                 enabled =
                     applicationConfigurationViewModel.validConnectionConfiguration() &&
-                            applicationConfigurationViewModel.validLocationConfiguration()
+                        applicationConfigurationViewModel.validLocationConfiguration(),
             ) {
                 Text("Continue")
             }

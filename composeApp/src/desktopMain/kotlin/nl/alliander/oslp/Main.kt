@@ -37,10 +37,12 @@ fun main() = application {
         var isConfigured by remember { mutableStateOf(false) }
 
         if (!isConfigured) {
-            ConfigurationScreen(onContinue = {
-                isConfigured = SigningUtil.initializeKeys()
-                storeConfiguration()
-            })
+            ConfigurationScreen(
+                onContinue = {
+                    isConfigured = SigningUtil.initializeKeys()
+                    storeConfiguration()
+                }
+            )
         } else {
             LaunchedEffect(Unit) { serverSocket.startListening() }
             App(requestService, mainViewModel)

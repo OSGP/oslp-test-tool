@@ -28,7 +28,7 @@ class ClientSocket() {
                     .connect(
                         InetSocketAddress(
                             ApplicationConfigurationViewModel.getInstance().clientAddress,
-                            ApplicationConfigurationViewModel.getInstance().clientPort
+                            ApplicationConfigurationViewModel.getInstance().clientPort,
                         )
                     )
 

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.models
 
 import kotlinx.serialization.Serializable
@@ -37,7 +40,7 @@ data class ApplicationConfiguration(
                 applicationConfigurationViewModel.serverSocketAddress,
                 applicationConfigurationViewModel.serverSocketPort,
                 applicationConfigurationViewModel.privateKeyPath,
-                applicationConfigurationViewModel.publicKeyPath
+                applicationConfigurationViewModel.publicKeyPath,
             )
     }
 }

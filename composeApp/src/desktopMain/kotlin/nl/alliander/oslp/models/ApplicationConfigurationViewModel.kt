@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.models
 
 import androidx.compose.runtime.getValue
@@ -21,8 +24,7 @@ class ApplicationConfigurationViewModel {
     companion object {
         private var instance: ApplicationConfigurationViewModel? = null
 
-        fun getInstance(): ApplicationConfigurationViewModel =
-            instance ?: readOrCreateInstance().also { instance = it }
+        fun getInstance(): ApplicationConfigurationViewModel = instance ?: readOrCreateInstance().also { instance = it }
 
         private fun readOrCreateInstance(): ApplicationConfigurationViewModel {
             val file = File("app_config.json")
@@ -35,7 +37,7 @@ class ApplicationConfigurationViewModel {
     }
 
     fun validLocationConfiguration(): Boolean = latitude > 0 && longitude > 0
+
     fun validConnectionConfiguration(): Boolean =
         clientAddress.isNotEmpty() && clientPort > 0 && serverSocketAddress.isNotEmpty() && serverSocketPort > 0
 }
-

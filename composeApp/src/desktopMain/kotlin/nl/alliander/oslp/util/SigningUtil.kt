@@ -25,12 +25,16 @@ object SigningUtil {
 
     fun initializeKeys(): Boolean {
         try {
-            privateKey = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(
-                PKCS8EncodedKeySpec(File(applicationConfigurationViewModel.privateKeyPath).readBytes())
-            )
-            publicKey = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(
-                X509EncodedKeySpec(File(applicationConfigurationViewModel.publicKeyPath).readBytes())
-            )
+            privateKey =
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
+                    .generatePrivate(
+                        PKCS8EncodedKeySpec(File(applicationConfigurationViewModel.privateKeyPath).readBytes())
+                    )
+            publicKey =
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
+                    .generatePublic(
+                        X509EncodedKeySpec(File(applicationConfigurationViewModel.publicKeyPath).readBytes())
+                    )
         } catch (e: Exception) {
             showErrorDialog("Invalid key: ${e.message}")
             return false
@@ -59,7 +63,6 @@ object SigningUtil {
 
         return builder.verify(truncatedKey)
     }
-
 
     private fun showErrorDialog(message: String) {
         JOptionPane.showMessageDialog(null, message, "Invalid key", JOptionPane.ERROR_MESSAGE)
