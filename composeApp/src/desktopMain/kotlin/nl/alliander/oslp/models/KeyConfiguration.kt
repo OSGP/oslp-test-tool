@@ -14,8 +14,8 @@ import java.security.spec.X509EncodedKeySpec
 import javax.swing.JOptionPane
 
 object KeyConfiguration {
-    private val SECURITY_PROVIDER = "SunEC"
-    private val SECURITY_KEYTYPE = "EC"
+    private const val SECURITY_PROVIDER = "SunEC"
+    private const val SECURITY_KEYTYPE = "EC"
 
     private var _privateKeyBytes by mutableStateOf<ByteArray?>(null)
     private var _publicKeyBytes by mutableStateOf<ByteArray?>(null)

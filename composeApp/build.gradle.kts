@@ -30,6 +30,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.protobufKotlin)
             implementation(libs.ktor)
+            implementation(libs.kotlinSerialization)
+            implementation(libs.protobufJavaUtil)
         }
     }
 }
