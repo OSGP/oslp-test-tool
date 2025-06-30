@@ -46,15 +46,15 @@ object KeyConfiguration {
 
     private fun createPrivateKey(key: ByteArray): PrivateKey? =
         runCatching {
-            KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(PKCS8EncodedKeySpec(key))
-        }
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(PKCS8EncodedKeySpec(key))
+            }
             .onFailure { showErrorDialog("Failed to create private key: ${it.message}") }
             .getOrNull()
 
     private fun createPublicKey(key: ByteArray): PublicKey? =
         runCatching {
-            KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(X509EncodedKeySpec(key))
-        }
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(X509EncodedKeySpec(key))
+            }
             .onFailure { showErrorDialog("Failed to create public key: ${it.message}") }
             .getOrNull()
 

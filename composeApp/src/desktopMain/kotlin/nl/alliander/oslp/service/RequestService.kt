@@ -100,14 +100,13 @@ class RequestService() {
 
     fun sendJsonCommands(bytes: ByteArray) {
         runCatching {
-            parseBytesToJsonArray(bytes).forEach {
-                val message = Message.newBuilder()
-                JsonFormat.parser().merge(it.jsonObject.toString(), message)
-                sendAndReceiveRequest(message.build())
+                parseBytesToJsonArray(bytes).forEach {
+                    val message = Message.newBuilder()
+                    JsonFormat.parser().merge(it.jsonObject.toString(), message)
+                    sendAndReceiveRequest(message.build())
+                }
             }
-        }.onFailure { error ->
-            Logger.logError(error.message ?: "Invalid JSON file")
-        }
+            .onFailure { error -> Logger.logError(error.message ?: "Invalid JSON file") }
     }
 
     private fun parseBytesToJsonArray(bytes: ByteArray): JsonArray {
