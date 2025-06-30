@@ -97,16 +97,21 @@ class RequestService() {
     }
 
     fun sendJsonCommands(bytes: ByteArray) {
-        val jsonString = bytes.toString(Charsets.UTF_8)
+        val requests = parseBytesToJsonArray(bytes)
 
-        val root = Json.parseToJsonElement(jsonString).jsonObject
-        val requests: JsonArray = root["requests"]?.jsonArray ?: error("Missing 'requests' array")
 
         for (request in requests) {
             val message = Message.newBuilder()
             JsonFormat.parser().merge(request.jsonObject.toString(), message)
             sendAndReceiveRequest(message.build())
         }
+    }
+
+    private fun parseBytesToJsonArray(bytes: ByteArray): JsonArray {
+        val jsonString = bytes.toString(Charsets.UTF_8)
+
+        val root = Json.parseToJsonElement(jsonString).jsonObject
+        return root["requests"]?.jsonArray ?: error("Missing 'requests' array")
     }
 
     private fun sendAndReceiveRequest(payload: Message) {

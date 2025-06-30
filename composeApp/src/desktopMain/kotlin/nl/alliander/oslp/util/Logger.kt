@@ -31,17 +31,17 @@ object Logger {
         }
     }
 
-    fun logSend(message: String) {
-        val messageToLog = message.trim().prependIndent("> ")
-        log(messageToLog)
-    }
-
     fun logSend(envelope: Envelope) {
         with(envelope) {
             logSend("Sent:")
             logSend("Seq: $sequenceNumber - Len: $lengthIndicator")
             logSend(message.toString())
         }
+    }
+
+    private fun logSend(message: String) {
+        val messageToLog = message.trim().prependIndent("> ")
+        log(messageToLog)
     }
 
     fun exportLogFile() {
