@@ -13,8 +13,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import java.io.File
-import java.io.FileOutputStream
-import java.io.ObjectOutputStream
+import kotlinx.serialization.json.Json
 import nl.alliander.oslp.models.ApplicationConfiguration
 import nl.alliander.oslp.models.ApplicationConfigurationViewModel
 import nl.alliander.oslp.models.MainViewModel
@@ -51,11 +50,8 @@ fun main() = application {
 
 fun storeConfiguration() {
     val config = ApplicationConfigurationViewModel.getInstance()
-    val file = File("app_config")
-
-    ObjectOutputStream(FileOutputStream(file)).use { output ->
-        output.writeObject(ApplicationConfiguration.fromModel(config))
-    }
+    val file = File("app_config.json")
+    file.writeText(Json.encodeToString(ApplicationConfiguration.fromModel(config)))
 
     println("Configuratie opgeslagen naar ${file.absolutePath}")
 }

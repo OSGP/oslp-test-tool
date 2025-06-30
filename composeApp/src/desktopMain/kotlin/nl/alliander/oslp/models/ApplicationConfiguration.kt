@@ -1,8 +1,8 @@
 package nl.alliander.oslp.models
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class ApplicationConfiguration(
     val latitude: Int,
     val longitude: Int,
@@ -12,7 +12,7 @@ data class ApplicationConfiguration(
     val serverSocketPort: Int,
     val privateKeyPath: String,
     val publicKeyPath: String,
-) : Serializable {
+) {
 
     fun toModel(): ApplicationConfigurationViewModel {
         val model = ApplicationConfigurationViewModel()

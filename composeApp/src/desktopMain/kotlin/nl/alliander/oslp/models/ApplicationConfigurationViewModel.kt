@@ -4,11 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import java.io.File
-import java.io.FileInputStream
-import java.io.ObjectInputStream
-import java.io.Serializable
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
-class ApplicationConfigurationViewModel : Serializable {
+@Serializable
+class ApplicationConfigurationViewModel {
     var latitude: Int by mutableStateOf(52260857)
     var longitude: Int by mutableStateOf(5263121)
     var clientAddress: String by mutableStateOf("localhost")
@@ -25,11 +25,9 @@ class ApplicationConfigurationViewModel : Serializable {
             instance ?: readOrCreateInstance().also { instance = it }
 
         private fun readOrCreateInstance(): ApplicationConfigurationViewModel {
-            val file = File("app_config")
+            val file = File("app_config.json")
             if (file.exists()) {
-                return ObjectInputStream(FileInputStream(file)).use { input ->
-                    input.readObject() as ApplicationConfiguration
-                }.toModel()
+                return Json.decodeFromString<ApplicationConfiguration>(file.readText()).toModel()
             }
 
             return ApplicationConfigurationViewModel()
