@@ -1,13 +1,26 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,20 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
-import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.components.SetLightRow
-import nl.alliander.oslp.service.LoggingService
+import nl.alliander.oslp.models.MainViewModel
+import nl.alliander.oslp.service.RequestService
+import nl.alliander.oslp.util.Logger
 
 @Composable
 @androidx.compose.desktop.ui.tooling.preview.Preview
-fun App() {
-    val loggingService = remember { LoggingService() }
-    val viewModel = remember { MainViewModel() }
-
+fun App(requestService: RequestService, viewModel: MainViewModel) {
     val scrollState = rememberScrollState()
-    LaunchedEffect(loggingService.loggingText) {
-        scrollState.animateScrollTo(scrollState.maxValue)
-    }
+    LaunchedEffect(Logger.loggingText) { scrollState.animateScrollTo(scrollState.maxValue) }
 
     MaterialTheme {
         Row(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -43,20 +52,42 @@ fun App() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Selftest (10 sec)", modifier) { loggingService.appendLog("Selftest (10 sec) clicked") }
-                    CommandButton("Reboot", modifier) { loggingService.appendLog("Reboot clicked") }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    CommandButton("Selftest (10 sec)", modifier, viewModel.isConfirmed) {
+                        requestService.startSelfTest()
+                    }
+                    CommandButton("Reboot", modifier, viewModel.isConfirmed) { requestService.startReboot() }
                 }
-                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Light sensor on", modifier) { loggingService.appendLog("Light sensor on (Light) clicked") }
-                    CommandButton("Light sensor off", modifier) { loggingService.appendLog("Light sensor off (Dark) clicked") }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    CommandButton("Light sensor on", modifier, viewModel.isConfirmed) {
+                        requestService.setLightSensor(0)
+                    }
+                    CommandButton("Light sensor off", modifier, viewModel.isConfirmed) {
+                        requestService.setLightSensor(1)
+                    }
                 }
-                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Get Status", modifier) { loggingService.appendLog("Get Status clicked") }
-                    CommandButton("Get Configuration", modifier) { loggingService.appendLog("Get Configuration clicked") }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    CommandButton("Get Status", modifier, viewModel.isConfirmed) { requestService.getStatus() }
+                    CommandButton("Get Configuration", modifier, viewModel.isConfirmed) {
+                        requestService.getConfiguration()
+                    }
                 }
-                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    CommandButton("Get Firmware versie", modifier) { loggingService.appendLog("Get Firmware versie clicked") }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    CommandButton("Get Firmware version", modifier, viewModel.isConfirmed) {
+                        requestService.getFirmwareVersion()
+                    }
 
                     Spacer(modifier = modifier)
                 }
@@ -64,28 +95,31 @@ fun App() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.medium)
-                        .padding(12.dp)
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.medium)
+                            .padding(12.dp)
                 ) {
                     Column {
                         Text("Set light", style = MaterialTheme.typography.h6)
 
                         SetLightRow(
                             label = "Relais 1",
-                            onGreen = { loggingService.appendLog("Relais 1 ON") },
-                            onRed = { loggingService.appendLog("Relais 1 OFF") }
+                            enabled = viewModel.isConfirmed,
+                            onGreen = { requestService.setLightRequest(1, true) },
+                            onRed = { requestService.setLightRequest(1, false) },
                         )
                         SetLightRow(
                             label = "Relais 2",
-                            onGreen = { loggingService.appendLog("Relais 2 ON") },
-                            onRed = { loggingService.appendLog("Relais 2 OFF") }
+                            enabled = viewModel.isConfirmed,
+                            onGreen = { requestService.setLightRequest(2, true) },
+                            onRed = { requestService.setLightRequest(2, false) },
                         )
                         SetLightRow(
                             label = "Relais 3",
-                            onGreen = { loggingService.appendLog("Relais 3 ON") },
-                            onRed = { loggingService.appendLog("Relais 3 OFF") }
+                            enabled = viewModel.isConfirmed,
+                            onGreen = { requestService.setLightRequest(3, true) },
+                            onRed = { requestService.setLightRequest(3, false) },
                         )
                     }
                 }
@@ -93,9 +127,9 @@ fun App() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { loggingService.appendLog("Send JSON message clicked") },
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    onClick = { Logger.log("Send JSON message clicked") },
+                    enabled = false,
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text("Send JSON message")
                 }
@@ -103,34 +137,21 @@ fun App() {
 
             Column(modifier = Modifier.fillMaxSize()) {
                 Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .border(1.dp, Color.Gray)
-                        .padding(8.dp)
-                        .verticalScroll(scrollState)
+                    modifier =
+                        Modifier.weight(1f)
+                            .fillMaxWidth()
+                            .border(1.dp, Color.Gray)
+                            .padding(8.dp)
+                            .verticalScroll(scrollState)
                 ) {
-                    Text(loggingService.loggingText, fontSize = 14.sp)
+                    Text(Logger.loggingText, fontSize = 14.sp)
                 }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Button(
-                        onClick = { loggingService.exportLogFile() },
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                    ) {
+                Row(modifier = Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.End) {
+                    Button(onClick = { Logger.exportLogFile() }, modifier = Modifier.padding(end = 8.dp)) {
                         Text("Save logging to file")
                     }
-                    Button(
-                        onClick = { loggingService.loggingText = "" }
-                    ) {
-                        Text("Clear logging")
-                    }
+                    Button(onClick = { Logger.loggingText = "" }) { Text("Clear logging") }
                 }
             }
         }

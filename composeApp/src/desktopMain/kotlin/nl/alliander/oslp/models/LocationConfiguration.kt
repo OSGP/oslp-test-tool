@@ -7,7 +7,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-class MainViewModel {
-    var isDeviceRegistered by mutableStateOf(false)
-    var isConfirmed by mutableStateOf(false)
+object LocationConfiguration {
+    var latitude by mutableStateOf(52260857)
+    var longitude by mutableStateOf(5263121)
+
+    fun validLocationConfiguration() = latitude > 0 && longitude > 0
 }
