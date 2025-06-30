@@ -14,7 +14,7 @@ import io.ktor.utils.io.writeFully
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.ApplicationConfiguration
+import nl.alliander.oslp.models.ApplicationConfigurationViewModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.util.Logger
 
@@ -27,8 +27,8 @@ class ClientSocket() {
                     .tcp()
                     .connect(
                         InetSocketAddress(
-                            ApplicationConfiguration.getInstance().clientAddress,
-                            ApplicationConfiguration.getInstance().clientPort
+                            ApplicationConfigurationViewModel.getInstance().clientAddress,
+                            ApplicationConfigurationViewModel.getInstance().clientPort
                         )
                     )
 

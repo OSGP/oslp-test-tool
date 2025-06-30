@@ -12,13 +12,13 @@ import java.security.Signature
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.swing.JOptionPane
-import nl.alliander.oslp.models.ApplicationConfiguration
+import nl.alliander.oslp.models.ApplicationConfigurationViewModel
 
 object SigningUtil {
     private const val SECURITY_PROVIDER = "SunEC"
     private const val SECURITY_ALGORITHM = "SHA256withECDSA"
     private const val SECURITY_KEYTYPE = "EC"
-    private val applicationConfiguration = ApplicationConfiguration.getInstance()
+    private val applicationConfigurationViewModel = ApplicationConfigurationViewModel.getInstance()
 
     private lateinit var publicKey: PublicKey
     private lateinit var privateKey: PrivateKey
@@ -26,10 +26,10 @@ object SigningUtil {
     fun initializeKeys(): Boolean {
         try {
             privateKey = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePrivate(
-                PKCS8EncodedKeySpec(File(applicationConfiguration.privateKeyPath).readBytes())
+                PKCS8EncodedKeySpec(File(applicationConfigurationViewModel.privateKeyPath).readBytes())
             )
             publicKey = KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER).generatePublic(
-                X509EncodedKeySpec(File(applicationConfiguration.publicKeyPath).readBytes())
+                X509EncodedKeySpec(File(applicationConfigurationViewModel.publicKeyPath).readBytes())
             )
         } catch (e: Exception) {
             showErrorDialog("Invalid key: ${e.message}")

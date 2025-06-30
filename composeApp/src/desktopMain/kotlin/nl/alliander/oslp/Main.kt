@@ -16,6 +16,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.ObjectOutputStream
 import nl.alliander.oslp.models.ApplicationConfiguration
+import nl.alliander.oslp.models.ApplicationConfigurationViewModel
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.service.RequestService
@@ -49,11 +50,11 @@ fun main() = application {
 }
 
 fun storeConfiguration() {
-    val config = ApplicationConfiguration.getInstance()
+    val config = ApplicationConfigurationViewModel.getInstance()
     val file = File("app_config")
 
     ObjectOutputStream(FileOutputStream(file)).use { output ->
-        output.writeObject(config)
+        output.writeObject(ApplicationConfiguration.fromModel(config))
     }
 
     println("Configuratie opgeslagen naar ${file.absolutePath}")

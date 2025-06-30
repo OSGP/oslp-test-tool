@@ -1,0 +1,43 @@
+package nl.alliander.oslp.models
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import java.io.File
+import java.io.FileInputStream
+import java.io.ObjectInputStream
+import java.io.Serializable
+
+class ApplicationConfigurationViewModel : Serializable {
+    var latitude: Int by mutableStateOf(52260857)
+    var longitude: Int by mutableStateOf(5263121)
+    var clientAddress: String by mutableStateOf("localhost")
+    var clientPort: Int by mutableStateOf(12124)
+    var serverSocketAddress: String by mutableStateOf("localhost")
+    var serverSocketPort: Int by mutableStateOf(12122)
+    var privateKeyPath: String by mutableStateOf("")
+    var publicKeyPath: String by mutableStateOf("")
+
+    companion object {
+        private var instance: ApplicationConfigurationViewModel? = null
+
+        fun getInstance(): ApplicationConfigurationViewModel =
+            instance ?: readOrCreateInstance().also { instance = it }
+
+        private fun readOrCreateInstance(): ApplicationConfigurationViewModel {
+            val file = File("app_config")
+            if (file.exists()) {
+                return ObjectInputStream(FileInputStream(file)).use { input ->
+                    input.readObject() as ApplicationConfiguration
+                }.toModel()
+            }
+
+            return ApplicationConfigurationViewModel()
+        }
+    }
+
+    fun validLocationConfiguration(): Boolean = latitude > 0 && longitude > 0
+    fun validConnectionConfiguration(): Boolean =
+        clientAddress.isNotEmpty() && clientPort > 0 && serverSocketAddress.isNotEmpty() && serverSocketPort > 0
+}
+

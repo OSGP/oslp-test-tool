@@ -1,49 +1,43 @@
 package nl.alliander.oslp.models
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import java.io.File
-import java.io.FileInputStream
-import java.io.ObjectInputStream
 import java.io.Serializable
 
+
 data class ApplicationConfiguration(
-    var latitude: Int = 52260857,
-    var longitude: Int = 5263121,
-    var clientAddress: String = "localhost",
-    var clientPort: Int = 12124,
-    var serverSocketAddress: String = "localhost",
-    var serverSocketPort: Int = 12122,
-    var privateKeyPath: String = "",
-    var publicKeyPath: String = ""
+    val latitude: Int,
+    val longitude: Int,
+    val clientAddress: String,
+    val clientPort: Int,
+    val serverSocketAddress: String,
+    val serverSocketPort: Int,
+    val privateKeyPath: String,
+    val publicKeyPath: String,
 ) : Serializable {
-    var privateKeyUploaded by mutableStateOf(false)
-    var publicKeyUploaded by mutableStateOf(false)
 
-    companion object {
-        private var instance: ApplicationConfiguration? = null
-
-        fun getInstance(): ApplicationConfiguration =
-            instance ?: readOrCreateInstance().also { instance = it }
-
-        private fun readOrCreateInstance(): ApplicationConfiguration {
-            val file = File("app_config")
-            if (file.exists()) {
-                return ObjectInputStream(FileInputStream(file)).use { input ->
-                    input.readObject() as ApplicationConfiguration
-                }.also { config ->
-                    config.privateKeyUploaded = config.privateKeyPath.isNotEmpty()
-                    config.publicKeyUploaded = config.publicKeyPath.isNotEmpty()
-                }
-            }
-
-            return ApplicationConfiguration()
-        }
+    fun toModel(): ApplicationConfigurationViewModel {
+        val model = ApplicationConfigurationViewModel()
+        model.latitude = latitude
+        model.longitude = longitude
+        model.clientAddress = clientAddress
+        model.clientPort = clientPort
+        model.serverSocketAddress = serverSocketAddress
+        model.serverSocketPort = serverSocketPort
+        model.privateKeyPath = privateKeyPath
+        model.publicKeyPath = publicKeyPath
+        return model
     }
 
-    fun validLocationConfiguration(): Boolean = latitude > 0 && longitude > 0
-    fun validConnectionConfiguration(): Boolean =
-        clientAddress.isNotEmpty() && clientPort > 0 && serverSocketAddress.isNotEmpty() && serverSocketPort > 0
+    companion object {
+        fun fromModel(applicationConfigurationViewModel: ApplicationConfigurationViewModel): ApplicationConfiguration =
+            ApplicationConfiguration(
+                applicationConfigurationViewModel.latitude,
+                applicationConfigurationViewModel.longitude,
+                applicationConfigurationViewModel.clientAddress,
+                applicationConfigurationViewModel.clientPort,
+                applicationConfigurationViewModel.serverSocketAddress,
+                applicationConfigurationViewModel.serverSocketPort,
+                applicationConfigurationViewModel.privateKeyPath,
+                applicationConfigurationViewModel.publicKeyPath
+            )
+    }
 }
-
