@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.alliander.oslp.domain.Envelope
-import nl.alliander.oslp.models.ConnectionConfiguration
+import nl.alliander.oslp.models.ApplicationConfiguration
 import nl.alliander.oslp.sockets.receive.ReceiveStrategy
 import nl.alliander.oslp.util.Logger
 
@@ -29,8 +29,8 @@ class ServerSocket {
                     .tcp()
                     .bind(
                         InetSocketAddress(
-                            ConnectionConfiguration.serverSocketAddress,
-                            ConnectionConfiguration.serverSocketPort,
+                            ApplicationConfiguration.getInstance().serverSocketAddress,
+                            ApplicationConfiguration.getInstance().serverSocketPort,
                         )
                     )
             Logger.log("Server is listening on address: ${serverSocket.localAddress}")

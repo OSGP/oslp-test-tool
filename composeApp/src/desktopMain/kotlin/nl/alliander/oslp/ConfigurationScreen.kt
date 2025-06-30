@@ -19,27 +19,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import javax.swing.JFileChooser
 import nl.alliander.oslp.components.KeyUploadButton
-import nl.alliander.oslp.models.ConnectionConfiguration
-import nl.alliander.oslp.models.KeyConfiguration
-import nl.alliander.oslp.models.LocationConfiguration
+import nl.alliander.oslp.models.ApplicationConfiguration
 
 @Composable
 fun ConfigurationScreen(onContinue: () -> Unit) {
+    val applicationConfiguration = ApplicationConfiguration.getInstance()
+
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text("Configuration", style = MaterialTheme.typography.h6)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = ConnectionConfiguration.serverSocketAddress,
-                    onValueChange = { ConnectionConfiguration.serverSocketAddress = it },
+                    value = applicationConfiguration.serverSocketAddress,
+                    onValueChange = { applicationConfiguration.serverSocketAddress = it },
                     label = { Text("Test tool address") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
                 )
                 TextField(
-                    value = ConnectionConfiguration.serverSocketPort.toString(),
-                    onValueChange = { ConnectionConfiguration.serverSocketPort = it.toIntOrNull() ?: 0 },
+                    value = applicationConfiguration.serverSocketPort.toString(),
+                    onValueChange = { applicationConfiguration.serverSocketPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Test tool port") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
@@ -48,15 +48,15 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = ConnectionConfiguration.clientAddress,
-                    onValueChange = { ConnectionConfiguration.clientAddress = it },
+                    value = applicationConfiguration.clientAddress,
+                    onValueChange = { applicationConfiguration.clientAddress = it },
                     label = { Text("Device address") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
                 )
                 TextField(
-                    value = ConnectionConfiguration.clientPort.toString(),
-                    onValueChange = { ConnectionConfiguration.clientPort = it.toIntOrNull() ?: 0 },
+                    value = applicationConfiguration.clientPort.toString(),
+                    onValueChange = { applicationConfiguration.clientPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Device port") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
@@ -65,15 +65,15 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = LocationConfiguration.latitude.toString(),
-                    onValueChange = { LocationConfiguration.latitude = it.toIntOrNull() ?: 0 },
+                    value = applicationConfiguration.latitude.toString(),
+                    onValueChange = { applicationConfiguration.latitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Latitude") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
                 )
                 TextField(
-                    value = LocationConfiguration.longitude.toString(),
-                    onValueChange = { LocationConfiguration.longitude = it.toIntOrNull() ?: 0 },
+                    value = applicationConfiguration.longitude.toString(),
+                    onValueChange = { applicationConfiguration.longitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Longitude") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
@@ -83,28 +83,28 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 KeyUploadButton(
                     label = "Upload Private Key",
-                    uploadedBytes = KeyConfiguration.privateKeyBytes,
+                    keyUploaded = ApplicationConfiguration.privateKeyUploaded,
                     onUploadClick = {
                         val fileChooser = JFileChooser()
                         val result = fileChooser.showOpenDialog(null)
                         if (result == JFileChooser.APPROVE_OPTION) {
                             val file = fileChooser.selectedFile
-                            val bytes = file.readBytes()
-                            KeyConfiguration.privateKeyBytes = bytes
+                            applicationConfiguration.privateKeyPath = file.path
+                            ApplicationConfiguration.privateKeyUploaded = true
                         }
                     },
                 )
 
                 KeyUploadButton(
                     label = "Upload Public Key",
-                    uploadedBytes = KeyConfiguration.publicKeyBytes,
+                    keyUploaded = ApplicationConfiguration.publicKeyUploaded,
                     onUploadClick = {
                         val fileChooser = JFileChooser()
                         val result = fileChooser.showOpenDialog(null)
                         if (result == JFileChooser.APPROVE_OPTION) {
                             val file = fileChooser.selectedFile
-                            val bytes = file.readBytes()
-                            KeyConfiguration.publicKeyBytes = bytes
+                            applicationConfiguration.publicKeyPath = file.path
+                            ApplicationConfiguration.publicKeyUploaded = true
                         }
                     },
                 )
@@ -113,9 +113,8 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
             Button(
                 onClick = onContinue,
                 enabled =
-                    KeyConfiguration.validKeys() &&
-                        ConnectionConfiguration.validConnectionConfiguration() &&
-                        LocationConfiguration.validLocationConfiguration(),
+                    applicationConfiguration.validConnectionConfiguration() &&
+                            applicationConfiguration.validLocationConfiguration()
             ) {
                 Text("Continue")
             }

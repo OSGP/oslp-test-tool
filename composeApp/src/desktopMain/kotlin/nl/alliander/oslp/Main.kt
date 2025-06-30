@@ -12,10 +12,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import java.io.File
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+import nl.alliander.oslp.models.ApplicationConfiguration
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.service.RequestService
 import nl.alliander.oslp.sockets.ServerSocket
+import nl.alliander.oslp.util.SigningUtil
 
 fun main() = application {
     val requestService = remember { RequestService() }
@@ -32,10 +37,24 @@ fun main() = application {
         var isConfigured by remember { mutableStateOf(false) }
 
         if (!isConfigured) {
-            ConfigurationScreen(onContinue = { isConfigured = true })
+            ConfigurationScreen(onContinue = {
+                isConfigured = SigningUtil.initializeKeys()
+                storeConfiguration()
+            })
         } else {
             LaunchedEffect(Unit) { serverSocket.startListening() }
             App(requestService, mainViewModel)
         }
     }
+}
+
+fun storeConfiguration() {
+    val config = ApplicationConfiguration.getInstance()
+    val file = File("app_config")
+
+    ObjectOutputStream(FileOutputStream(file)).use { output ->
+        output.writeObject(config)
+    }
+
+    println("Configuratie opgeslagen naar ${file.absolutePath}")
 }
