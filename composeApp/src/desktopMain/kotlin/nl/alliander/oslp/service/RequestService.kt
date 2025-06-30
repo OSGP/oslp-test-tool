@@ -14,7 +14,9 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import nl.alliander.oslp.domain.Envelope
+import nl.alliander.oslp.exception.InvalidJsonException
 import nl.alliander.oslp.sockets.ClientSocket
+import nl.alliander.oslp.util.Logger
 import nl.alliander.oslp.util.SigningUtil
 import nl.alliander.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp
@@ -97,20 +99,31 @@ class RequestService() {
     }
 
     fun sendJsonCommands(bytes: ByteArray) {
-        val requests = parseBytesToJsonArray(bytes)
-
-        for (request in requests) {
-            val message = Message.newBuilder()
-            JsonFormat.parser().merge(request.jsonObject.toString(), message)
-            sendAndReceiveRequest(message.build())
+        runCatching {
+            parseBytesToJsonArray(bytes).forEach {
+                val message = Message.newBuilder()
+                JsonFormat.parser().merge(it.jsonObject.toString(), message)
+                sendAndReceiveRequest(message.build())
+            }
+        }.onFailure { error ->
+            Logger.logError(error.message ?: "Invalid JSON file")
         }
     }
 
     private fun parseBytesToJsonArray(bytes: ByteArray): JsonArray {
         val jsonString = bytes.toString(Charsets.UTF_8)
+        try {
+            val root = Json.parseToJsonElement(jsonString).jsonObject
+            validateJsonRequest(root["requests"]?.jsonArray)
+            return Json.parseToJsonElement(jsonString).jsonArray
+        } catch (_: IllegalArgumentException) {
+            throw InvalidJsonException("Invalid JSON file")
+        }
+    }
 
-        val root = Json.parseToJsonElement(jsonString).jsonObject
-        return root["requests"]?.jsonArray ?: error("Missing 'requests' array")
+    private fun validateJsonRequest(jsonArray: JsonArray?) {
+        jsonArray ?: throw InvalidJsonException("Missing requests object list")
+        if (jsonArray.isEmpty()) throw InvalidJsonException("No commands found in the json file")
     }
 
     private fun sendAndReceiveRequest(payload: Message) {

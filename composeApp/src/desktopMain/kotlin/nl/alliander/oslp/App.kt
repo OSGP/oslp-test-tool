@@ -136,6 +136,7 @@ fun App(requestService: RequestService, viewModel: MainViewModel) {
                             requestService.sendJsonCommands(file.readBytes())
                         }
                     },
+                    enabled = viewModel.isConfirmed,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text("Send JSON message")

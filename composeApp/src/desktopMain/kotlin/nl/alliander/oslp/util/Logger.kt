@@ -18,6 +18,11 @@ object Logger {
         appendLog(message)
     }
 
+    fun logError(message: String) {
+        appendLog("ERROR: $message")
+    }
+
+
     fun logReceive(message: String) {
         val messageToLog = message.trim().prependIndent("< ")
         log(messageToLog)
