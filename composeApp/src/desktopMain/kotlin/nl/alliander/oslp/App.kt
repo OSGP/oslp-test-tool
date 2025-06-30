@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import javax.swing.JFileChooser
 import nl.alliander.oslp.components.CircleIndicator
 import nl.alliander.oslp.components.CommandButton
 import nl.alliander.oslp.components.SetLightRow
@@ -127,8 +128,15 @@ fun App(requestService: RequestService, viewModel: MainViewModel) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { Logger.log("Send JSON message clicked") },
-                    enabled = false,
+                    onClick = {
+                        val fileChooser = JFileChooser()
+                        val result = fileChooser.showOpenDialog(null)
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            val file = fileChooser.selectedFile
+                            requestService.sendJsonCommands(file.readBytes())
+                        }
+                    },
+                    enabled = viewModel.isConfirmed,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text("Send JSON message")

@@ -8,7 +8,6 @@ import nl.alliander.oslp.models.MainViewModel
 class DeviceStateService private constructor(private val mainViewModel: MainViewModel) {
     private var deviceRegistered = false
     private var deviceRegistrationConfirmed = false
-    private var relayEnabled = mutableListOf(false, false, false)
 
     var deviceId: ByteArray = byteArrayOf()
     var sequenceNumber: Int = 0
