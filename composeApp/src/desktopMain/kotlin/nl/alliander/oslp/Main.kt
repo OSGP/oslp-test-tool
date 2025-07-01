@@ -12,10 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import java.io.File
-import kotlinx.serialization.json.Json
 import nl.alliander.oslp.models.ApplicationConfiguration
-import nl.alliander.oslp.models.ApplicationConfigurationViewModel
 import nl.alliander.oslp.models.MainViewModel
 import nl.alliander.oslp.service.DeviceStateService
 import nl.alliander.oslp.service.RequestService
@@ -33,27 +30,27 @@ fun main() = application {
 
     val state = rememberWindowState(width = 1280.dp, height = 720.dp)
 
+    val configurationViewModel = ApplicationConfiguration.get().toModel()
+
     Window(onCloseRequest = ::exitApplication, title = "OSLP Test Tool", state = state) {
         var isConfigured by remember { mutableStateOf(false) }
 
         if (!isConfigured) {
             ConfigurationScreen(
+                configurationViewModel,
                 onContinue = {
+                    val config = ApplicationConfiguration.update(configurationViewModel)
+
                     isConfigured = SigningUtil.initializeKeys()
+
                     if (isConfigured) {
-                        storeConfiguration()
+                        config.storeConfiguration()
                     }
-                }
+                },
             )
         } else {
             LaunchedEffect(Unit) { serverSocket.startListening() }
             App(requestService, mainViewModel)
         }
     }
-}
-
-fun storeConfiguration() {
-    val config = ApplicationConfigurationViewModel.getInstance()
-    val file = File("app_config.json")
-    file.writeText(Json.encodeToString(ApplicationConfiguration.fromModel(config)))
 }

@@ -22,8 +22,7 @@ import nl.alliander.oslp.components.KeyUploadButton
 import nl.alliander.oslp.models.ApplicationConfigurationViewModel
 
 @Composable
-fun ConfigurationScreen(onContinue: () -> Unit) {
-    val applicationConfigurationViewModel = ApplicationConfigurationViewModel.getInstance()
+fun ConfigurationScreen(viewModel: ApplicationConfigurationViewModel, onContinue: () -> Unit) {
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -31,15 +30,15 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = applicationConfigurationViewModel.serverSocketAddress,
-                    onValueChange = { applicationConfigurationViewModel.serverSocketAddress = it },
+                    value = viewModel.serverSocketAddress,
+                    onValueChange = { viewModel.serverSocketAddress = it },
                     label = { Text("Test tool address") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
                 )
                 TextField(
-                    value = applicationConfigurationViewModel.serverSocketPort.toString(),
-                    onValueChange = { applicationConfigurationViewModel.serverSocketPort = it.toIntOrNull() ?: 0 },
+                    value = viewModel.serverSocketPort.toString(),
+                    onValueChange = { viewModel.serverSocketPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Test tool port") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
@@ -48,15 +47,15 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = applicationConfigurationViewModel.clientAddress,
-                    onValueChange = { applicationConfigurationViewModel.clientAddress = it },
+                    value = viewModel.clientAddress,
+                    onValueChange = { viewModel.clientAddress = it },
                     label = { Text("Device address") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
                 )
                 TextField(
-                    value = applicationConfigurationViewModel.clientPort.toString(),
-                    onValueChange = { applicationConfigurationViewModel.clientPort = it.toIntOrNull() ?: 0 },
+                    value = viewModel.clientPort.toString(),
+                    onValueChange = { viewModel.clientPort = it.toIntOrNull() ?: 0 },
                     label = { Text("Device port") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
@@ -65,15 +64,15 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextField(
-                    value = applicationConfigurationViewModel.latitude.toString(),
-                    onValueChange = { applicationConfigurationViewModel.latitude = it.toIntOrNull() ?: 0 },
+                    value = viewModel.latitude.toString(),
+                    onValueChange = { viewModel.latitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Latitude") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
                 )
                 TextField(
-                    value = applicationConfigurationViewModel.longitude.toString(),
-                    onValueChange = { applicationConfigurationViewModel.longitude = it.toIntOrNull() ?: 0 },
+                    value = viewModel.longitude.toString(),
+                    onValueChange = { viewModel.longitude = it.toIntOrNull() ?: 0 },
                     label = { Text("Longitude") },
                     singleLine = true,
                     modifier = Modifier.width(250.dp),
@@ -83,26 +82,26 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 KeyUploadButton(
                     label = "Upload Private Key",
-                    filePath = applicationConfigurationViewModel.privateKeyPath,
+                    filePath = viewModel.privateKeyPath,
                     onUploadClick = {
                         val fileChooser = JFileChooser()
                         val result = fileChooser.showOpenDialog(null)
                         if (result == JFileChooser.APPROVE_OPTION) {
                             val file = fileChooser.selectedFile
-                            applicationConfigurationViewModel.privateKeyPath = file.path
+                            viewModel.privateKeyPath = file.path
                         }
                     },
                 )
 
                 KeyUploadButton(
                     label = "Upload Public Key",
-                    filePath = applicationConfigurationViewModel.publicKeyPath,
+                    filePath = viewModel.publicKeyPath,
                     onUploadClick = {
                         val fileChooser = JFileChooser()
                         val result = fileChooser.showOpenDialog(null)
                         if (result == JFileChooser.APPROVE_OPTION) {
                             val file = fileChooser.selectedFile
-                            applicationConfigurationViewModel.publicKeyPath = file.path
+                            viewModel.publicKeyPath = file.path
                         }
                     },
                 )
@@ -110,9 +109,7 @@ fun ConfigurationScreen(onContinue: () -> Unit) {
 
             Button(
                 onClick = onContinue,
-                enabled =
-                    applicationConfigurationViewModel.validConnectionConfiguration() &&
-                        applicationConfigurationViewModel.validLocationConfiguration(),
+                enabled = viewModel.validConnectionConfiguration() && viewModel.validLocationConfiguration(),
             ) {
                 Text("Continue")
             }
