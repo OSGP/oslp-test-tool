@@ -40,7 +40,9 @@ fun main() = application {
             ConfigurationScreen(
                 onContinue = {
                     isConfigured = SigningUtil.initializeKeys()
-                    storeConfiguration()
+                    if (isConfigured) {
+                        storeConfiguration()
+                    }
                 }
             )
         } else {
