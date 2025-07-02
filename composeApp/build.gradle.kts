@@ -6,8 +6,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.spotless)
-
-    kotlin("plugin.serialization") version libs.versions.kotlin
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -32,7 +31,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.protobufKotlin)
             implementation(libs.ktor)
-            implementation(libs.kotlinSerialization)
+            implementation(libs.kotlinSerializationJson)
             implementation(libs.protobufJavaUtil)
         }
     }
