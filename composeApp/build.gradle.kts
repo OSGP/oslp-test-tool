@@ -39,7 +39,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "nl.alliander.oslp.MainKt"
+        mainClass = "org.lfenergy.gxf.oslp.MainKt"
 
         buildTypes.release.proguard {
             isEnabled = true
