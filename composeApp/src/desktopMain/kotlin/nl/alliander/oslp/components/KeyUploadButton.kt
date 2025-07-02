@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun KeyUploadButton(label: String, uploadedBytes: ByteArray?, onUploadClick: () -> Unit) {
-    val buttonColor = if (uploadedBytes != null) Color(0xFF4CAF50) else Color(0xFFF44336)
+fun KeyUploadButton(label: String, filePath: String, onUploadClick: () -> Unit) {
+    val buttonColor = if (filePath.isNotEmpty()) Color(0xFF4CAF50) else Color(0xFFF44336)
 
     Button(
         onClick = onUploadClick,

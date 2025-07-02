@@ -8,7 +8,7 @@ ktor = "3.2.0"
 protobuf = "4.31.1"
 protobufPlugin = "0.9.5"
 spotless = "7.0.4"
-kotlinSerialization = "1.8.1"
+kotlinSerializationJson = "1.9.0"
 protobufJavaUtil = "4.31.1"
 
 [libraries]
@@ -18,7 +18,7 @@ kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-co
 ktor = { group = "io.ktor", name = "ktor-network", version.ref = "ktor" }
 protobufKotlin = { group = "com.google.protobuf", name = "protobuf-kotlin", version.ref = "protobuf" }
 protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
-kotlinSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+kotlinSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJson" }
 protobufJavaUtil = { group = "com.google.protobuf", name = "protobuf-java-util", version.ref = "protobufJavaUtil" }
 
 [plugins]
@@ -29,3 +29,4 @@ kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

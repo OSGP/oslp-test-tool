@@ -3,16 +3,46 @@
 // SPDX-License-Identifier: Apache-2.0
 package nl.alliander.oslp.util
 
+import java.io.File
+import java.security.KeyFactory
+import java.security.PrivateKey
+import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.Signature
-import nl.alliander.oslp.models.KeyConfiguration
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
+import javax.swing.JOptionPane
+import nl.alliander.oslp.models.ApplicationConfiguration
 
 object SigningUtil {
+    private const val SECURITY_PROVIDER = "SunEC"
+    private const val SECURITY_ALGORITHM = "SHA256withECDSA"
+    private const val SECURITY_KEYTYPE = "EC"
+
+    private lateinit var publicKey: PublicKey
+    private lateinit var privateKey: PrivateKey
+
+    private val config = ApplicationConfiguration.get()
+
+    fun initializeKeys(): Boolean {
+        try {
+            privateKey =
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
+                    .generatePrivate(PKCS8EncodedKeySpec(File(config.privateKeyPath).readBytes()))
+            publicKey =
+                KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
+                    .generatePublic(X509EncodedKeySpec(File(config.publicKeyPath).readBytes()))
+        } catch (e: Exception) {
+            showErrorDialog("Invalid key: ${e.message}")
+            return false
+        }
+        return true
+    }
 
     fun createSignature(message: ByteArray): ByteArray =
         Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER)
             .apply {
-                initSign(KeyConfiguration.privateKey, SecureRandom())
+                initSign(privateKey, SecureRandom())
                 update(message)
             }
             .sign()
@@ -20,7 +50,7 @@ object SigningUtil {
     fun verifySignature(message: ByteArray, securityKey: ByteArray): Boolean {
         val builder =
             Signature.getInstance(SECURITY_ALGORITHM, SECURITY_PROVIDER).apply {
-                initVerify(KeyConfiguration.publicKey)
+                initVerify(publicKey)
                 update(message)
             }
 
@@ -31,6 +61,7 @@ object SigningUtil {
         return builder.verify(truncatedKey)
     }
 
-    private const val SECURITY_PROVIDER = "SunEC"
-    private const val SECURITY_ALGORITHM = "SHA256withECDSA"
+    private fun showErrorDialog(message: String) {
+        JOptionPane.showMessageDialog(null, message, "Invalid key", JOptionPane.ERROR_MESSAGE)
+    }
 }
