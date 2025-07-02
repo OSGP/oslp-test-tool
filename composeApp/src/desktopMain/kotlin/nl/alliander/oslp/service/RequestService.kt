@@ -113,8 +113,9 @@ class RequestService() {
         val jsonString = bytes.toString(Charsets.UTF_8)
         try {
             val root = Json.parseToJsonElement(jsonString).jsonObject
-            validateJsonRequest(root["requests"]?.jsonArray)
-            return Json.parseToJsonElement(jsonString).jsonArray
+            val requests = root["requests"]?.jsonArray
+            validateJsonRequest(requests)
+            return requests!!
         } catch (_: IllegalArgumentException) {
             throw InvalidJsonException("Invalid JSON file")
         }
