@@ -29,6 +29,8 @@ jobs:
         with:
           dependency-graph: generate-and-submit
       - name: Build binaries
+        with:
+          disable-cache: true
         run: ./gradlew.bat build createReleaseDistributable packageReleaseMsi
       - name: Publish binaries
         uses: actions/upload-artifact@v4
