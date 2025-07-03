@@ -14,6 +14,10 @@
 -keep class io.ktor.util.date.GMTDate { *; }
 -keep class io.ktor.util.date.GMTDate$$serializer { *; }
 
+# --- Keep proto classes ---
+-keep class com.google.** { *; }
+-keep class org.opensmartgridplatform.oslp.** { *; }
+
 # --- General kotlinx.serialization support ---
 -keep class kotlinx.serialization.** { *; }
 -keepclassmembers class ** {
