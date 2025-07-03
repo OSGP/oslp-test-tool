@@ -16,6 +16,7 @@
 
 # --- Keep proto classes ---
 -keep class com.google.protobuf.** { *; }
+-keep class org.opensmartgridplatform.oslp.** { *; }
 
 # --- General kotlinx.serialization support ---
 -keep class kotlinx.serialization.** { *; }
