@@ -40,9 +40,8 @@ class RequestService() {
         val payload =
             Message.newBuilder().setStartSelfTestRequest(Oslp.StartSelfTestRequest.newBuilder().build()).build()
 
-        sendAndReceiveRequest(payload)
-
         GlobalScope.launch {
+            sendAndReceiveRequest(payload)
             delay(10_000)
             stopSelfTest()
         }
