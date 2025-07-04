@@ -29,6 +29,7 @@ Settings to configure:
 * **Private key**: Platform private key
 * **Public key**: Device public key
 
+For more detailed documentation about OSLP and the operations please refer to the [OSLP Documentation](https://grid-exchange-fabric.gitbook.io/gxf/protocols/oslp/oslp-v0.6.1).
 
 ## Install instructions
 The application can be used as a portable application by extracting the oslp-test-tool directory from the /app directory in the zip file. The application can also be installed using the provided MSI installer.
