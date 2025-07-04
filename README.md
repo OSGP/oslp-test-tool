@@ -10,14 +10,14 @@ This is a Kotlin Multiplatform project targeting Desktop.
   It contains several subfolders:
   - `commonMain` contains the common resources for the application.
   - `desktopMain` contains the desktop-specific resources and code for the application. As the application is currently only targeting desktop, this is the only platform-specific folder.
-* The `protobuf` module contains the Protobuf definition of the latest OSLP version. Including the logic to generate and build the code.
+* The `protobuf` module contains the Protobuf definition of OSLP `0.6.1` updated for Protobuf version `4.31.1`, including the logic to generate and build the code.
 * The project uses a Gradle build system, which is configured in the `build.gradle.kts` file.
-* For connectivity the Ktor framework is used.
+* For connectivity, the Ktor framework is used.
 
 ## Functional description
 
 This tool is designed to test devices that implement the Open Smart Lighting Protocol. It features a UI that allows users to send and receive messages from a connected device.
-It's build to act as the platform to which OSLP enabled devices connect to.
+It's built to act as the platform to which OSLP enabled devices connect to.
 
 Settings to configure:
 * **Test tool address**: The address the tool wil listen on.
