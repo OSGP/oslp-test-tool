@@ -20,7 +20,7 @@ This tool is designed to test devices that implement the Open Smart Lighting Pro
 It's built to act as the platform to which OSLP enabled devices connect to.
 
 Settings to configure:
-* **Test tool address**: The address the tool wil listen on.
+* **Test tool address**: The address the tool will listen on.
 * **Test tool port**: The port the tool will listen on.
 * **Device address**: The address of the device to connect to.
 * **Device port**: The port of the device to connect to.
