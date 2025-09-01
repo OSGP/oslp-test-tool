@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.ktor)
             implementation(libs.kotlinSerializationJson)
             implementation(libs.protobufJavaUtil)
+            implementation(libs.oslpMessageSigning)
         }
     }
 }
@@ -64,5 +65,24 @@ extensions.configure<SpotlessExtension> {
         ktfmt().kotlinlangStyle().configure { it.setMaxWidth(120) }
 
         licenseHeaderFile(file("../spotless/license-header-template.kt"))
+    }
+}
+
+repositories {
+    google {
+        mavenContent {
+            includeGroupAndSubgroups("androidx")
+            includeGroupAndSubgroups("com.android")
+            includeGroupAndSubgroups("com.google")
+        }
+    }
+    mavenCentral()
+    maven {
+        name = "GXFGithubPackages"
+        url = uri("https://maven.pkg.github.com/osgp/*")
+        credentials {
+            username = project.findProperty("github.username") as String? ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("github.token") as String? ?: System.getenv("GITHUB_TOKEN")
+        }
     }
 }

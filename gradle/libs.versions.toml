@@ -10,6 +10,7 @@ protobufPlugin = "0.9.5"
 spotless = "7.2.1"
 kotlinSerializationJson = "1.9.0"
 protobufJavaUtil = "4.31.1"
+gxfUtils = "2.6.1"
 
 [libraries]
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -20,6 +21,7 @@ protobufKotlin = { group = "com.google.protobuf", name = "protobuf-kotlin", vers
 protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 kotlinSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJson" }
 protobufJavaUtil = { group = "com.google.protobuf", name = "protobuf-java-util", version.ref = "protobufJavaUtil" }
+oslpMessageSigning = { group = "com.gxf.utilities", name = "oslp-message-signing", version.ref = "gxfUtils" }
 
 [plugins]
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

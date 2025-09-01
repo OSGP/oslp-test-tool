@@ -5,7 +5,7 @@ package org.lfenergy.gxf.oslp.sockets.receive
 
 import org.lfenergy.gxf.oslp.domain.Envelope
 import org.lfenergy.gxf.oslp.util.Logger
-import org.lfenergy.gxf.oslp.util.SigningUtil
+import org.lfenergy.gxf.oslp.util.OslpSigningUtil
 import org.lfenergy.gxf.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp.Message
 
@@ -26,10 +26,11 @@ abstract class ReceiveStrategy {
     private fun validateSignature(requestEnvelope: Envelope): Boolean {
         val verified =
             with(requestEnvelope) {
-                SigningUtil.verifySignature(
-                    sequenceNumber.toByteArray(2) + deviceId + lengthIndicator.toByteArray(2) + messageBytes,
-                    securityKey,
-                )
+                OslpSigningUtil.getInstance()
+                    .verifySignature(
+                        sequenceNumber.toByteArray(2) + deviceId + lengthIndicator.toByteArray(2) + messageBytes,
+                        securityKey,
+                    )
             }
 
         if (!verified) {
@@ -41,12 +42,13 @@ abstract class ReceiveStrategy {
 
     private fun createResponseEnvelope(requestEnvelope: Envelope, responsePayload: ByteArray): Envelope {
         val securityKey =
-            SigningUtil.createSignature(
-                requestEnvelope.sequenceNumber.toByteArray(2) +
-                    requestEnvelope.deviceId +
-                    responsePayload.size.toByteArray(2) +
-                    responsePayload
-            )
+            OslpSigningUtil.getInstance()
+                .createSignature(
+                    requestEnvelope.sequenceNumber.toByteArray(2) +
+                        requestEnvelope.deviceId +
+                        responsePayload.size.toByteArray(2) +
+                        responsePayload
+                )
 
         return Envelope(
             securityKey,
