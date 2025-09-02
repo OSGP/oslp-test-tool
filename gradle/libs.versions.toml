@@ -1,5 +1,5 @@
 [versions]
-androidx-lifecycle = "2.9.2"
+androidx-lifecycle = "2.9.3"
 compose-multiplatform = "1.8.2"
 gradleWrapperUpgrade = "0.12"
 kotlin = "2.2.10"
