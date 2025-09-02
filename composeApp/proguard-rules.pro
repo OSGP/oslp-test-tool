@@ -60,7 +60,7 @@
 -dontwarn io.github.oshai.kotlinlogging.logback.internal.LogbackLoggerWrapper
 
 # Suppress warnings for missing LogbackLogEvent methods
--dontwarn io.github.oshai.kotlinlogging.logback.internal.LogbackLogEven
+-dontwarn io.github.oshai.kotlinlogging.logback.internal.LogbackLogEvent
 
 
 -dontwarn com.oracle.svm.core.annotate.Substitute
