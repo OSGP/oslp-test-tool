@@ -17,7 +17,7 @@ import org.lfenergy.gxf.oslp.domain.Envelope
 import org.lfenergy.gxf.oslp.exception.InvalidJsonException
 import org.lfenergy.gxf.oslp.sockets.ClientSocket
 import org.lfenergy.gxf.oslp.util.Logger
-import org.lfenergy.gxf.oslp.util.SigningUtil
+import org.lfenergy.gxf.oslp.util.OslpSigningUtil
 import org.lfenergy.gxf.oslp.util.toByteArray
 import org.opensmartgridplatform.oslp.Oslp
 import org.opensmartgridplatform.oslp.Oslp.LightValue
@@ -134,9 +134,10 @@ class RequestService() {
         val messageBytes = payload.toByteArray()
 
         val signature =
-            SigningUtil.createSignature(
-                sequenceNumber.toByteArray(2) + deviceId + lengthIndicator.toByteArray(2) + messageBytes
-            )
+            OslpSigningUtil.getInstance()
+                .createSignature(
+                    sequenceNumber.toByteArray(2) + deviceId + lengthIndicator.toByteArray(2) + messageBytes
+                )
 
         val request = Envelope(signature, sequenceNumber, deviceId, lengthIndicator, messageBytes)
 

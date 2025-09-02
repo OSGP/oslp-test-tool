@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.ktor)
             implementation(libs.kotlinSerializationJson)
             implementation(libs.protobufJavaUtil)
+            implementation(libs.oslpMessageSigning)
         }
     }
 }
