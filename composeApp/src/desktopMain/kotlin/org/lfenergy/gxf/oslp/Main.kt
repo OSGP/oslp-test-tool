@@ -17,6 +17,7 @@ import org.lfenergy.gxf.oslp.models.MainViewModel
 import org.lfenergy.gxf.oslp.service.DeviceStateService
 import org.lfenergy.gxf.oslp.service.RequestService
 import org.lfenergy.gxf.oslp.sockets.ServerSocket
+import org.lfenergy.gxf.oslp.util.OslpSigningUtil
 
 fun main() = application {
     val requestService = remember { RequestService() }
@@ -40,7 +41,9 @@ fun main() = application {
                 onContinue = {
                     val config = ApplicationConfiguration.update(configurationViewModel)
 
-                    config.storeConfiguration()
+                    if (OslpSigningUtil.getInstance().oslpKeyProvider.initializeKeys()) {
+                        config.storeConfiguration()
+                    }
                 },
             )
         } else {

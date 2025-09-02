@@ -6,15 +6,16 @@ package org.lfenergy.gxf.oslp.util
 import com.gxf.utilities.oslp.message.signing.SigningUtil
 import com.gxf.utilities.oslp.message.signing.configuration.SigningProperties
 
-class OslpSigningUtil {
+class OslpSigningUtil(signingProperties: SigningProperties, val oslpKeyProvider: OslpKeyProvider) :
+    SigningUtil(signingProperties, oslpKeyProvider) {
 
     companion object {
-        private var instance: SigningUtil? = null
+        private var instance: OslpSigningUtil? = null
         private const val SECURITY_ALGORITHM = "SHA256withECDSA"
 
-        fun getInstance(): SigningUtil =
+        fun getInstance(): OslpSigningUtil =
             instance
-                ?: SigningUtil(
+                ?: OslpSigningUtil(
                         SigningProperties(OslpKeyProvider.SECURITY_PROVIDER, SECURITY_ALGORITHM),
                         OslpKeyProvider(),
                     )

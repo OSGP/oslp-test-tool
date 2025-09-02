@@ -24,7 +24,7 @@ class OslpKeyProvider : KeyProvider {
 
     private val config = ApplicationConfiguration.get()
 
-    init {
+    fun initializeKeys(): Boolean {
         try {
             privateKey =
                 KeyFactory.getInstance(SECURITY_KEYTYPE, SECURITY_PROVIDER)
@@ -34,7 +34,9 @@ class OslpKeyProvider : KeyProvider {
                     .generatePublic(X509EncodedKeySpec(File(config.publicKeyPath).readBytes()))
         } catch (e: Exception) {
             showErrorDialog("Invalid key: ${e.message}")
+            return false
         }
+        return true
     }
 
     override fun getPublicKey(): PublicKey {
