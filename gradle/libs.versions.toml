@@ -2,7 +2,7 @@
 androidx-lifecycle = "2.9.3"
 compose-multiplatform = "1.8.2"
 gradleWrapperUpgrade = "0.12"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 kotlinx-coroutines = "1.10.2"
 ktor = "3.2.3"
 protobuf = "4.32.0"
