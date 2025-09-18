@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -60,7 +61,9 @@ fun App(requestService: RequestService, viewModel: MainViewModel) {
                     CommandButton("Selftest (10 sec)", modifier, viewModel.isConfirmed) {
                         requestService.startSelfTest()
                     }
-                    CommandButton("Reboot", modifier, viewModel.isConfirmed) { requestService.startReboot() }
+                    CommandButton("Reboot", modifier, viewModel.isConfirmed && viewModel.isCommunicationEnabled) {
+                        requestService.startReboot()
+                    }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -156,6 +159,21 @@ fun App(requestService: RequestService, viewModel: MainViewModel) {
                 }
 
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.End) {
+                    Button(
+                        onClick = { viewModel.isCommunicationEnabled = !viewModel.isCommunicationEnabled },
+                        modifier = Modifier.padding(end = 8.dp),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                backgroundColor = if (viewModel.isCommunicationEnabled) Color.Green else Color.Red
+                            ),
+                    ) {
+                        Text(
+                            text =
+                                if (viewModel.isCommunicationEnabled) "Communication enabled"
+                                else "Communication disabled",
+                            color = Color.Black,
+                        )
+                    }
                     Button(onClick = { Logger.exportLogFile() }, modifier = Modifier.padding(end = 8.dp)) {
                         Text("Save logging to file")
                     }

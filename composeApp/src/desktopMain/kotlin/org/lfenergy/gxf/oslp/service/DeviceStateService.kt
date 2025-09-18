@@ -36,6 +36,10 @@ class DeviceStateService private constructor(private val mainViewModel: MainView
         syncState()
     }
 
+    fun isCommunicationDisabled(): Boolean {
+        return !mainViewModel.isCommunicationEnabled
+    }
+
     private fun syncState() {
         mainViewModel.isDeviceRegistered = deviceRegistered
         mainViewModel.isConfirmed = deviceRegistrationConfirmed
