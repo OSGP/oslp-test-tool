@@ -10,4 +10,5 @@ import androidx.compose.runtime.setValue
 class MainViewModel {
     var isDeviceRegistered by mutableStateOf(false)
     var isConfirmed by mutableStateOf(false)
+    var isCommunicationEnabled by mutableStateOf(true)
 }
