@@ -41,7 +41,7 @@ class ClientSocket() {
                 output.writeFully(requestEnvelope, 0, requestEnvelope.size)
 
                 if (deviceStateService.isCommunicationDisabled()) {
-                    Logger.log("Not listing for a response because the communication is disabled")
+                    Logger.log("Not listening for a response because the communication is disabled")
                     return@runBlocking null
                 }
 
