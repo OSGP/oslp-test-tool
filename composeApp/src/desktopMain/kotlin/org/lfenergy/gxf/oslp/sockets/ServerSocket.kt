@@ -17,6 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.lfenergy.gxf.oslp.domain.Envelope
 import org.lfenergy.gxf.oslp.models.ApplicationConfiguration
+import org.lfenergy.gxf.oslp.service.DeviceStateService
 import org.lfenergy.gxf.oslp.sockets.receive.ReceiveStrategy
 import org.lfenergy.gxf.oslp.util.Logger
 
@@ -24,6 +25,7 @@ class ServerSocket {
     @OptIn(DelicateCoroutinesApi::class)
     fun startListening() {
         val config = ApplicationConfiguration.get()
+        val deviceStateService = DeviceStateService.getInstance()
 
         GlobalScope.launch {
             val serverSocket =
@@ -47,14 +49,17 @@ class ServerSocket {
                         val requestEnvelope = Envelope.parseFrom(buffer.copyOf(bytesRead))
 
                         Logger.logReceive(requestEnvelope)
+                        if (deviceStateService.isCommunicationDisabled()) {
+                            Logger.log("Not sending a response back, because the communication is disabled")
+                        } else {
+                            val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
 
-                        val responseStrategy = ReceiveStrategy.getStrategyFor(requestEnvelope.message)
+                            responseStrategy(requestEnvelope)?.let { envelope ->
+                                val responseBytes = envelope.getBytes()
+                                output.writeFully(responseBytes)
 
-                        responseStrategy(requestEnvelope)?.let { envelope ->
-                            val responseBytes = envelope.getBytes()
-                            output.writeFully(responseBytes)
-
-                            Logger.logSend(envelope)
+                                Logger.logSend(envelope)
+                            }
                         }
                     }
                 } catch (e: InvalidProtocolBufferException) {
