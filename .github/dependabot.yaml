@@ -1,8 +1,15 @@
 version: 2
+registries:
+  maven-artifactory:
+    type: maven-repository
+    url:  https://maven.pkg.github.com/osgp/
+    username: IoTFDP
+    password: ${{secrets.IOTFDP_GITHUB_TOKEN}}
 updates:
   - package-ecosystem: "gradle"
     directory: "/"
     open-pull-requests-limit: 10
+    registries: "*"
     schedule:
       interval: "daily"
     groups:

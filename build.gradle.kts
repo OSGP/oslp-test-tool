@@ -31,3 +31,24 @@ tasks.withType<KotlinCompile> {
     dependsOn(tasks.named("updateGitHooks"))
     compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") }
 }
+
+subprojects {
+    repositories {
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
+        mavenCentral()
+        maven {
+            name = "GXFGithubPackages"
+            url = uri("https://maven.pkg.github.com/osgp/*")
+            credentials {
+                username = project.findProperty("github.username") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("github.token") as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
