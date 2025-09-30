@@ -169,8 +169,8 @@ fun App(requestService: RequestService, viewModel: MainViewModel) {
                     ) {
                         Text(
                             text =
-                                if (viewModel.isCommunicationEnabled) "Deactivate communication interruptions"
-                                else "Activate communication interruptions",
+                                if (viewModel.isCommunicationEnabled) "Activate communication interruptions"
+                                else "Deactivate communication interruptions",
                             color = Color.Black,
                         )
                     }
