@@ -20,6 +20,19 @@ wrapperUpgrade {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven {
+        name = "GXFGithubPackages"
+        url = uri("https://maven.pkg.github.com/osgp/*")
+        credentials {
+            username = project.findProperty("github.username") as String? ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("github.token") as String? ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+
 tasks.register<Copy>("updateGitHooks") {
     description = "Copies the pre-commit Git Hook to the .git/hooks folder."
     group = "verification"

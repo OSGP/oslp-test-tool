@@ -15,7 +15,6 @@ kotlin {
 
     sourceSets {
         val desktopMain by getting
-        all { dependencies { implementation(project(":protobuf")) } }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -33,6 +32,7 @@ kotlin {
             implementation(libs.ktor)
             implementation(libs.kotlinSerializationJson)
             implementation(libs.protobufJavaUtil)
+            implementation(libs.protoDefinitions)
         }
     }
 }
@@ -52,6 +52,18 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "oslp-test-tool"
             packageVersion = "1.0.0"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "GXFGithubPackages"
+        url = uri("https://maven.pkg.github.com/osgp/*")
+        credentials {
+            username = project.findProperty("github.username") as String? ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("github.token") as String? ?: System.getenv("GITHUB_TOKEN")
         }
     }
 }
