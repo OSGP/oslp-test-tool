@@ -1,6 +1,19 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        name = "GXFGithubPackages"
+        url = uri("https://maven.pkg.github.com/osgp/*")
+        credentials {
+            username = project.findProperty("github.username") as String? ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("github.token") as String? ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
