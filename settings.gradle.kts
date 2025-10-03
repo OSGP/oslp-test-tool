@@ -30,5 +30,3 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-
-include(":protobuf")
