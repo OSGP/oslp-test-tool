@@ -21,7 +21,7 @@ protobufKotlin = { group = "com.google.protobuf", name = "protobuf-kotlin", vers
 protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 kotlinSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJson" }
 protobufJavaUtil = { group = "com.google.protobuf", name = "protobuf-java-util", version.ref = "protobufJavaUtil" }
-protoDefinitions = { group = "org.lfenergy.gxf.oslp-protobuf", name = "oslp-protobuf", version.ref = "protoDefinitions"}
+protoDefinitions = { group = "org.lfenergy.gxf.oslp-protobuf", name = "oslp-protobuf", version.ref = "protoDefinitions" }
 
 [plugins]
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
