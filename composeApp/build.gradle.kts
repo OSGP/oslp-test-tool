@@ -41,7 +41,6 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation(libs.protobufKotlin)
             implementation(libs.ktor)
             implementation(libs.kotlinSerializationJson)
             implementation(libs.protobufJavaUtil)

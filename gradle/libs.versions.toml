@@ -17,8 +17,6 @@ androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 ktor = { group = "io.ktor", name = "ktor-network", version.ref = "ktor" }
-protobufKotlin = { group = "com.google.protobuf", name = "protobuf-kotlin", version.ref = "protobuf" }
-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 kotlinSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJson" }
 protobufJavaUtil = { group = "com.google.protobuf", name = "protobuf-java-util", version.ref = "protobufJavaUtil" }
 protoDefinitions = { group = "org.lfenergy.gxf.oslp-protobuf", name = "oslp-protobuf", version.ref = "protoDefinitions" }
