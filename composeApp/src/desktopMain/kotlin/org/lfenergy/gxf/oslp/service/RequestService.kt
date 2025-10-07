@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.gxf.oslp.service
 
-import com.google.protobuf.kotlin.toByteString
+import com.google.protobuf.ByteString
 import com.google.protobuf.util.JsonFormat
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -87,7 +87,7 @@ class RequestService() {
     fun setLightRequest(index: Int, on: Boolean) {
         val lightValue = LightValue.newBuilder()
         lightValue.setOn(on)
-        lightValue.setIndex(index.toByteArray(1).toByteString())
+        lightValue.setIndex(ByteString.copyFrom(index.toByteArray(1)))
 
         val payload =
             Message.newBuilder()
