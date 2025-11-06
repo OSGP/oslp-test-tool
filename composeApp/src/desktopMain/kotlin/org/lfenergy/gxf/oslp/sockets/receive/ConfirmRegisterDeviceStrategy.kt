@@ -37,7 +37,7 @@ class ConfirmRegisterDeviceStrategy : ReceiveStrategy() {
                     Oslp.ConfirmRegisterDeviceResponse.newBuilder()
                         .setRandomDevice(deviceStateService.randomDevice)
                         .setRandomPlatform(deviceStateService.randomPlatform)
-                        .setSequenceWindow(1)
+                        .setSequenceWindow(6)
                         .setStatusValue(0)
                         .build()
                 )
