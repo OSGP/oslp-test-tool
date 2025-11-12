@@ -17,6 +17,10 @@
 # --- Keep proto classes ---
 -keep class com.google.** { *; }
 -keep class org.opensmartgridplatform.oslp.** { *; }
+-keepclassmembers class com.google.protobuf.Descriptors$FileDescriptor {
+    <methods>;
+}
+-dontwarn com.google.protobuf.Descriptors$FileDescriptorTables
 
 # --- General kotlinx.serialization support ---
 -keep class kotlinx.serialization.** { *; }
