@@ -2,14 +2,14 @@
 androidx-lifecycle = "2.9.6"
 compose-multiplatform = "1.10.0"
 gradleWrapperUpgrade = "0.12"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 kotlinx-coroutines = "1.10.2"
 ktor = "3.4.0"
 protobuf = "4.32.1"
 protobufPlugin = "0.9.6"
-spotless = "8.2.0"
+spotless = "8.2.1"
 kotlinSerializationJson = "1.10.0"
-protobufJavaUtil = "4.33.4"
+protobufJavaUtil = "4.33.5"
 protoDefinitions = "0.6.1"
 
 [libraries]
